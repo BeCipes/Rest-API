@@ -1,0 +1,28 @@
+import joi from 'joi'
+
+// const resepValidation = joi.object({
+//     nama: joi.string().required(),
+//     deskripsi: joi.string().required(),
+//     bahan: joi.string().required(),
+//     langkah: joi.string().required(),
+//     foto: joi.string().required(),
+//     kategori: joi.string().required(),
+//     porsi: joi.number().required(),
+//     waktu: joi.number().required(),
+//     tingkat: joi.number().required(),
+//     kalori: joi.number().required(),
+//     protein: joi.number().required(),
+//     lemak: joi.number().required(),
+//     karbo: joi.number().required(),
+//     serat: joi.number().required(),
+//     gula: joi.number().required(),
+//     natrium: joi.number().required(),
+//     kolesterol: joi.number().required(),
+//     asam: joi.number().required(),
+//     kalsium: joi.number().required(),
+//     zat_besi: joi.number().required(),
+//     vitamin_a: joi.number().required(),
+//     vitamin_b: joi.number().required(),
+//     vitamin_c: joi.number().required(),
+//     vitamin_d: joi.number().required(),
+// })
