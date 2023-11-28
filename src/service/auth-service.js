@@ -67,9 +67,9 @@ const login = async (req) => {
         throw new ResponseError(400, "Email or password is wrong")
     }
 
-    const { accessToken, refreshToken } = generateTokens(user);
+    const { accessToken, refreshToken } = generateTokens(dbUser)
 
-    return prismaClient.user.update({
+    const tes = await prismaClient.user.update({
         where: {
             email: dbUser.email
         },
@@ -85,9 +85,62 @@ const login = async (req) => {
             token: true
         }
     })
+
+    if (!tes) {
+        throw new ResponseError(500, "Internal Server Error")
+    }
+
+    return {
+        token: {
+            accessToken,
+            refreshToken
+        },
+        role: dbUser.role?.role_name
+    }
+}
+
+const refreshToken = async (refreshToken) => {
+    try {
+        const user = await prismaClient.user.findFirst({
+            where: {
+                token: refreshToken,
+            },
+            include: {
+                role: {
+                    select: {
+                        role_name: true,
+                    },
+                },
+            },
+        })
+
+        if (!user) {
+            throw new ResponseError(401, "Invalid refresh token");
+        }
+
+        const newTokens = generateTokens(user)
+
+        // Update the refresh token in the database (optional)
+        // await prismaClient.user.update({
+        //   where: {
+        //     id_user: user.id_user,
+        //   },
+        //   data: {
+        //     token: newTokens.refreshToken,
+        //   },
+        // });
+
+        return {
+            token: newTokens,
+            role: user.role?.role_name,
+        }
+    } catch (error) {
+        throw new ResponseError(error.statusCode || 500, error.message)
+    }
 }
 
 export default {
     register,
-    login
+    login,
+    refreshToken
 }
