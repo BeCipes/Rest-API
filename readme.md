@@ -6,8 +6,7 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 
 ## Techstack yang digunakan
 
-<img src="https://www.freecodecamp.org/news/content/images/2022/06/image-195.png" alt="NodeJS" height="50"/>
-<img src="https://tolustar.com/wp-content/uploads/2020/09/express-js.png" alt="ExpressJS" height="50"/>
+<img src="https://www.freecodecamp.org/news/content/images/2022/06/image-195.png" alt="NodeJS" height="50"/> <img src="https://tolustar.com/wp-content/uploads/2020/09/express-js.png" alt="ExpressJS" height="50"/>
 <img src="https://avatars.githubusercontent.com/u/17219288?s=200&v=4" alt="Prisma" height="50"/>
 <img src="https://github.com/winstonjs.png" alt="Winston" height="50"/>
 <img src="https://repository-images.githubusercontent.com/139898859/9617c480-81c2-11ea-94fc-322231ead1f0" alt="Bycrypt" height="50"/>
