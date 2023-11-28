@@ -1,15 +1,14 @@
 import jwt from 'jsonwebtoken'
 
 function generateAccessToken(user) {
-  return jwt.sign({ id_user: user.id_user }, process.env.SECRET, {
+  return jwt.sign({ id: user.id_user, role: user.role?.role_name }, process.env.SECRET, {
     expiresIn: '5m',
   })
 }
 
 function generateRefreshToken(user) {
   return jwt.sign({
-    id_user: user.id_user
-    // jti
+    id: user.id_user
   }, process.env.SECRET, {
     expiresIn: '8h'
   })
