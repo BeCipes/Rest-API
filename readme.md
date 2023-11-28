@@ -21,13 +21,13 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 3. Buat file `.env` dengan isi sebagai berikut:
 
    ```env
-   // Port yang ingin anda pakai
+   # Port yang ingin anda pakai
    PORT=
 
-   // Secret key yang ingin anda pakai
+   # Secret key yang ingin anda pakai
    SECRET=
 
-   // URL database anda (sebagai contoh saya berikan dibawah)
+   # URL database anda (sebagai contoh saya berikan dibawah)
    DATABASE_URL="mysql://root:password@localhost:3306/yourdb"
    ```
 
