@@ -36,4 +36,4 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 
 ### Dokumentasi API
 
-Dokumentasi API dapat dilihat di file `apispecs_gocipes.json`
+Dokumentasi API dibuat menggunakan **`OpenAPI Specification (OAS)`** dan dapat dilihat di file `apispecs_gocipes.json`
