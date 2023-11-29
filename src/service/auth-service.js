@@ -3,7 +3,7 @@ import { registerUserValidation, loginUserValidation } from "../validation/auth-
 import { prismaClient } from "../application/database.js"
 import { ResponseError } from "../error/response-error.js"
 import bcrypt from "bcrypt"
-import {generateTokens, generateAccessToken, generateRefreshToken} from "../helper/generate-jwt.js"
+import { generateTokens } from "../helper/generate-jwt.js"
 
 const register = async (req) => {
     const user = validate(registerUserValidation, req)
