@@ -3,7 +3,7 @@ CREATE TABLE `role` (
     `id_role` INTEGER NOT NULL AUTO_INCREMENT,
     `role_name` VARCHAR(100) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
+    `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `role_role_name_key`(`role_name`),
     PRIMARY KEY (`id_role`)
