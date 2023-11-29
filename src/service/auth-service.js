@@ -12,7 +12,7 @@ const register = async (req) => {
         where: {
             email: user.email
         }
-    });
+    })
 
     if (countUser === 1) {
         throw new ResponseError(400, "Email already exists")
@@ -25,10 +25,10 @@ const register = async (req) => {
     })
 
     if (!userRole) {
-        throw new ResponseError(500, "Role not found");
+        throw new ResponseError(500, "Role not found")
     }
 
-    user.id_role = userRole.id_role;
+    user.id_role = userRole.id_role
     user.password = await bcrypt.hash(user.password, 10)
 
     return prismaClient.user.create({
@@ -67,14 +67,14 @@ const login = async (req) => {
         throw new ResponseError(400, "Email or password is wrong")
     }
 
-    const { accessToken, refreshToken } = generateTokens(dbUser)
+    const token = generateTokens(dbUser)
 
     const tes = await prismaClient.user.update({
         where: {
             email: dbUser.email
         },
         data: {
-            token: refreshToken
+            token: token.refreshToken
         },
         select: {
             role: {
@@ -92,8 +92,7 @@ const login = async (req) => {
 
     return {
         token: {
-            accessToken,
-            refreshToken
+            token
         },
         role: dbUser.role?.role_name
     }
@@ -115,20 +114,20 @@ const refreshToken = async (refreshToken) => {
         })
 
         if (!user) {
-            throw new ResponseError(401, "Invalid refresh token");
+            throw new ResponseError(401, "Invalid refresh token")
         }
 
         const newTokens = generateTokens(user)
 
         // Update the refresh token in the database (optional)
-        // await prismaClient.user.update({
-        //   where: {
-        //     id_user: user.id_user,
-        //   },
-        //   data: {
-        //     token: newTokens.refreshToken,
-        //   },
-        // });
+        await prismaClient.user.update({
+            where: {
+                id_user: user.id_user,
+            },
+            data: {
+                token: newTokens.refreshToken,
+            },
+        })
 
         return {
             token: newTokens,
