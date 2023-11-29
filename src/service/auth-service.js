@@ -22,6 +22,10 @@ const register = async (req) => {
         where: {
             role_name: "User".toLowerCase(),
         },
+        select: {
+            id_role: true,
+            role_name: true
+        }
     })
 
     if (!userRole) {
