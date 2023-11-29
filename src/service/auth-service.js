@@ -23,8 +23,7 @@ const register = async (req) => {
             role_name: "User".toLowerCase(),
         },
         select: {
-            id_role: true,
-            role_name: true
+            id_role: true
         }
     })
 
