@@ -1,10 +1,10 @@
 import roleService from "../service/role-service.js"
-import WebResponse from "../helper/web-response.js"
+import { SuccessWebResponse } from "../helper/web-response.js"
 
 const createRole = async (req, res, next) => {
     try {
         const result = await roleService.create(req.body)
-        const response = WebResponse(200, "OK", "Success create new role", result)
+        const response = SuccessWebResponse(200, "OK", "Success create new role", result)
 
         res.status(200).json(response)
     } catch (e) {
@@ -18,7 +18,7 @@ const updateRole = async (req, res, next) => {
         req.body.id_role = roleId
         
         const result = await roleService.update(req.body)
-        const response = WebResponse(200, "OK", "Success update role", result)
+        const response = SuccessWebResponse(200, "OK", "Success update role", result)
 
         res.status(200).json(response)
     } catch (e) {
@@ -30,7 +30,7 @@ const deleteRole = async (req, res, next) => {
     try {
         const roleId = req.params.roleId
         const result = await roleService.remove(roleId)
-        const response = WebResponse(200, "OK", "Success delete role", result)
+        const response = SuccessWebResponse(200, "OK", "Success delete role", result)
 
         res.status(200).json(response)
     } catch (e) {
@@ -42,7 +42,7 @@ const getRoleById = async (req, res, next) => {
     try {
         const roleId = req.params.roleId
         const result = await roleService.get(roleId)
-        const response = WebResponse(200, "OK", "Success get role", result)
+        const response = SuccessWebResponse(200, "OK", "Success get role", result)
 
         res.status(200).json(response)
     } catch (e) {
@@ -53,7 +53,7 @@ const getRoleById = async (req, res, next) => {
 const getAllRole = async (req, res, next) => {
     try {
         const result = await roleService.getAll()
-        const response = WebResponse(200, "OK", "Success get all role", result)
+        const response = SuccessWebResponse(200, "OK", "Success get all role", result)
 
         res.status(200).json(response)
     } catch (e) {

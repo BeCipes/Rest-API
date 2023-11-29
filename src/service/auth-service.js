@@ -99,42 +99,40 @@ const login = async (req) => {
 }
 
 const refreshToken = async (refreshToken) => {
-    try {
-        const user = await prismaClient.user.findFirst({
-            where: {
-                token: refreshToken,
-            },
-            include: {
-                role: {
-                    select: {
-                        role_name: true,
-                    },
+    const user = await prismaClient.user.findFirst({
+        where: {
+            token: refreshToken,
+        },
+        include: {
+            role: {
+                select: {
+                    role_name: true,
                 },
             },
-        })
+        },
+    })
 
-        if (!user) {
-            throw new ResponseError(401, "Invalid refresh token")
-        }
+    console.log(user)
 
-        const newTokens = generateTokens(user)
+    if (!user) {
+        throw new ResponseError(401, "Invalid refresh token")
+    }
 
-        // Update the refresh token in the database (optional)
-        await prismaClient.user.update({
-            where: {
-                id_user: user.id_user,
-            },
-            data: {
-                token: newTokens.refreshToken,
-            },
-        })
+    const newTokens = generateTokens(user)
 
-        return {
-            token: newTokens,
-            role: user.role?.role_name,
-        }
-    } catch (error) {
-        throw new ResponseError(error.statusCode || 500, error.message)
+    // Update the refresh token in the database (optional)
+    // await prismaClient.user.update({
+    //     where: {
+    //         id_user: user.id_user,
+    //     },
+    //     data: {
+    //         token: newTokens.refreshToken,
+    //     },
+    // })
+
+    return {
+        token: newTokens.accessToken,
+        role: user.role?.role_name,
     }
 }
 

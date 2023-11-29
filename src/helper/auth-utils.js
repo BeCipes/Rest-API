@@ -16,3 +16,15 @@ export const decodeAccessToken = (token) => {
         throw new Error('Invalid access token')
     }
 }
+
+export const getTokenPart = (token) => {
+    const tokenParts = token.split(' ')
+
+    if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
+        throw new Error('Invalid access token format')
+    }
+
+    const tokenFinal = tokenParts[1]
+
+    return tokenFinal
+}

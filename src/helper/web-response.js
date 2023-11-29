@@ -1,4 +1,4 @@
-const WebResponse = (code, status, msg, data) => {
+const SuccessWebResponse = (code, status, msg, data) => {
     return {
         code: code,
         status: status,
@@ -7,4 +7,14 @@ const WebResponse = (code, status, msg, data) => {
     }
 }
 
-export default WebResponse
+const ErrorWebResponse = (code, error) => {
+    return {
+        code: code,
+        error: error
+    }
+}
+
+export {
+    SuccessWebResponse,
+    ErrorWebResponse
+}

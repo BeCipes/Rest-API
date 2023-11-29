@@ -1,11 +1,8 @@
 import { prismaClient } from "../application/database.js"
+import { getTokenPart } from "../helper/auth-utils.js"
 
 export const authMiddleware = async (req, res, next) => {
     const token = req.get('Authorization')
-
-    if (!token && req.path === '/login') {
-        return next();
-    }
 
     if (!token) {
         res.status(401).json({
@@ -15,20 +12,14 @@ export const authMiddleware = async (req, res, next) => {
     }
 
     try {
-        const decodedToken = decodeAccessToken(token)
+        const tokenPart = getTokenPart(token)
 
         const user = await prismaClient.user.findFirst({
             where: {
-                id_user: decodedToken.id,
-            },
-            include: {
-                role: {
-                    select: {
-                        role_name: true
-                    }
-                }
+                token: tokenPart,
             }
         })
+        console.log(user)
 
         if (!user) {
             res.status(401).json({
@@ -37,14 +28,14 @@ export const authMiddleware = async (req, res, next) => {
             return
         }
 
-        req.user = user
-        const userRole = user.role?.role_name.toLowerCase()
+        // req.user = user
+        // const userRole = user.role?.role_name.toLowerCase()
 
-        if (userRole !== 'user') {
-            return res.status(403).json({
-                errors: "Forbidden"
-            }).end()
-        }
+        // if (userRole !== 'user') {
+        //     return res.status(403).json({
+        //         errors: "Forbidden"
+        //     }).end()
+        // }
 
         next()
     } catch (error) {
