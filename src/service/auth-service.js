@@ -112,8 +112,6 @@ const refreshToken = async (refreshToken) => {
         },
     })
 
-    console.log(user)
-
     if (!user) {
         throw new ResponseError(401, "Invalid refresh token")
     }
