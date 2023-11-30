@@ -22,10 +22,11 @@ model User {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime? @default(now())
 
-  role Role @relation(fields: [id_role], references: [id_role])
+  role    Role      @relation(fields: [id_role], references: [id_role])
+  Artikel Artikel[]
 
   @@map("users")
-}
+} 
 
 model Role {
   id_role   Int       @id @default(autoincrement())
@@ -36,4 +37,19 @@ model Role {
   users User[]
 
   @@map("role")
+}
+
+model Artikel {
+  id_artikel Int       @id @default(autoincrement())
+  id_user    Int       @db.Int
+  headline   String    @db.VarChar(100)
+  content    String    @db.Text
+  image      String?   @unique
+  writer     String    @db.VarChar(100)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @default(now())
+
+  user User @relation(fields: [id_user], references: [id_user])
+
+  @@map("artikel")
 }
