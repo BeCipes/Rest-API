@@ -10,7 +10,7 @@ const SuccessWebResponse = (code, status, msg, data) => {
 const ErrorWebResponse = (code, error) => {
     return {
         code: code,
-        error: error
+        errors: error
     }
 }
 
