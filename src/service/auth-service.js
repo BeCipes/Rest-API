@@ -1,8 +1,8 @@
-import { validate } from "../validation/validation.js"
-import { registerUserValidation, loginUserValidation } from "../validation/auth-validation.js"
-import { prismaClient } from "../application/database.js"
-import { ResponseError } from "../error/response-error.js"
-import { generateTokens } from "../helper/generate-jwt.js"
+import { validate } from "./../validation/validation.js"
+import { registerUserValidation, loginUserValidation } from "./../validation/auth-validation.js"
+import { prismaClient } from "./../application/database.js"
+import { ResponseError } from "./../error/response-error.js"
+import { generateTokens, generateAccessToken } from "./../helper/generate-jwt.js"
 import bcrypt from "bcrypt"
 
 const register = async (req) => {
@@ -28,13 +28,13 @@ const register = async (req) => {
     })
 
     if (!userRole) {
-        throw new ResponseError(500, "Role not found")
+        throw new ResponseError(404, "Role not found")
     }
 
     user.id_role = userRole.id_role
     user.password = await bcrypt.hash(user.password, 10)
 
-    const token = generateTokens(user)
+    const token = await generateTokens(user)
     user.token = token.refreshToken
 
     await prismaClient.user.create({
@@ -69,16 +69,17 @@ const login = async (req) => {
     })
     
     if (!dbUser) {
-        throw new ResponseError(400, "Email or password is wrong")
+        throw new ResponseError(401, "Email or password is wrong")
     }
     
     const isPasswordValid = await bcrypt.compare(user.password, dbUser.password)
     
     if (!isPasswordValid) {
-        throw new ResponseError(400, "Email or password is wrong")
+        throw new ResponseError(401, "Email or password is wrong")
     }
 
-    const token = generateTokens(dbUser)
+    
+    const token = await generateTokens(dbUser)
 
     const tes = await prismaClient.user.update({
         where: {
@@ -120,26 +121,16 @@ const refreshToken = async (refreshToken) => {
             },
         },
     })
-
+    
     if (!user) {
         throw new ResponseError(401, "Invalid refresh token")
     }
-
-    const newTokens = generateTokens(user)
-
-    // Update the refresh token in the database (optional)
-    // await prismaClient.user.update({
-    //     where: {
-    //         id_user: user.id_user,
-    //     },
-    //     data: {
-    //         token: newTokens.refreshToken,
-    //     },
-    // })
+    
+    const newToken = await generateAccessToken(user)
 
     return {
         role: user.role?.role_name,
-        token: newTokens.accessToken,
+        token: newToken,
     }
 }
 
