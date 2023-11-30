@@ -6,11 +6,11 @@ const roleRouter = new express.Router()
 roleRouter.use(adminMiddleware)
 
 // Role Router
-roleRouter.get("/api/role/", roleController.getAllRole)
-roleRouter.get("/api/role/:roleId", roleController.getRoleById)
-roleRouter.post("/api/role", roleController.createRole)
-roleRouter.put("/api/role/:roleId", roleController.updateRole)
-roleRouter.delete("/api/role/:roleId", roleController.deleteRole)
+roleRouter.get("/role/", roleController.getAllRole)
+roleRouter.get("/role/:roleId", roleController.getRoleById)
+roleRouter.post("/role", roleController.createRole)
+roleRouter.put("/role/:roleId", roleController.updateRole)
+roleRouter.delete("/role/:roleId", roleController.deleteRole)
 
 export {
     roleRouter

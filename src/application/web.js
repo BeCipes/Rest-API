@@ -4,12 +4,16 @@ import { roleRouter } from "./../routes/role-api.js"
 import { userRouter } from "./../routes/user-api.js"
 import { errorMiddleware } from "./../middleware/error-middleware.js"
 
-export const app = express()
+const app = express()
 
 app.use(express.json())
 
-app.use(publicRouter)
-app.use(roleRouter)
-app.use(userRouter)
+const apiPrefix = "/api"
+
+app.use(apiPrefix, publicRouter)
+app.use(apiPrefix, roleRouter)
+app.use(apiPrefix, userRouter)
 
 app.use(errorMiddleware)
+
+export { app }

@@ -5,9 +5,9 @@ import { authMiddleware } from "../middleware/auth-middleware.js"
 const publicRouter = new express.Router()
 // publicRouter.use(authMiddleware)
 
-publicRouter.post('/api/users/register', authController.register)
-publicRouter.post('/api/users/login', authController.login)
-publicRouter.post('/api/users/refresh', authMiddleware, authController.refreshTokens)
+publicRouter.post('/users/register', authController.register)
+publicRouter.post('/users/login', authController.login)
+publicRouter.post('/users/refresh', authMiddleware, authController.refreshTokens)
 
 export {
     publicRouter

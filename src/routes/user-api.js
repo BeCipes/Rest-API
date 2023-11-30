@@ -6,11 +6,11 @@ const userRouter = new express.Router()
 userRouter.use(adminMiddleware)
 
 // User Router
-userRouter.get("/api/user/", userController.getAllUser)
-userRouter.get("/api/user/:userId", userController.getUserById)
-userRouter.post("/api/user", userController.createUser)
-userRouter.put("/api/user/:userId", userController.updateUser)
-userRouter.delete("/api/user/:userId", userController.deleteUser)
+userRouter.get("/user/", userController.getAllUser)
+userRouter.get("/user/:userId", userController.getUserById)
+userRouter.post("/user", userController.createUser)
+userRouter.put("/user/:userId", userController.updateUser)
+userRouter.delete("/user/:userId", userController.deleteUser)
 
 export {
     userRouter
