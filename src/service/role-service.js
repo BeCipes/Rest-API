@@ -97,11 +97,13 @@ const remove = async (roleId, res) => {
         throw new ResponseError(400, "Role is not found")
     }
 
-    return prismaClient.role.delete({
+    await prismaClient.role.delete({
         where: {
             id_role: roleId
         }
     })
+
+    return
 }
 
 export default {

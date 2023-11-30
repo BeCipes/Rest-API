@@ -2,8 +2,8 @@ import { validate } from "../validation/validation.js"
 import { registerUserValidation, loginUserValidation } from "../validation/auth-validation.js"
 import { prismaClient } from "../application/database.js"
 import { ResponseError } from "../error/response-error.js"
-import bcrypt from "bcrypt"
 import { generateTokens } from "../helper/generate-jwt.js"
+import bcrypt from "bcrypt"
 
 const register = async (req) => {
     const user = validate(registerUserValidation, req)
@@ -34,14 +34,22 @@ const register = async (req) => {
     user.id_role = userRole.id_role
     user.password = await bcrypt.hash(user.password, 10)
 
-    return prismaClient.user.create({
+    const token = generateTokens(user)
+    user.token = token.refreshToken
+
+    await prismaClient.user.create({
         data: user,
         select: {
             first_name: true,
             last_name: true,
-            email: true
+            email: true,
+            token: true
         }
     })
+
+    return {
+        token
+    }
 }
 
 const login = async (req) => {
@@ -94,10 +102,8 @@ const login = async (req) => {
     }
 
     return {
-        token: {
-            token
-        },
-        role: dbUser.role?.role_name
+        role: dbUser.role?.role_name,
+        token
     }
 }
 
@@ -132,8 +138,8 @@ const refreshToken = async (refreshToken) => {
     // })
 
     return {
-        token: newTokens.accessToken,
         role: user.role?.role_name,
+        token: newTokens.accessToken,
     }
 }
 
