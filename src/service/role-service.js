@@ -3,7 +3,7 @@ import { ResponseError } from "../error/response-error.js"
 import { validate } from "../validation/validation.js"
 import { createRoleValidation, updateRoleValidation, getRoleValidation } from "../validation/role-validation.js"
 
-const create = async (req, res) => {
+const create = async (req) => {
     const role = validate(createRoleValidation, req)
 
     const countRole = await prismaClient.role.count({
@@ -24,7 +24,7 @@ const create = async (req, res) => {
     })
 }
 
-const update = async (req, res) => {
+const update = async (req) => {
     const role = validate(updateRoleValidation, req)
 
     const countRole = await prismaClient.role.count({
@@ -34,7 +34,7 @@ const update = async (req, res) => {
     })
 
     if (!countRole) {
-        throw new ResponseError(400, "Role is not found")
+        throw new ResponseError(404, "Role is not found")
     }
 
     return prismaClient.role.update({
@@ -49,7 +49,7 @@ const update = async (req, res) => {
     })
 }
 
-const get = async (roleId, res) => {
+const get = async (roleId) => {
     roleId = validate(getRoleValidation, roleId)
 
     const role = await prismaClient.role.findUnique({
@@ -63,13 +63,13 @@ const get = async (roleId, res) => {
     })
 
     if (!role) {
-        throw new ResponseError(400, "Role is not found")
+        throw new ResponseError(404, "Role is not found")
     }
 
     return role
 }
 
-const getAll = async (res) => {
+const getAll = async () => {
     const role = await prismaClient.role.findMany({
         select: {
             id_role: true,
@@ -78,13 +78,13 @@ const getAll = async (res) => {
     })
 
     if (!role) {
-        throw new ResponseError(400, "Role is not found")
+        throw new ResponseError(404, "Role is not found")
     }
 
     return role
 }
 
-const remove = async (roleId, res) => {
+const remove = async (roleId) => {
     roleId = validate(getRoleValidation, roleId)
 
     const role = await prismaClient.role.count({
@@ -94,7 +94,7 @@ const remove = async (roleId, res) => {
     })
 
     if (!role) {
-        throw new ResponseError(400, "Role is not found")
+        throw new ResponseError(404, "Role is not found")
     }
 
     await prismaClient.role.delete({
