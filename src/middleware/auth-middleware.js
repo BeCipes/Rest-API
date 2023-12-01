@@ -1,4 +1,4 @@
-import { prismaClient } from "../application/database.js"
+import { prismaClient } from "../app/database.js"
 import { getTokenPart } from "../helper/auth-utils.js"
 import { ErrorWebResponse } from "../helper/web-response.js"
 

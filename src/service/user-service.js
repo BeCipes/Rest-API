@@ -1,6 +1,6 @@
 import { validate } from "../validation/validation.js"
 import { createUserValidation, updateUserValidation, getUserValidation } from "../validation/user-validation.js"
-import { prismaClient } from "../application/database.js"
+import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import bcrypt from "bcrypt"
 

@@ -1,5 +1,5 @@
-import { app } from "./application/web.js"
-import { logger } from "./application/logging.js"
+import { app } from "./app/web.js"
+import { logger } from "./app/logging.js"
 import dotenv from "dotenv"
 
 dotenv.config({ path: './config/.env' })

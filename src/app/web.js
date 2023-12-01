@@ -1,9 +1,9 @@
 import express from "express"
-import { publicRouter } from "./../routes/public-api.js"
-import { roleRouter } from "./../routes/role-api.js"
-import { userRouter } from "./../routes/user-api.js"
+import { publicRouter } from "../routes/public-api.js"
+import { roleRouter } from "../routes/role-api.js"
+import { userRouter } from "../routes/user-api.js"
 import { kategoriResepRouter } from "../routes/kategori_resep-api.js"
-import { errorMiddleware } from "./../middleware/error-middleware.js"
+import { errorMiddleware } from "../middleware/error-middleware.js"
 import cors from "cors"
 
 const app = express()

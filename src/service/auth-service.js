@@ -1,6 +1,6 @@
 import { validate } from "./../validation/validation.js"
 import { registerUserValidation, loginUserValidation } from "./../validation/auth-validation.js"
-import { prismaClient } from "./../application/database.js"
+import { prismaClient } from "../app/database.js"
 import { ResponseError } from "./../error/response-error.js"
 import { generateTokens, generateAccessToken } from "./../helper/generate-jwt.js"
 import bcrypt from "bcrypt"

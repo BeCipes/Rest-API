@@ -1,4 +1,4 @@
-import { prismaClient } from "../application/database.js"
+import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import { validate } from "../validation/validation.js"
 import { createRoleValidation, updateRoleValidation, getRoleValidation } from "../validation/role-validation.js"
