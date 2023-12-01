@@ -24,10 +24,10 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
    # Port yang ingin anda pakai
    PORT=
 
-   # Secret key yang ingin anda pakai
+   # Secret key untuk jwt
    SECRET=
 
-   # URL database anda (sebagai contoh saya berikan dibawah)
+   # URL database (sebagai contoh saya berikan dibawah)
    DATABASE_URL="mysql://root:password@localhost:3306/yourdb"
    ```
 
