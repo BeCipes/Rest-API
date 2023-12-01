@@ -22,11 +22,10 @@ model User {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime? @default(now())
 
-  role    Role      @relation(fields: [id_role], references: [id_role])
-  Artikel Artikel[]
+  role Role @relation(fields: [id_role], references: [id_role])
 
   @@map("users")
-} 
+}
 
 model Role {
   id_role   Int       @id @default(autoincrement())
@@ -39,17 +38,27 @@ model Role {
   @@map("role")
 }
 
-model Artikel {
-  id_artikel Int       @id @default(autoincrement())
-  id_user    Int       @db.Int
-  headline   String    @db.VarChar(100)
-  content    String    @db.Text
-  image      String?   @unique
-  writer     String    @db.VarChar(100)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime? @default(now())
+model Kategori_Resep {
+  id_kategori_resep Int       @id @default(autoincrement())
+  nama_kategori     String    @unique @db.VarChar(100)
+  gambar            String?   @db.VarChar(100)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime? @default(now())
 
-  user User @relation(fields: [id_user], references: [id_user])
-
-  @@map("artikel")
+  @@map("kategori_resep")
 }
+
+// model Artikel {
+//   id_artikel Int       @id @default(autoincrement())
+//   id_user    Int       @db.Int
+//   headline   String    @db.VarChar(100)
+//   content    String    @db.Text
+//   image      String?   @unique
+//   writer     String    @db.VarChar(100)
+//   createdAt  DateTime  @default(now())
+//   updatedAt  DateTime? @default(now())
+
+//   user User @relation(fields: [id_user], references: [id_user])
+
+//   @@map("artikel")
+// }
