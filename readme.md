@@ -18,7 +18,7 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 
 1. Clone repository ini
 2. Install dependencies yang diperlukan dengan perintah `npm install`
-3. Buat file `.env` dengan isi sebagai berikut:
+3. Edit file `.env` pada folder `config` dengan format sebagai berikut:
 
    ```env
    # Port yang ingin anda pakai
