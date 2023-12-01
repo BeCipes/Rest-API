@@ -27,7 +27,7 @@ const create = async (req) => {
     })
 
     if (!userRole) {
-        throw new ResponseError(500, "Role not found")
+        throw new ResponseError(404, "Role not found")
     }
 
     user.id_role = userRole.id_role
@@ -53,7 +53,7 @@ const update = async (req) => {
     })
 
     if (!countUser) {
-        throw new ResponseError(400, "User is not found")
+        throw new ResponseError(404, "User is not found")
     }
 
     user.password = await bcrypt.hash(user.password, 10)
@@ -82,7 +82,7 @@ const remove = async (userId) => {
     })
 
     if (!countUser) {
-        throw new ResponseError(400, "User is not found")
+        throw new ResponseError(404, "User is not found")
     }
 
     await prismaClient.user.delete({
@@ -110,7 +110,7 @@ const get = async (userId) => {
     })
 
     if (!user) {
-        throw new ResponseError(400, "User is not found")
+        throw new ResponseError(404, "User is not found")
     }
 
     return user
@@ -127,7 +127,7 @@ const getAll = async () => {
     })
 
     if (!user) {
-        throw new ResponseError(400, "User is not found")
+        throw new ResponseError(404, "User is not found")
     }
 
     return user
