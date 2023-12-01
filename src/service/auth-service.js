@@ -1,9 +1,9 @@
-import { validate } from "../validation/validation.js"
-import { registerUserValidation, loginUserValidation } from "../validation/auth-validation.js"
-import { prismaClient } from "../application/database.js"
-import { ResponseError } from "../error/response-error.js"
+import { validate } from "./../validation/validation.js"
+import { registerUserValidation, loginUserValidation } from "./../validation/auth-validation.js"
+import { prismaClient } from "../app/database.js"
+import { ResponseError } from "./../error/response-error.js"
+import { generateTokens, generateAccessToken } from "./../helper/generate-jwt.js"
 import bcrypt from "bcrypt"
-import {generateTokens, generateAccessToken, generateRefreshToken} from "../helper/generate-jwt.js"
 
 const register = async (req) => {
     const user = validate(registerUserValidation, req)
@@ -12,7 +12,7 @@ const register = async (req) => {
         where: {
             email: user.email
         }
-    });
+    })
 
     if (countUser === 1) {
         throw new ResponseError(400, "Email already exists")
@@ -22,23 +22,34 @@ const register = async (req) => {
         where: {
             role_name: "User".toLowerCase(),
         },
+        select: {
+            id_role: true
+        }
     })
 
     if (!userRole) {
-        throw new ResponseError(500, "Role not found");
+        throw new ResponseError(404, "Role not found")
     }
 
-    user.id_role = userRole.id_role;
+    user.id_role = userRole.id_role
     user.password = await bcrypt.hash(user.password, 10)
 
-    return prismaClient.user.create({
+    const token = await generateTokens(user)
+    user.token = token.refreshToken
+
+    await prismaClient.user.create({
         data: user,
         select: {
             first_name: true,
             last_name: true,
-            email: true
+            email: true,
+            token: true
         }
     })
+
+    return {
+        token
+    }
 }
 
 const login = async (req) => {
@@ -58,23 +69,24 @@ const login = async (req) => {
     })
     
     if (!dbUser) {
-        throw new ResponseError(400, "Email or password is wrong")
+        throw new ResponseError(401, "Email or password is wrong")
     }
     
     const isPasswordValid = await bcrypt.compare(user.password, dbUser.password)
     
     if (!isPasswordValid) {
-        throw new ResponseError(400, "Email or password is wrong")
+        throw new ResponseError(401, "Email or password is wrong")
     }
 
-    const { accessToken, refreshToken } = generateTokens(dbUser)
+    
+    const token = await generateTokens(dbUser)
 
     const tes = await prismaClient.user.update({
         where: {
             email: dbUser.email
         },
         data: {
-            token: refreshToken
+            token: token.refreshToken
         },
         select: {
             role: {
@@ -91,51 +103,34 @@ const login = async (req) => {
     }
 
     return {
-        token: {
-            accessToken,
-            refreshToken
-        },
-        role: dbUser.role?.role_name
+        role: dbUser.role?.role_name,
+        token
     }
 }
 
 const refreshToken = async (refreshToken) => {
-    try {
-        const user = await prismaClient.user.findFirst({
-            where: {
-                token: refreshToken,
-            },
-            include: {
-                role: {
-                    select: {
-                        role_name: true,
-                    },
+    const user = await prismaClient.user.findFirst({
+        where: {
+            token: refreshToken,
+        },
+        include: {
+            role: {
+                select: {
+                    role_name: true,
                 },
             },
-        })
+        },
+    })
+    
+    if (!user) {
+        throw new ResponseError(401, "Invalid refresh token")
+    }
+    
+    const newToken = await generateAccessToken(user)
 
-        if (!user) {
-            throw new ResponseError(401, "Invalid refresh token");
-        }
-
-        const newTokens = generateTokens(user)
-
-        // Update the refresh token in the database (optional)
-        // await prismaClient.user.update({
-        //   where: {
-        //     id_user: user.id_user,
-        //   },
-        //   data: {
-        //     token: newTokens.refreshToken,
-        //   },
-        // });
-
-        return {
-            token: newTokens,
-            role: user.role?.role_name,
-        }
-    } catch (error) {
-        throw new ResponseError(error.statusCode || 500, error.message)
+    return {
+        role: user.role?.role_name,
+        token: newToken,
     }
 }
 

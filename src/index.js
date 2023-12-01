@@ -1,16 +1,10 @@
-import express from "express"
-import { publicRouter } from "./routes/public-api.js"
-import { roleRouter } from "./routes/api.js"
-import { errorMiddleware } from "./middleware/error-middleware.js"
+import { app } from "./app/web.js"
+import { logger } from "./app/logging.js"
+import { config } from "dotenv"
 
-export const app = express()
-
-app.use(express.json())
-app.use(errorMiddleware)
-app.use(publicRouter)
-app.use(roleRouter)
+config({ path: './config/.env' })
 
 app.listen(process.env.PORT, () => {
-    console.log('listening on port 3000')
-    // logger.info("App start");
+    // console.log('listening on port 3000')
+    logger.info(`App start on port ${process.env.PORT}`)
 })

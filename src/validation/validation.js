@@ -6,7 +6,7 @@ const validate = (schema, request) => {
     allowUnknown: false,
   })
   if (result.error) {
-    throw new ResponseError(400, result.error.message)
+    throw new ResponseError(400, result.error)
   } else {
     return result.value
   }

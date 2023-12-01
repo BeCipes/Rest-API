@@ -1,22 +1,27 @@
 import jwt from 'jsonwebtoken'
+import bcrypt from "bcrypt"
 
-function generateAccessToken(user) {
-  return jwt.sign({ id: user.id_user, role: user.role?.role_name }, process.env.SECRET, {
-    expiresIn: '5m',
+const generateAccessToken = async (user) => {
+  const token = jwt.sign({ id: user.id_user, role: user.role?.role_name }, process.env.SECRET, {
+    expiresIn: '12h',
   })
+
+  return token
 }
 
-function generateRefreshToken(user) {
-  return jwt.sign({
+const generateRefreshToken = async (user) => {
+  const token = jwt.sign({
     id: user.id_user
   }, process.env.SECRET, {
-    expiresIn: '8h'
+    expiresIn: '30d'
   })
+
+  return token
 }
 
-function generateTokens(user) {
-  const accessToken = generateAccessToken(user)
-  const refreshToken = generateRefreshToken(user)
+const generateTokens = async (user) => {
+  const accessToken = await generateAccessToken(user)
+  const refreshToken = await bcrypt.hash(await generateRefreshToken(user), 10)
 
   return {
     accessToken,

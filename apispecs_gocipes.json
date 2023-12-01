@@ -1,29 +1,114 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "GoCipes API Documentation",
-    "description": "This is a sample server for a GoCipes API.",
+    "title": "BeCipes API Documentation",
+    "description": "This is a sample server for a BeCipes API.",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://localhost",
+      "url": "http://localhost:3000/api",
       "description": "Local server"
     }
   ],
   "paths": {
-    "/resep": {
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth API"],
+        "summary": "Login a user",
+        "description": "Login a user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/loginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth API"],
+        "summary": "Register a user",
+        "description": "Register a user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "security": [
+          {
+            "getTokenAuth": []
+          }
+        ],
+        "tags": ["Auth API"],
+        "summary": "Get new access token",
+        "description": "Get new access token",
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/role": {
       "get": {
-        "tags": ["Resep API"],
-        "summary": "Get all resep",
-        "description": "Get all resep",
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Role API"],
+        "summary": "Get all role",
+        "description": "Get all role",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/resep"
+                  "$ref": "#/components/schemas/roleResponse"
                 }
               }
             }
@@ -31,14 +116,19 @@
         }
       },
       "post": {
-        "tags": ["Resep API"],
-        "summary": "Create a new resep",
-        "description": "Create a new resep",
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Role API"],
+        "summary": "Create a new role",
+        "description": "Create a new role",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateOrUpdateresep"
+                "$ref": "#/components/schemas/roleRequest"
               }
             }
           }
@@ -49,7 +139,353 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/resep"
+                  "$ref": "#/components/schemas/roleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/role/{roleId}": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Role API"],
+        "summary": "Get a role by id",
+        "description": "Get a role by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "role ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/roleResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Role API"],
+        "summary": "Update a role by id",
+        "description": "Update a role by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "role ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/roleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/roleResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Role API"],
+        "summary": "Delete a role by id",
+        "description": "Delete a role by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "role ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "summary": "Get all user",
+        "description": "Get all user",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "summary": "Create a new user",
+        "description": "Create a new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{userId}": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "summary": "Get a user by id",
+        "description": "Get a user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "user ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "summary": "Update a user by id",
+        "description": "Update a user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "user ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "summary": "Delete a user by id",
+        "description": "Delete a user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "user ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resep": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Resep API"],
+        "summary": "Get all resep",
+        "description": "Get all resep",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/resepResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Resep API"],
+        "summary": "Create a new resep",
+        "description": "Create a new resep",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/resepRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/resepResponse"
                 }
               }
             }
@@ -59,6 +495,11 @@
     },
     "/resep/{resepId}": {
       "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
         "tags": ["Resep API"],
         "summary": "Get a resep by id",
         "description": "Get a resep by id",
@@ -79,7 +520,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/resep"
+                  "$ref": "#/components/schemas/resepResponse"
                 }
               }
             }
@@ -87,6 +528,11 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
         "tags": ["Resep API"],
         "summary": "Update a resep by id",
         "description": "Update a resep by id",
@@ -105,7 +551,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateOrUpdateresep"
+                "$ref": "#/components/schemas/resepRequest"
               }
             }
           }
@@ -116,7 +562,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/resep"
+                  "$ref": "#/components/schemas/resepResponse"
                 }
               }
             }
@@ -124,6 +570,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
         "tags": ["Resep API"],
         "summary": "Delete a resep by id",
         "description": "Delete a resep by id",
@@ -159,67 +610,117 @@
           }
         }
       }
-    },
-    "/login": {
-      "post": {
-        "tags": ["User API"],
-        "summary": "Login a user",
-        "description": "Login a user",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginUser"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/user"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/register": {
-      "post": {
-        "tags": ["User API"],
-        "summary": "Register a user",
-        "description": "Register a user",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterUser"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/user"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
+    "securitySchemes": {
+      "adminAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Authentication key for admin routes"
+      },
+      "getTokenAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Authentication key for refresh token"
+      }
+    },
     "schemas": {
-      "CreateOrUpdateresep": {
+      "loginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "registerRequest": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          }
+        }
+      },
+      "tokenResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "accessToken": {
+                "type": "string"
+              },
+              "refreshToken": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "roleRequest": {
+        "type": "object",
+        "properties": {
+          "role_name": {
+            "type": "string"
+          }
+        }
+      },
+      "roleResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id_role": {
+                  "type": "number"
+                },
+                "role_name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "resepRequest": {
         "type": "object",
         "properties": {
           "name": {
@@ -230,13 +731,16 @@
           }
         }
       },
-      "resep": {
+      "resepResponse": {
         "type": "object",
         "properties": {
           "code": {
             "type": "number"
           },
           "status": {
+            "type": "string"
+          },
+          "msg": {
             "type": "string"
           },
           "data": {
@@ -258,44 +762,47 @@
           }
         }
       },
-      "LoginUser": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        }
-      },
-      "RegisterUser": {
-        "type": "object",
-        "properties": {
-          "first_name": {
-            "type": "string"
-          },
-          "last_name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          },
-          "photo": {
-            "type": "string"
-          }
-        }
-      },
-      "user": {
+      "userRequest": {
         "type": "object",
         "properties": {
           "code": {
             "type": "number"
           },
           "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string"
+                },
+                "last_name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "photo": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "userResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "msg": {
             "type": "string"
           },
           "data": {
@@ -313,9 +820,6 @@
                   "type": "string"
                 },
                 "email": {
-                  "type": "string"
-                },
-                "password": {
                   "type": "string"
                 },
                 "photo": {

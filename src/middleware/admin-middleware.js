@@ -1,13 +1,14 @@
-import { prismaClient } from "../application/database.js"
+import { prismaClient } from "../app/database.js"
 import { decodeAccessToken } from "../helper/auth-utils.js"
+import { ErrorWebResponse } from "../helper/web-response.js"
 
 export const adminMiddleware = async (req, res, next) => {
     const token = req.get('Authorization')
 
     if (!token) {
-        res.status(401).json({
-            errors: "Unauthorized"
-        }).end()
+        const response = ErrorWebResponse(401, "Unauthorized")
+        res.status(401).json(response).end()
+
         return
     }
 
@@ -28,9 +29,9 @@ export const adminMiddleware = async (req, res, next) => {
         })
 
         if (!user) {
-            res.status(401).json({
-                errors: "Unauthorized"
-            }).end()
+            const response = ErrorWebResponse(401, "Unauthorized")
+            res.status(401).json(response).end()
+            
             return
         }
 
@@ -38,15 +39,15 @@ export const adminMiddleware = async (req, res, next) => {
         const userRole = user.role?.role_name.toLowerCase()
 
         if (userRole !== 'admin') {
-            return res.status(403).json({
-                errors: "Forbidden"
-            }).end()
+            const response = ErrorWebResponse(403, "Forbidden")
+            res.status(403).json(response).end()
+            
+            return
         }
 
         next()
     } catch (error) {
-        res.status(401).json({
-            errors: "Unauthorized"
-        }).end()
+        const response = ErrorWebResponse(401, "Unauthorized")
+        res.status(401).json(response).end()
     }
 }
