@@ -3,6 +3,7 @@ CREATE TABLE `kategori_resep` (
     `id_kategori_resep` INTEGER NOT NULL AUTO_INCREMENT,
     `nama_kategori` VARCHAR(100) NOT NULL,
     `gambar` VARCHAR(100) NULL,
+    `jenis` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
