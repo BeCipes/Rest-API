@@ -1,8 +1,7 @@
 import supertest from "supertest"
-import { app } from "../src/application/web.js"
-import { logger } from "../src/application/logging.js"
+import { app } from "../src/app/web.js"
+import { logger } from "../src/app/logging.js"
 import { createTestUser, removeTestUser } from "./test-util.js"
-import bcrypt from "bcrypt"
 
 describe('POST /api/users/login', function () {
     beforeEach(async () => {

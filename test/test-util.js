@@ -1,5 +1,5 @@
-import {prismaClient} from "../src/application/database.js";
-import bcrypt from "bcrypt";
+import { prismaClient } from "../src/app/database.js"
+import bcrypt from "bcrypt"
 
 // User configuration
 const createTestUser = async () => {
@@ -25,9 +25,9 @@ const removeTestUser = async () => {
 
 // Role configuration
 const createTestRole = async () => {
-    await prismaClient.user.create({
+    await prismaClient.role.create({
         data: {
-            role_name: "test",
+            role_name: "user",
         }
     })
 }
