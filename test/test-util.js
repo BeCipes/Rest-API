@@ -1,5 +1,9 @@
 import { prismaClient } from "../src/app/database.js"
 import bcrypt from "bcrypt"
+import { config } from "dotenv"
+
+// dotenv configuration
+config({ path: './config/.env' })
 
 // User configuration
 const createTestUser = async () => {
@@ -27,7 +31,7 @@ const removeTestUser = async () => {
 const createTestRole = async () => {
     await prismaClient.role.create({
         data: {
-            role_name: "user",
+            role_name: "test",
         }
     })
 }
