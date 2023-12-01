@@ -6,7 +6,7 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 
 ## Techstack yang digunakan
 
-<img src="https://www.freecodecamp.org/news/content/images/2022/06/image-195.png" alt="NodeJS" height="50"/> <img src="https://tolustar.com/wp-content/uploads/2020/09/express-js.png" alt="ExpressJS" height="50"/>
+<img src="https://agussuratna.net/wp-content/uploads/2023/07/node.js-logo.png" alt="NodeJS" height="50"/> <img src="https://raw.githubusercontent.com/aleksandryackovlev/openapi-mock-express-middleware/master/assets/express-logo.png" alt="ExpressJS" height="50"/>
 <img src="https://avatars.githubusercontent.com/u/17219288?s=200&v=4" alt="Prisma" height="50"/>
 <img src="https://github.com/winstonjs.png" alt="Winston" height="50"/>
 <img src="https://repository-images.githubusercontent.com/139898859/9617c480-81c2-11ea-94fc-322231ead1f0" alt="Bycrypt" height="50"/>
@@ -17,7 +17,7 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 ## Cara menggunakan
 
 1. Clone repository ini
-2. Install dependencies dengan `npm install`
+2. Install dependencies yang diperlukan dengan perintah `npm install`
 3. Buat file `.env` dengan isi sebagai berikut:
 
    ```env
@@ -31,8 +31,7 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
    DATABASE_URL="mysql://root:password@localhost:3306/yourdb"
    ```
 
-4. Install dependencies dengan menggunakan perintah `npm install`
-5. Jalankan server dengan menggunakan perintah `npm run dev`
+4. Jalankan server dengan menggunakan perintah `npm run dev`
 
 ### Dokumentasi API
 
