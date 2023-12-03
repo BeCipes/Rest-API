@@ -31,7 +31,9 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
    DATABASE_URL="mysql://root:password@localhost:3306/yourdb"
    ```
 
-4. Jalankan server dengan menggunakan perintah `npm run dev`
+4. Jalankan perintah `npm run migrate` untuk membuat tabel-tabel yang diperlukan
+5. Jalankan server dengan menggunakan perintah `npm run dev`
+6. **(Optional)** Jika anda ingin melakukan test, anda dapat menggunakan perintah `npm run test`
 
 ### Dokumentasi API
 
