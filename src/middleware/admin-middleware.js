@@ -38,6 +38,8 @@ export const adminMiddleware = async (req, res, next) => {
         req.user = user
         const userRole = user.role?.role_name.toLowerCase()
 
+        console.log(user)
+
         if (userRole !== 'admin') {
             const response = ErrorWebResponse(403, "Forbidden")
             res.status(403).json(response).end()

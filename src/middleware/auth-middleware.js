@@ -20,7 +20,6 @@ export const authMiddleware = async (req, res, next) => {
                 token: token,
             }
         })
-        console.log(user)
 
         if (!user) {
             const response = ErrorWebResponse(401, "Unauthorized")
