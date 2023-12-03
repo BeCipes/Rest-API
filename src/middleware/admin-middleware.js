@@ -1,9 +1,10 @@
 import { prismaClient } from "../app/database.js"
-import { decodeAccessToken } from "../helper/auth-utils.js"
+import { decodeToken, getTokenPart } from "../helper/jwt-helper.js"
 import { ErrorWebResponse } from "../helper/web-response.js"
 
 export const adminMiddleware = async (req, res, next) => {
-    const token = req.get('Authorization')
+    const rawToken = req.get('Authorization')
+    const token = await getTokenPart(rawToken)
 
     if (!token) {
         const response = ErrorWebResponse(401, "Unauthorized")
@@ -12,8 +13,9 @@ export const adminMiddleware = async (req, res, next) => {
         return
     }
 
+    
     try {
-        const decodedToken = decodeAccessToken(token)
+        const decodedToken = await decodeToken(token)
 
         const user = await prismaClient.user.findFirst({
             where: {
@@ -28,6 +30,7 @@ export const adminMiddleware = async (req, res, next) => {
             }
         })
 
+
         if (!user) {
             const response = ErrorWebResponse(401, "Unauthorized")
             res.status(401).json(response).end()
@@ -37,8 +40,6 @@ export const adminMiddleware = async (req, res, next) => {
 
         req.user = user
         const userRole = user.role?.role_name.toLowerCase()
-
-        console.log(user)
 
         if (userRole !== 'admin') {
             const response = ErrorWebResponse(403, "Forbidden")

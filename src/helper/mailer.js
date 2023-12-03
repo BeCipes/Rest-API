@@ -37,7 +37,7 @@ const sendMailAsync = (options) => {
   })
 }
 
-const generatePasswordToken = async (email) => {
+const generatePasswordToken = () => {
   const token = crypto.randomBytes(32).toString('hex')
   const tokenExp = new Date(Date.now() + 3600000)
 

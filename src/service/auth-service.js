@@ -2,7 +2,7 @@ import { validate } from "./../validation/validation.js"
 import { registerUserValidation, loginUserValidation } from "./../validation/auth-validation.js"
 import { prismaClient } from "../app/database.js"
 import { ResponseError } from "./../error/response-error.js"
-import { generateTokens, generateAccessToken } from "./../helper/generate-jwt.js"
+import { generateTokens, generateAccessToken } from "../helper/jwt-helper.js"
 import { generatePasswordToken } from "./../helper/mailer.js"
 import bcrypt from "bcrypt"
 
@@ -78,7 +78,6 @@ const login = async (req) => {
     if (!isPasswordValid) {
         throw new ResponseError(401, "Email or password is wrong")
     }
-
     
     const token = await generateTokens(dbUser)
 
@@ -135,7 +134,7 @@ const refreshToken = async (refreshToken) => {
     }
 }
 
-const generatePasswordResetToken = async (email) => {
+const sendPasswordResetMail = async (email) => {
     const user = await prismaClient.user.findUnique({
         where: {
             email: email
@@ -148,15 +147,6 @@ const generatePasswordResetToken = async (email) => {
 
     const token = generatePasswordToken();
 
-    await prismaClient.user.update({
-        where: {
-            email: email
-        },
-        data: {
-            resetToken: token.resetToken,
-            resetTokenExpiry: token.resetTokenExpiry,
-        },
-    })
 
     return token
 }
@@ -165,5 +155,5 @@ export default {
     register,
     login,
     refreshToken,
-    generatePasswordResetToken
+    sendPasswordResetMail
 }

@@ -1,20 +1,19 @@
 import { prismaClient } from "../app/database.js"
-import { getTokenPart } from "../helper/auth-utils.js"
+import { getTokenPart, decodeToken } from "../helper/jwt-helper.js"
 import { ErrorWebResponse } from "../helper/web-response.js"
 
 export const authMiddleware = async (req, res, next) => {
     const rawToken = req.get('Authorization')
+    const token = await getTokenPart(rawToken)
 
-    if (!rawToken) {
+    if (!token) {
         const response = ErrorWebResponse(401, "Unauthorized")
         res.status(401).json(response).end()
         
         return
     }
-
+    
     try {
-        const token = getTokenPart(rawToken)
-
         const user = await prismaClient.user.findFirst({
             where: {
                 token: token,

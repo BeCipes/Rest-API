@@ -1,6 +1,6 @@
 import authService from "../service/auth-service.js"
 import { SuccessWebResponse } from "../helper/web-response.js"
-import { getTokenPart } from "../helper/auth-utils.js"
+import { getTokenPart } from "../helper/jwt-helper.js"
 import { sendMailAsync } from "../helper/mailer.js"
 
 const register = async (req, res, next) => {
@@ -40,21 +40,15 @@ const refreshTokens = async (req, res, next) => {
 
 const forgotPassword = async (req, res, next) => {
     try {
-        const { email } = req.body;
-        const resetToken = await authService.generatePasswordResetToken(email);
-
-        // Save the reset token in your database or any storage mechanism
-        // ...
-
-        // Send the password reset email
-        await sendPasswordResetEmail(email, resetToken);
-
-        res.status(200).json({ message: 'Password reset email sent successfully' });
+        const { email } = req.body
+        const result = await authService.sendPasswordResetMail(email)
+        const response = SuccessWebResponse(200, "OK", "Password reset email sent successfully")
+        res.status(200).json(response);
     } catch (error) {
         console.error(error);
         next(error);
     }
-};
+}
 
 const sendPasswordResetEmail = async (userEmail, resetToken) => {
     try {
