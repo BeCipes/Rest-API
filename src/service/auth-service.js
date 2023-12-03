@@ -2,8 +2,8 @@ import { validate } from "./../validation/validation.js"
 import { registerUserValidation, loginUserValidation } from "./../validation/auth-validation.js"
 import { prismaClient } from "../app/database.js"
 import { ResponseError } from "./../error/response-error.js"
-import { generateTokens, generateAccessToken } from "../helper/jwt-helper.js"
-import { generatePasswordToken } from "./../helper/mailer.js"
+import { generateTokens, generateAccessToken, generateResetPasswordToken, decodeToken, getTokenPart } from "../helper/jwt-helper.js"
+import { sendMail } from "./../helper/mailer.js"
 import bcrypt from "bcrypt"
 
 const register = async (req) => {
@@ -108,7 +108,9 @@ const login = async (req) => {
     }
 }
 
-const refreshToken = async (refreshToken) => {
+const refreshToken = async (rawToken) => {
+    const refreshToken = await getTokenPart(rawToken)
+
     const user = await prismaClient.user.findFirst({
         where: {
             token: refreshToken,
@@ -145,15 +147,43 @@ const sendPasswordResetMail = async (email) => {
         throw new ResponseError(404, "User not found")
     }
 
-    const token = generatePasswordToken();
+    const token = await generateResetPasswordToken(user)
+    await sendMail(token)
 
+    return
+}
 
-    return token
+const forgotPassword = async (token, password) => {
+    const decodedToken = await decodeToken(token)
+
+    const user = await prismaClient.user.findFirst({
+        where: {
+            id: decodedToken.id,
+        },
+    })
+    
+    if (!user) {
+        throw new ResponseError(401, "Invalid token")
+    }
+    
+    const newPassword = await bcrypt.hash(password, 10)
+    
+    await prismaClient.user.update({
+        where: {
+            id: user.id,
+        },
+        data: {
+            password: newPassword
+        },
+    })
+
+    return
 }
 
 export default {
     register,
     login,
     refreshToken,
+    forgotPassword,
     sendPasswordResetMail
 }

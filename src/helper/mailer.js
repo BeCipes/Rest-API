@@ -1,54 +1,50 @@
-import expressMailer from 'express-mailer'
+import nodemailer from "nodemailer"
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-const configureMailer = (app) => {
-  expressMailer.extend(app, {
-    from: 'your-email@example.com',
-    host: 'smtp.your-email-provider.com',  // Update with your email provider
-    secureConnection: true,
-    port: 465,
-    transportMethod: 'SMTP',
-    auth: {
-      user: 'your-email@example.com',
-      pass: 'your-email-password',
-    },
+const sendMail = async (token) => {
+  const transporter = nodemailer.createTransport({
+    port: 465,               // true for 465, false for other ports
+    host: "sandbox.smtp.mailtrap.io",
+      auth: {
+            user: '79dbc37dd4fcbf',
+            pass: '6bb6949b90b0d5',
+      },
+    secure: false,
+    tls: {
+        ciphers:'SSLv3'
+    }
   })
 
-  // Set the views directory
-  // const __filename = fileURLToPath(import.meta.url)
-  // const __dirname = path.dirname(__filename)
-  // app.set('views', path.join(__dirname, '../views/'))
-
-  // Set template engine
-  app.set('view engine', 'jade')
-}
-
-const sendMailAsync = (options) => {
-  return new Promise((resolve, reject) => {
-    app.mailer.send('reset-password', options, (err) => {
-      if (err) {
-        console.error(err)
-        reject(err)
-      } else {
-        resolve()
-      }
-    })
-  })
-}
-
-const generatePasswordToken = () => {
-  const token = crypto.randomBytes(32).toString('hex')
-  const tokenExp = new Date(Date.now() + 3600000)
-
-  return {
-    token,
-    tokenExp
+  const mailData = {
+    from: 'coba@gmail.com',  // sender address
+    to: 'austinnicho82@gmail.com',   // list of receivers
+    subject: 'GoCipes - Link reset password',
+    text: 'Reset Password',
+    html: `<b>Berikut adalah link untuk mereset password anda</b>
+            <br> <a href="http://localhost:3000/api/auth/forgot-password/${token}">Ini link reset password</a> <br/>`,
   }
+
+  transporter.sendMail(mailData, function (err, info) {
+      if(err)
+        console.log(err)
+      else
+        console.log(info)
+  })
 }
+
+// const sendMail = async (options) => {
+//   return new Promise((resolve, reject) => {
+//     expressMailer.sendMail(options, (error, info) => {
+//       if (error) {
+//         reject(error)
+//       } else {
+//         resolve(info)
+//       }
+//     })
+//   })
+// }
 
 export {
-  configureMailer,
-  sendMailAsync,
-  generatePasswordToken
+  sendMail,
 }

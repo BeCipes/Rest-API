@@ -20,16 +20,28 @@ const generateRefreshToken = async (user) => {
   return token
 }
 
+const generateResetPasswordToken = async (user) => {
+  const token = jwt.sign({ id: user.id }, process.env.SECRET, {
+    expiresIn: '5m',
+  })
+
+  return token
+}
+
 const getTokenPart = async (token) => {
+  try {
     const tokenParts = token.split(' ')
 
     if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
-        throw new ResponseError(400, 'Invalid token format')
+      throw new ResponseError(400, 'Invalid token format')
     }
 
     const tokenFinal = tokenParts[1]
 
     return tokenFinal
+  } catch (e) {
+    throw new ResponseError(400, 'Invalid token format')
+  }
 }
 
 const decodeToken = async (token) => {
@@ -59,6 +71,7 @@ const generateTokens = async (user) => {
 export {
   generateAccessToken,
   generateRefreshToken,
+  generateResetPasswordToken,
   generateTokens,
   getTokenPart,
   decodeToken,
