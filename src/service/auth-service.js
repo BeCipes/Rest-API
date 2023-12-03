@@ -3,6 +3,7 @@ import { registerUserValidation, loginUserValidation } from "./../validation/aut
 import { prismaClient } from "../app/database.js"
 import { ResponseError } from "./../error/response-error.js"
 import { generateTokens, generateAccessToken } from "./../helper/generate-jwt.js"
+import { generatePasswordToken } from "./../helper/mailer.js"
 import bcrypt from "bcrypt"
 
 const register = async (req) => {
@@ -134,8 +135,35 @@ const refreshToken = async (refreshToken) => {
     }
 }
 
+const generatePasswordResetToken = async (email) => {
+    const user = await prismaClient.user.findUnique({
+        where: {
+            email: email
+        }
+    })
+
+    if (!user) {
+        throw new ResponseError(404, "User not found")
+    }
+
+    const token = generatePasswordToken();
+
+    await prismaClient.user.update({
+        where: {
+            email: email
+        },
+        data: {
+            resetToken: token.resetToken,
+            resetTokenExpiry: token.resetTokenExpiry,
+        },
+    })
+
+    return token
+}
+
 export default {
     register,
     login,
-    refreshToken
+    refreshToken,
+    generatePasswordResetToken
 }
