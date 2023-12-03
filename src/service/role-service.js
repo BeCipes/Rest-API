@@ -29,7 +29,7 @@ const update = async (req) => {
 
     const countRole = await prismaClient.role.count({
         where: {
-            id_role: role.id_role
+            id: role.id
         }
     })
 
@@ -39,11 +39,11 @@ const update = async (req) => {
 
     return prismaClient.role.update({
         where: {
-            id_role: role.id_role
+            id: role.id
         },
         data: role,
         select: {
-            id_role: true,
+            id: true,
             role_name: true
         }
     })
@@ -54,10 +54,10 @@ const get = async (roleId) => {
 
     const role = await prismaClient.role.findUnique({
         where: {
-            id_role: roleId
+            id: roleId
         },
         select: {
-            id_role: true,
+            id: true,
             role_name: true
         }
     })
@@ -72,7 +72,7 @@ const get = async (roleId) => {
 const getAll = async () => {
     const role = await prismaClient.role.findMany({
         select: {
-            id_role: true,
+            id: true,
             role_name: true
         }
     })
@@ -89,7 +89,7 @@ const remove = async (roleId) => {
 
     const role = await prismaClient.role.count({
         where: {
-            id_role: roleId
+            id: roleId
         }
     })
 
@@ -99,7 +99,7 @@ const remove = async (roleId) => {
 
     await prismaClient.role.delete({
         where: {
-            id_role: roleId
+            id: roleId
         }
     })
 

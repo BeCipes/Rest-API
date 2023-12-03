@@ -17,7 +17,7 @@ export const adminMiddleware = async (req, res, next) => {
 
         const user = await prismaClient.user.findFirst({
             where: {
-                id_user: decodedToken.id,
+                id: decodedToken.id,
             },
             include: {
                 role: {

@@ -16,9 +16,9 @@ const configureMailer = (app) => {
   })
 
   // Set the views directory
-  const __filename = fileURLToPath(import.meta.url)
-  const __dirname = path.dirname(__filename)
-  app.set('views', path.join(__dirname, '../views/'))
+  // const __filename = fileURLToPath(import.meta.url)
+  // const __dirname = path.dirname(__filename)
+  // app.set('views', path.join(__dirname, '../views/'))
 
   // Set template engine
   app.set('view engine', 'jade')

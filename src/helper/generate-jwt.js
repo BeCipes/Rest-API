@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from "bcrypt"
 
 const generateAccessToken = async (user) => {
-  const token = jwt.sign({ id: user.id_user, role: user.role?.role_name }, process.env.SECRET, {
+  const token = jwt.sign({ id: user.id, role: user.role?.role_name }, process.env.SECRET, {
     expiresIn: '12h',
   })
 
@@ -11,7 +11,7 @@ const generateAccessToken = async (user) => {
 
 const generateRefreshToken = async (user) => {
   const token = jwt.sign({
-    id: user.id_user
+    id: user.id
   }, process.env.SECRET, {
     expiresIn: '30d'
   })

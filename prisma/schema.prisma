@@ -99,7 +99,6 @@ model kategori_resep {
   id          Int       @id @default(autoincrement())
   id_kategori Int
   id_resep    Int
-  nama_jenis  String    @unique @db.VarChar(100)
   createdBy   Int
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @default(now())

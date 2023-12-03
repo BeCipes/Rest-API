@@ -15,7 +15,7 @@ const createRole = async (req, res, next) => {
 const updateRole = async (req, res, next) => {
     try {
         const roleId = req.params.roleId
-        req.body.id_role = roleId
+        req.body.id = roleId
         
         const result = await roleService.update(req.body)
         const response = SuccessWebResponse(200, "OK", "Success update role", result)

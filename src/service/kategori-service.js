@@ -1,7 +1,7 @@
 import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import { validate } from "../validation/validation.js"
-import { createKategoriResepValidation, updateKategoriResepValidation, getKategoriResepValidation } from "../validation/kategori_resep-validation.js"
+import { createKategoriResepValidation, updateKategoriResepValidation, getKategoriResepValidation } from "../validation/kategori-validation.js"
 
 const create = async (req) => {
     const kategori_resep = validate(createKategoriResepValidation, req)

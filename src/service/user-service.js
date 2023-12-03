@@ -7,7 +7,7 @@ import bcrypt from "bcrypt"
 const create = async (req) => {
     const user = validate(createUserValidation, req)
 
-    const countUser = await prismaClient.user.count({
+    const countUser = await prismaClient.users.count({
         where: {
             email: user.email
         }
@@ -33,7 +33,7 @@ const create = async (req) => {
     user.id_role = userRole.id_role
     user.password = await bcrypt.hash(user.password, 10)
 
-    return prismaClient.user.create({
+    return prismaClient.users.create({
         data: user,
         select: {
             first_name: true,
@@ -46,9 +46,9 @@ const create = async (req) => {
 const update = async (req) => {
     const user = validate(updateUserValidation, req)
 
-    const countUser = await prismaClient.user.count({
+    const countUser = await prismaClient.users.count({
         where: {
-            id_user: user.id_user
+            id: user.id
         }
     })
 
@@ -58,13 +58,13 @@ const update = async (req) => {
 
     user.password = await bcrypt.hash(user.password, 10)
 
-    return prismaClient.user.update({
+    return prismaClient.users.update({
         where: {
-            id_user: user.id_user
+            id: user.id
         },
         data: user,
         select: {
-            id_user: true,
+            id: true,
             first_name: true,
             last_name: true,
             email: true
@@ -75,9 +75,9 @@ const update = async (req) => {
 const remove = async (userId) => {
     userId = validate(getUserValidation, userId)
 
-    const countUser = await prismaClient.user.count({
+    const countUser = await prismaClient.users.count({
         where: {
-            id_user: userId
+            id: userId
         }
     })
 
@@ -85,9 +85,9 @@ const remove = async (userId) => {
         throw new ResponseError(404, "User is not found")
     }
 
-    await prismaClient.user.delete({
+    await prismaClient.users.delete({
         where: {
-            id_user: userId
+            id: userId
         },
     })
 
@@ -97,12 +97,12 @@ const remove = async (userId) => {
 const get = async (userId) => {
     userId = validate(getUserValidation, userId)
 
-    const user = await prismaClient.user.findUnique({
+    const user = await prismaClient.users.findUnique({
         where: {
-            id_user: userId
+            id: userId
         },
         select: {
-            id_user: true,
+            id: true,
             first_name: true,
             last_name: true,
             email: true
@@ -117,9 +117,9 @@ const get = async (userId) => {
 }
 
 const getAll = async () => {
-    const user = await prismaClient.user.findMany({
+    const user = await prismaClient.users.findMany({
         select: {
-            id_user: true,
+            id: true,
             first_name: true,
             last_name: true,
             email: true

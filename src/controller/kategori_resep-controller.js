@@ -1,4 +1,4 @@
-import kategoriResepService from "../service/kategori_resep-service.js"
+import kategoriResepService from "../service/kategori-service.js"
 import { SuccessWebResponse } from "../helper/web-response.js"
 
 const createKategoriResep = async (req, res, next) => {

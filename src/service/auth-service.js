@@ -9,7 +9,7 @@ import bcrypt from "bcrypt"
 const register = async (req) => {
     const user = validate(registerUserValidation, req)
 
-    const countUser = await prismaClient.user.count({
+    const countUser = await prismaClient.users.count({
         where: {
             email: user.email
         }
@@ -24,7 +24,7 @@ const register = async (req) => {
             role_name: "User".toLowerCase(),
         },
         select: {
-            id_role: true
+            id: true
         }
     })
 
@@ -32,13 +32,13 @@ const register = async (req) => {
         throw new ResponseError(404, "Role not found")
     }
 
-    user.id_role = userRole.id_role
+    user.id_role = userRole.id
     user.password = await bcrypt.hash(user.password, 10)
 
     const token = await generateTokens(user)
     user.token = token.refreshToken
 
-    await prismaClient.user.create({
+    await prismaClient.users.create({
         data: user,
         select: {
             first_name: true,
@@ -56,7 +56,7 @@ const register = async (req) => {
 const login = async (req) => {
     const user = validate(loginUserValidation, req)
 
-    const dbUser = await prismaClient.user.findUnique({
+    const dbUser = await prismaClient.users.findUnique({
         where: {
             email: user.email
         },
@@ -82,7 +82,7 @@ const login = async (req) => {
     
     const token = await generateTokens(dbUser)
 
-    const tes = await prismaClient.user.update({
+    const tes = await prismaClient.users.update({
         where: {
             email: dbUser.email
         },
@@ -110,7 +110,7 @@ const login = async (req) => {
 }
 
 const refreshToken = async (refreshToken) => {
-    const user = await prismaClient.user.findFirst({
+    const user = await prismaClient.users.findFirst({
         where: {
             token: refreshToken,
         },
@@ -136,7 +136,7 @@ const refreshToken = async (refreshToken) => {
 }
 
 const generatePasswordResetToken = async (email) => {
-    const user = await prismaClient.user.findUnique({
+    const user = await prismaClient.users.findUnique({
         where: {
             email: email
         }
@@ -148,7 +148,7 @@ const generatePasswordResetToken = async (email) => {
 
     const token = generatePasswordToken();
 
-    await prismaClient.user.update({
+    await prismaClient.users.update({
         where: {
             email: email
         },
