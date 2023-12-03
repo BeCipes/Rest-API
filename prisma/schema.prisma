@@ -41,7 +41,7 @@ model role {
   createdAt DateTime  @default(now())
   updatedAt DateTime? @default(now())
 
-  users users[]
+  user user[]
 
   @@map("role")
 }
@@ -55,7 +55,7 @@ model favorite {
   updatedAt DateTime? @default(now())
 
   resep resep @relation(fields: [id_resep], references: [id])
-  users users @relation(fields: [createdBy], references: [id])
+  user  user  @relation(fields: [createdBy], references: [id])
 
   @@map("favorite")
 }
@@ -71,7 +71,7 @@ model kategori {
   updatedAt     DateTime? @default(now())
 
   jenis_kategori jenis_kategori @relation(fields: [id_jenis], references: [id])
-  user           users          @relation(fields: [createdBy], references: [id])
+  user           user           @relation(fields: [createdBy], references: [id])
 
   artikel        artikel[]
   teknik         teknik[]
@@ -88,7 +88,7 @@ model jenis_kategori {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime? @default(now())
 
-  user users @relation(fields: [createdBy], references: [id])
+  user user @relation(fields: [createdBy], references: [id])
 
   kategori kategori[]
 
@@ -103,7 +103,7 @@ model kategori_resep {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @default(now())
 
-  user     users    @relation(fields: [createdBy], references: [id])
+  user     user     @relation(fields: [createdBy], references: [id])
   kategori kategori @relation(fields: [id_kategori], references: [id])
   resep    resep    @relation(fields: [id_resep], references: [id])
 
@@ -121,7 +121,7 @@ model bahan {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime? @default(now())
 
-  user users @relation(fields: [createdBy], references: [id])
+  user user @relation(fields: [createdBy], references: [id])
 
   @@map("bahan")
 }
@@ -139,7 +139,7 @@ model resep {
   updatedAt      DateTime? @default(now())
 
   kategori kategori @relation(fields: [id_kategori], references: [id])
-  user     users    @relation(fields: [createdBy], references: [id])
+  user     user     @relation(fields: [createdBy], references: [id])
 
   step           step[]
   favorite       favorite[]
@@ -159,7 +159,7 @@ model step {
   updatedAt DateTime? @default(now())
 
   resep resep @relation(fields: [id_resep], references: [id])
-  user  users @relation(fields: [createdBy], references: [id])
+  user  user  @relation(fields: [createdBy], references: [id])
 
   @@map("step")
 }
@@ -177,7 +177,7 @@ model artikel {
   updatedAt   DateTime? @default(now())
 
   kategori kategori @relation(fields: [id_kategori], references: [id])
-  user     users    @relation(fields: [createdBy], references: [id])
+  user     user     @relation(fields: [createdBy], references: [id])
 
   @@map("artikel")
 }
@@ -195,7 +195,7 @@ model teknik {
   updatedAt   DateTime? @default(now())
 
   kategori kategori @relation(fields: [id_kategori], references: [id])
-  user     users    @relation(fields: [createdBy], references: [id])
+  user     user     @relation(fields: [createdBy], references: [id])
 
   @@map("teknik")
 }
