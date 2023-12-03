@@ -1,14 +1,12 @@
 import nodemailer from "nodemailer"
-import path from 'path'
-import { fileURLToPath } from 'url'
 
-const sendMail = async (token) => {
+const configureMail = () => {
   const transporter = nodemailer.createTransport({
-    port: 465,               // true for 465, false for other ports
-    host: "sandbox.smtp.mailtrap.io",
+    port: process.env.MAIL_PORT,
+    host: process.env.MAIL_HOST,
       auth: {
-            user: '79dbc37dd4fcbf',
-            pass: '6bb6949b90b0d5',
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASS,
       },
     secure: false,
     tls: {
@@ -16,9 +14,15 @@ const sendMail = async (token) => {
     }
   })
 
+  return transporter
+}
+
+const sendForgotPassMail = async (token) => {
+  const transporter = configureMail()
+
   const mailData = {
-    from: 'coba@gmail.com',  // sender address
-    to: 'austinnicho82@gmail.com',   // list of receivers
+    from: 'coba@gmail.com',
+    to: 'austinnicho82@gmail.com',
     subject: 'GoCipes - Link reset password',
     text: 'Reset Password',
     html: `<b>Berikut adalah link untuk mereset password anda</b>
@@ -26,25 +30,13 @@ const sendMail = async (token) => {
   }
 
   transporter.sendMail(mailData, function (err, info) {
-      if(err)
-        console.log(err)
-      else
-        console.log(info)
+    if(err)
+      console.log(err)
+    else
+      console.log(info)
   })
 }
 
-// const sendMail = async (options) => {
-//   return new Promise((resolve, reject) => {
-//     expressMailer.sendMail(options, (error, info) => {
-//       if (error) {
-//         reject(error)
-//       } else {
-//         resolve(info)
-//       }
-//     })
-//   })
-// }
-
 export {
-  sendMail,
+  sendForgotPassMail,
 }

@@ -3,7 +3,7 @@ import { registerUserValidation, loginUserValidation } from "./../validation/aut
 import { prismaClient } from "../app/database.js"
 import { ResponseError } from "./../error/response-error.js"
 import { generateTokens, generateAccessToken, generateResetPasswordToken, decodeToken, getTokenPart } from "../helper/jwt-helper.js"
-import { sendMail } from "./../helper/mailer.js"
+import { sendForgotPassMail } from "./../helper/mailer.js"
 import bcrypt from "bcrypt"
 
 const register = async (req) => {
@@ -148,7 +148,7 @@ const sendPasswordResetMail = async (email) => {
     }
 
     const token = await generateResetPasswordToken(user)
-    await sendMail(token)
+    await sendForgotPassMail(token)
 
     return
 }
