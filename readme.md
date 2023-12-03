@@ -27,6 +27,12 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
    # Secret key untuk jwt
    SECRET=
 
+   # Mailing service yang anda gunakan
+   MAIL_HOST=
+   MAIL_PORT=
+   MAIL_USER=
+   MAIL_PASS=
+
    # URL database (sebagai contoh saya berikan dibawah)
    DATABASE_URL="mysql://root:password@localhost:3306/yourdb"
    ```
