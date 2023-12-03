@@ -8,7 +8,7 @@ datasource db {
 }
 
 // ---- User Configuration ----
-model users {
+model user {
   id         Int       @id @default(autoincrement())
   id_role    Int
   first_name String    @db.VarChar(100)
@@ -32,7 +32,7 @@ model users {
   favorite       favorite[]
   kategori_resep kategori_resep[]
 
-  @@map("users")
+  @@map("user")
 }
 
 model role {
