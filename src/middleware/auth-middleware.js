@@ -4,6 +4,14 @@ import { ErrorWebResponse } from "../helper/web-response.js"
 
 export const authMiddleware = async (req, res, next) => {
     const rawToken = req.get('Authorization')
+    
+    if (!rawToken) {
+        const response = ErrorWebResponse(401, "Unauthorized")
+        res.status(401).json(response).end()
+        
+        return
+    }
+
     const token = await getTokenPart(rawToken)
 
     if (!token) {
