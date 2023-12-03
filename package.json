@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "dotenv -e config/.env nodemon src/index.js",
-    "test": "jest -i",
+    "test": "dotenv -e config/.env jest -i",
     "prisma-generate": "dotenv -e config/.env -- npx prisma generate",
     "migrate": "dotenv -e config/.env -- npx prisma migrate dev",
     "migrate-create-only": "dotenv -e config/.env -- npx prisma migrate dev --create-only"
