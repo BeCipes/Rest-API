@@ -23,7 +23,7 @@ app.use(apiPrefix, userRouter)
 app.use(apiPrefix, roleRouter)
 app.use(apiPrefix, kategoriResepRouter)
 
-app.use(errorMiddleware)
 app.use(notfoundMiddleware)
+app.use(errorMiddleware)
 
 export { app }
