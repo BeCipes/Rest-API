@@ -9,7 +9,7 @@ import bcrypt from "bcrypt"
 const register = async (req) => {
     const user = validate(registerUserValidation, req)
 
-    const countUser = await prismaClient.users.count({
+    const countUser = await prismaClient.user.count({
         where: {
             email: user.email
         }
@@ -38,7 +38,7 @@ const register = async (req) => {
     const token = await generateTokens(user)
     user.token = token.refreshToken
 
-    await prismaClient.users.create({
+    await prismaClient.user.create({
         data: user,
         select: {
             first_name: true,
@@ -56,7 +56,7 @@ const register = async (req) => {
 const login = async (req) => {
     const user = validate(loginUserValidation, req)
 
-    const dbUser = await prismaClient.users.findUnique({
+    const dbUser = await prismaClient.user.findUnique({
         where: {
             email: user.email
         },
@@ -82,7 +82,7 @@ const login = async (req) => {
     
     const token = await generateTokens(dbUser)
 
-    const tes = await prismaClient.users.update({
+    const tes = await prismaClient.user.update({
         where: {
             email: dbUser.email
         },
@@ -110,7 +110,7 @@ const login = async (req) => {
 }
 
 const refreshToken = async (refreshToken) => {
-    const user = await prismaClient.users.findFirst({
+    const user = await prismaClient.user.findFirst({
         where: {
             token: refreshToken,
         },
@@ -136,7 +136,7 @@ const refreshToken = async (refreshToken) => {
 }
 
 const generatePasswordResetToken = async (email) => {
-    const user = await prismaClient.users.findUnique({
+    const user = await prismaClient.user.findUnique({
         where: {
             email: email
         }
@@ -148,7 +148,7 @@ const generatePasswordResetToken = async (email) => {
 
     const token = generatePasswordToken();
 
-    await prismaClient.users.update({
+    await prismaClient.user.update({
         where: {
             email: email
         },

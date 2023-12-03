@@ -7,12 +7,13 @@ import bcrypt from "bcrypt"
 const create = async (req) => {
     const user = validate(createUserValidation, req)
 
-    const countUser = await prismaClient.users.count({
+    const countUser = await prismaClient.user.count({
         where: {
             email: user.email
         }
     })
 
+    // Perdebatan apakah admin hanya boleh membuat user / boleh semua
     if (countUser === 1) {
         throw new ResponseError(400, "Email already exists")
     }
@@ -22,7 +23,7 @@ const create = async (req) => {
             role_name: "User".toLowerCase(),
         },
         select: {
-            id_role: true
+            id: true
         }
     })
 
@@ -30,10 +31,10 @@ const create = async (req) => {
         throw new ResponseError(404, "Role not found")
     }
 
-    user.id_role = userRole.id_role
+    user.id_role = userRole.id
     user.password = await bcrypt.hash(user.password, 10)
 
-    return prismaClient.users.create({
+    return prismaClient.user.create({
         data: user,
         select: {
             first_name: true,
@@ -46,7 +47,7 @@ const create = async (req) => {
 const update = async (req) => {
     const user = validate(updateUserValidation, req)
 
-    const countUser = await prismaClient.users.count({
+    const countUser = await prismaClient.user.count({
         where: {
             id: user.id
         }
@@ -58,7 +59,7 @@ const update = async (req) => {
 
     user.password = await bcrypt.hash(user.password, 10)
 
-    return prismaClient.users.update({
+    return prismaClient.user.update({
         where: {
             id: user.id
         },
@@ -75,7 +76,7 @@ const update = async (req) => {
 const remove = async (userId) => {
     userId = validate(getUserValidation, userId)
 
-    const countUser = await prismaClient.users.count({
+    const countUser = await prismaClient.user.count({
         where: {
             id: userId
         }
@@ -85,7 +86,7 @@ const remove = async (userId) => {
         throw new ResponseError(404, "User is not found")
     }
 
-    await prismaClient.users.delete({
+    await prismaClient.user.delete({
         where: {
             id: userId
         },
@@ -97,7 +98,7 @@ const remove = async (userId) => {
 const get = async (userId) => {
     userId = validate(getUserValidation, userId)
 
-    const user = await prismaClient.users.findUnique({
+    const user = await prismaClient.user.findUnique({
         where: {
             id: userId
         },
@@ -105,7 +106,12 @@ const get = async (userId) => {
             id: true,
             first_name: true,
             last_name: true,
-            email: true
+            email: true,
+            role: {
+                select: {
+                    role_name: true,
+                },
+            },
         }
     })
 
@@ -117,12 +123,17 @@ const get = async (userId) => {
 }
 
 const getAll = async () => {
-    const user = await prismaClient.users.findMany({
+    const user = await prismaClient.user.findMany({
         select: {
             id: true,
             first_name: true,
             last_name: true,
-            email: true
+            email: true,
+            role: {
+                select: {
+                    role_name: true,
+                },
+            },
         }
     })
 
