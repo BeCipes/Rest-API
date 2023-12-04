@@ -92,6 +92,55 @@
         }
       }
     },
+    "/auth/forgot-password": {
+      "post": {
+        "tags": ["Auth API"],
+        "summary": "Send forgot password mail to the user",
+        "description": "Send forgot password mail to the user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/forgotPasswordMailRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/auth/forgot-password/{token}": {
+      "post": {
+        "tags": ["Auth API"],
+        "summary": "Change password with forgot password token",
+        "description": "Change password with forgot password token",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/forgotPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/role": {
       "get": {
         "security": [
@@ -684,6 +733,22 @@
           }
         }
       },
+      "forgotPasswordMailRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "forgotPasswordRequest": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          }
+        }
+      },
       "roleRequest": {
         "type": "object",
         "properties": {
@@ -723,10 +788,19 @@
       "resepRequest": {
         "type": "object",
         "properties": {
-          "name": {
+          "nama_resep": {
             "type": "string"
           },
-          "description": {
+          "deskripsi": {
+            "type": "string"
+          },
+          "gambar": {
+            "type": "string"
+          },
+          "bahan": {
+            "type": "string"
+          },
+          "informasi_gizi": {
             "type": "string"
           }
         }
@@ -751,10 +825,19 @@
                 "id": {
                   "type": "number"
                 },
-                "name": {
+                "nama_resep": {
                   "type": "string"
                 },
-                "description": {
+                "deskripsi": {
+                  "type": "string"
+                },
+                "gambar": {
+                  "type": "string"
+                },
+                "bahan": {
+                  "type": "string"
+                },
+                "informasi_gizi": {
                   "type": "string"
                 }
               }
