@@ -7,6 +7,7 @@ const createTeknikValidation = Joi.object({
     url: Joi.string().max(100).required(),
     sumber: Joi.string().max(100).required(),
     id_kategori: Joi.number().min(1).positive().required(),
+    createdBy: Joi.number().min(1).positive().required(),
 })
 
 const updateTeknikValidation = Joi.object({

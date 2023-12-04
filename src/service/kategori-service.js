@@ -1,18 +1,18 @@
 import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import { validate } from "../validation/validation.js"
-import { createKategoriResepValidation, updateKategoriResepValidation, getKategoriResepValidation } from "../validation/kategori-validation.js"
+import { createKategoriValidation, updateKategoriValidation, getKategoriValidation } from "../validation/kategori-validation.js"
 
 const create = async (req) => {
-    const kategori = validate(createKategoriResepValidation, req)
+    const kategori = validate(createKategoriValidation, req)
 
-    const countKategoriResep = await prismaClient.kategori.count({
+    const countKategori = await prismaClient.kategori.count({
         where: {
             nama_kategori: kategori.nama_kategori
         }
     })
 
-    if (countKategoriResep === 1) {
+    if (countKategori === 1) {
         throw new ResponseError(400, "Kategori Resep already exists")
     }
 
@@ -26,15 +26,15 @@ const create = async (req) => {
 }
 
 const update = async (req) => {
-    const kategori = validate(updateKategoriResepValidation, req)
+    const kategori = validate(updateKategoriValidation, req)
 
-    const countKategoriResep = await prismaClient.kategori.count({
+    const countKategori = await prismaClient.kategori.count({
         where: {
             id: kategori.id
         }
     })
 
-    if (!countKategoriResep) {
+    if (!countKategori) {
         throw new ResponseError(404, "Kategori Resep is not found")
     }
 
@@ -51,12 +51,12 @@ const update = async (req) => {
     })
 }
 
-const get = async (kategoriResepId) => {
-    kategoriResepId = validate(getKategoriResepValidation, kategoriResepId)
+const get = async (kategoriId) => {
+    kategoriId = validate(getKategoriValidation, kategoriId)
 
     const kategori = await prismaClient.kategori.findUnique({
         where: {
-            id: kategoriResepId
+            id: kategoriId
         },
         select: {
             id: true,
@@ -82,22 +82,22 @@ const getAll = async () => {
     })
 }
 
-const remove = async (kategoriResepId) => {
-    kategoriResepId = validate(getKategoriResepValidation, kategoriResepId)
+const remove = async (kategoriId) => {
+    kategoriId = validate(getKategoriValidation, kategoriId)
 
-    const countKategoriResep = await prismaClient.kategori.count({
+    const countKategori = await prismaClient.kategori.count({
         where: {
-            id: kategoriResepId
+            id: kategoriId
         }
     })
 
-    if (!countKategoriResep) {
+    if (!countKategori) {
         throw new ResponseError(404, "Kategori Resep is not found")
     }
 
     await prismaClient.kategori.delete({
         where: {
-            id: kategoriResepId
+            id: kategoriId
         }
     })
 

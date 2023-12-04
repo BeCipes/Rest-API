@@ -5,6 +5,7 @@ const createBahanValidation = Joi.object({
     deskripsi: Joi.string().max(100).required(),
     gambar: Joi.string().max(100).required(),
     gizi: Joi.string().max(100).required(),
+    createdBy: Joi.number().min(1).positive().required(),
 })
 
 const updateBahanValidation = Joi.object({
