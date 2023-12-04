@@ -45,11 +45,8 @@ const create = async (req) => {
                     nama_resep: true,
                     deskripsi: true,
                     gambar: true,
-                    kategori: {
-                        select: {
-                            nama_kategori: true
-                        }
-                    }
+                    bahan: true,
+                    informasi_gizi: true
                 }
             }
         }
@@ -79,11 +76,8 @@ const get = async (favoriteId) => {
                     nama_resep: true,
                     deskripsi: true,
                     gambar: true,
-                    kategori: {
-                        select: {
-                            nama_kategori: true
-                        }
-                    }
+                    bahan: true,
+                    informasi_gizi
                 }
             }
         }
@@ -114,11 +108,8 @@ const getAll = async () => {
                     nama_resep: true,
                     deskripsi: true,
                     gambar: true,
-                    kategori: {
-                        select: {
-                            nama_kategori: true
-                        }
-                    }
+                    bahan: true,
+                    informasi_gizi
                 }
             }
         }
