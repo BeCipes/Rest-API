@@ -1,10 +1,12 @@
 import kategoriService from "../service/kategori-service.js"
 import { SuccessWebResponse } from "../helper/web-response.js"
+import { getCurrentUserId } from "../helper/auth-util.js"
 
 const createKategori = async (req, res, next) => {
     try {
         const userId = await getCurrentUserId(req.get("Authorization"))
-        const requestData = { ... req.body, createdBy: userId }
+        const requestData = { ...req.body, createdBy: userId }
+        
         const result = await kategoriService.create(requestData)
         const response = SuccessWebResponse(200, "OK", "Success create new kategori resep", result)
 
@@ -17,7 +19,7 @@ const createKategori = async (req, res, next) => {
 const updateKategori = async (req, res, next) => {
     try {
         const kategoriId = req.params.kategoriId
-        req.body.id_kategori_resep = kategoriId
+        req.body.id = kategoriId
         
         const result = await kategoriService.update(req.body)
         const response = SuccessWebResponse(200, "OK", "Success update kategori resep", result)

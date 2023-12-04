@@ -30,6 +30,7 @@ const create = async (req) => {
         data: kategori,
         select: {
             nama_kategori: true,
+            id_jenis: true,
             gambar: true
         }
     })
@@ -71,6 +72,7 @@ const get = async (kategoriId) => {
         select: {
             id: true,
             nama_kategori: true,
+            id_jenis: true,
             gambar: true
         }
     })
@@ -87,6 +89,7 @@ const getAll = async () => {
         select: {
             id: true,
             nama_kategori: true,
+            id_jenis: true,
             gambar: true
         }
     })
