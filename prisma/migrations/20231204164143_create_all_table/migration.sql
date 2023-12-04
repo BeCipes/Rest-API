@@ -99,7 +99,6 @@ CREATE TABLE `resep` (
     `gambar` VARCHAR(100) NOT NULL,
     `bahan` VARCHAR(255) NOT NULL,
     `informasi_gizi` VARCHAR(255) NOT NULL,
-    `id_kategori` INTEGER NOT NULL,
     `createdBy` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -182,9 +181,6 @@ ALTER TABLE `kategori_resep` ADD CONSTRAINT `kategori_resep_id_resep_fkey` FOREI
 
 -- AddForeignKey
 ALTER TABLE `bahan` ADD CONSTRAINT `bahan_createdBy_fkey` FOREIGN KEY (`createdBy`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `resep` ADD CONSTRAINT `resep_id_kategori_fkey` FOREIGN KEY (`id_kategori`) REFERENCES `kategori`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `resep` ADD CONSTRAINT `resep_createdBy_fkey` FOREIGN KEY (`createdBy`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
