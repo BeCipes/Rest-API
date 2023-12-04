@@ -75,7 +75,6 @@ model kategori {
 
   artikel        artikel[]
   teknik         teknik[]
-  resep          resep[]
   kategori_resep kategori_resep[]
 
   @@map("kategori")
@@ -133,13 +132,11 @@ model resep {
   gambar         String    @db.VarChar(100)
   bahan          String    @db.VarChar(255)
   informasi_gizi String    @db.VarChar(255)
-  id_kategori    Int
   createdBy      Int
   createdAt      DateTime  @default(now())
   updatedAt      DateTime? @default(now())
 
-  kategori kategori @relation(fields: [id_kategori], references: [id])
-  user     user     @relation(fields: [createdBy], references: [id])
+  user user @relation(fields: [createdBy], references: [id])
 
   step           step[]
   favorite       favorite[]
