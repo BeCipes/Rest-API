@@ -16,6 +16,16 @@ const create = async (req) => {
         throw new ResponseError(400, "Kategori Resep already exists")
     }
 
+    const countUser = await prismaClient.user.count({
+        where: {
+            id: req.createdBy
+        }
+    })
+
+    if (countUser === 0) {
+        throw new ResponseError(404, "User is not found")
+    }
+
     return prismaClient.kategori.create({
         data: kategori,
         select: {

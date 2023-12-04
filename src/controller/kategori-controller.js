@@ -3,7 +3,9 @@ import { SuccessWebResponse } from "../helper/web-response.js"
 
 const createKategori = async (req, res, next) => {
     try {
-        const result = await kategoriService.create(req.body)
+        const userId = await getCurrentUserId(req.get("Authorization"))
+        const requestData = { ... req.body, createdBy: userId }
+        const result = await kategoriService.create(requestData)
         const response = SuccessWebResponse(200, "OK", "Success create new kategori resep", result)
 
         res.status(200).json(response)

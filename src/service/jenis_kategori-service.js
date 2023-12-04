@@ -26,8 +26,6 @@ const create = async (req) => {
         throw new ResponseError(404, "User is not found")
     }
 
-    jenisKategori.createdBy = req.createdBy
-
     return prismaClient.jenis_kategori.create({
         data: jenisKategori,
         select: {
