@@ -5,7 +5,7 @@ import { adminMiddleware } from "../middleware/admin-middleware.js"
 const jenisKategoriRouter = new express.Router()
 jenisKategoriRouter.use(adminMiddleware)
 
-// Jenis Kategori Resep Router
+// Jenis Kategori Router
 jenisKategoriRouter.get("/jenis-kategori/", jenisKategoriController.getAllJenisKategori)
 jenisKategoriRouter.get("/jenis-kategori/:jenisKategoriId", jenisKategoriController.getJenisKategoriById)
 jenisKategoriRouter.post("/jenis-kategori", jenisKategoriController.createJenisKategori)
