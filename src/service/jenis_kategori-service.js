@@ -13,7 +13,7 @@ const create = async (req) => {
     })
 
     if (countKategori === 1) {
-        throw new ResponseError(400, "Kategori Resep already exists")
+        throw new ResponseError(400, "Jenis kategori already exists")
     }
 
     const countUser = await prismaClient.user.count({
@@ -44,7 +44,7 @@ const update = async (req) => {
     })
 
     if (!countKategori) {
-        throw new ResponseError(404, "Kategori Resep is not found")
+        throw new ResponseError(404, "Jenis kategori is not found")
     }
 
     return prismaClient.jenis_kategori.update({
@@ -73,7 +73,7 @@ const get = async (kategoriId) => {
     })
 
     if (!jenisKategori) {
-        throw new ResponseError(404, "Kategori Resep is not found")
+        throw new ResponseError(404, "Jenis kategori is not found")
     }
 
     return jenisKategori
@@ -98,7 +98,7 @@ const remove = async (kategoriId) => {
     })
 
     if (!countKategori) {
-        throw new ResponseError(404, "Kategori Resep is not found")
+        throw new ResponseError(404, "Jenis kategori is not found")
     }
 
     await prismaClient.jenis_kategori.delete({

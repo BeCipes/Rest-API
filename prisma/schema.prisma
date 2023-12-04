@@ -171,6 +171,7 @@ model artikel {
   gambar      String    @db.VarChar(100)
   isi         String    @db.VarChar(100)
   penulis     String    @db.VarChar(100)
+  sumber      String    @db.VarChar(100)
   id_kategori Int
   createdBy   Int
   createdAt   DateTime  @default(now())
