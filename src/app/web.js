@@ -4,6 +4,7 @@ import { roleRouter } from "../routes/role-api.js"
 import { userRouter } from "../routes/user-api.js"
 import { kategoriRouter } from "../routes/kategori-api.js"
 import { jenisKategoriRouter } from "../routes/jenis_kategori-api.js"
+import { artikelRouter } from "../routes/artikel-api.js"
 import { errorMiddleware } from "../middleware/error-middleware.js"
 import { notfoundMiddleware } from "../middleware/not-found-middleware.js"
 import cors from "cors"
@@ -24,6 +25,7 @@ app.use(apiPrefix, userRouter)
 app.use(apiPrefix, roleRouter)
 app.use(apiPrefix, kategoriRouter)
 app.use(apiPrefix, jenisKategoriRouter)
+app.use(apiPrefix, artikelRouter)
 
 app.use(notfoundMiddleware)
 app.use(errorMiddleware)
