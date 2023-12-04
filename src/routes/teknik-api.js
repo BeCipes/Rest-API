@@ -6,11 +6,11 @@ const teknikRouter = new express.Router()
 teknikRouter.use(adminMiddleware)
 
 // Teknik Router
-teknikRouter.get("/teknik/", teknikController.Teknik)
-teknikRouter.get("/teknik/:teknikId", teknikController.TeknikById)
-teknikRouter.post("/teknik", teknikController.Teknik)
-teknikRouter.put("/teknik/:teknikId", teknikController.Teknik)
-teknikRouter.delete("/teknik/:teknikId", teknikController.Teknik)
+teknikRouter.get("/teknik/", teknikController.getAllTeknik)
+teknikRouter.get("/teknik/:teknikId", teknikController.getTeknikById)
+teknikRouter.post("/teknik", teknikController.createTeknik)
+teknikRouter.put("/teknik/:teknikId", teknikController.updateTeknik)
+teknikRouter.delete("/teknik/:teknikId", teknikController.deleteTeknik)
 
 export {
     teknikRouter

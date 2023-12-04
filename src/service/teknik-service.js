@@ -39,10 +39,10 @@ const create = async (req) => {
     return prismaClient.teknik.create({
         data: teknik,
         select: {
-            headline: true,
-            gambar: true,
-            isi: true,
-            penulis: true,
+            title: true,
+            description: true,
+            cover: true,
+            url: true,
             sumber: true,
             id_kategori: true,
         }
@@ -69,10 +69,10 @@ const update = async (req) => {
         data: teknik,
         select: {
             id: true,
-            headline: true,
-            gambar: true,
-            isi: true,
-            penulis: true,
+            title: true,
+            description: true,
+            cover: true,
+            url: true,
             sumber: true,
             id_kategori: true,
         }
@@ -88,10 +88,10 @@ const get = async (teknikId) => {
         },
         select: {
             id: true,
-            headline: true,
-            gambar: true,
-            isi: true,
-            penulis: true,
+            title: true,
+            description: true,
+            cover: true,
+            url: true,
             sumber: true,
             id_kategori: true,
         }
@@ -108,10 +108,10 @@ const getAll = async () => {
     return prismaClient.teknik.findMany({
         select: {
             id: true,
-            headline: true,
-            gambar: true,
-            isi: true,
-            penulis: true,
+            title: true,
+            description: true,
+            cover: true,
+            url: true,
             sumber: true,
             id_kategori: true,
         }
