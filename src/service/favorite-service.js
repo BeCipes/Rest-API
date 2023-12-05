@@ -91,7 +91,7 @@ const get = async (favoriteId) => {
 }
 
 const getByUserId = async (userId) => {
-    userId = validate(getFavoriteValidation, favoriteId)
+    userId = validate(getFavoriteValidation, userId)
 
     const favorite = await prismaClient.favorite.findMany({
         where: {
@@ -106,7 +106,7 @@ const getByUserId = async (userId) => {
                     deskripsi: true,
                     gambar: true,
                     bahan: true,
-                    informasi_gizi
+                    informasi_gizi: true
                 }
             }
         }
