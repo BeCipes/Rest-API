@@ -69,7 +69,7 @@
       }
     },
     "/auth/refresh": {
-      "post": {
+      "get": {
         "security": [
           {
             "userAuth": []
@@ -130,179 +130,6 @@
         "responses": {
           "200": {
             "description": "Success"
-          }
-        }
-      }
-    },
-    "/role": {
-      "get": {
-        "security": [
-          {
-            "adminAuth": []
-          }
-        ],
-        "tags": ["Role API"],
-        "summary": "Get all role",
-        "description": "Get all role",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/roleResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "security": [
-          {
-            "adminAuth": []
-          }
-        ],
-        "tags": ["Role API"],
-        "summary": "Create a new role",
-        "description": "Create a new role",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/roleRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/roleResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/role/{roleId}": {
-      "get": {
-        "security": [
-          {
-            "adminAuth": []
-          }
-        ],
-        "tags": ["Role API"],
-        "summary": "Get a role by id",
-        "description": "Get a role by id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "role ID",
-            "required": true,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/roleResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "security": [
-          {
-            "adminAuth": []
-          }
-        ],
-        "tags": ["Role API"],
-        "summary": "Update a role by id",
-        "description": "Update a role by id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "role ID",
-            "required": true,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/roleRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/roleResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "security": [
-          {
-            "adminAuth": []
-          }
-        ],
-        "tags": ["Role API"],
-        "summary": "Delete a role by id",
-        "description": "Delete a role by id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "role ID",
-            "required": true,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success delete role",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "number"
-                    },
-                    "status": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
           }
         }
       }
@@ -461,6 +288,278 @@
         "responses": {
           "200": {
             "description": "Success delete user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/favorite": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Favorite API"],
+        "summary": "Get all user's favorite",
+        "description": "Get all user's favorite",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/favoriteUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/favoriteResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Favorite API"],
+        "summary": "Create a new favorite for user",
+        "description": "Create a new favorite for user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/favoriteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/favoriteResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/favorite/{favoriteId}": {
+      "delete": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Favorite API"],
+        "summary": "Delete user's favorite",
+        "description": "Delete user's favorite",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "role ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/role": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Role API"],
+        "summary": "Get all role",
+        "description": "Get all role",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/roleResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Role API"],
+        "summary": "Create a new role",
+        "description": "Create a new role",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/roleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/roleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/role/{roleId}": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Role API"],
+        "summary": "Get a role by id",
+        "description": "Get a role by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "role ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/roleResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Role API"],
+        "summary": "Update a role by id",
+        "description": "Update a role by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "role ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/roleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/roleResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Role API"],
+        "summary": "Delete a role by id",
+        "description": "Delete a role by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "role ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete role",
             "content": {
               "application/json": {
                 "schema": {
@@ -909,6 +1008,93 @@
                 },
                 "token": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "favoriteUserRequest": {
+        "type": "object",
+        "properties": {
+          "id_user": {
+            "type": "number"
+          }
+        }
+      },
+      "favoriteRequest": {
+        "type": "object",
+        "properties": {
+          "id_user": {
+            "type": "number"
+          },
+          "id_resep": {
+            "type": "number"
+          }
+        }
+      },
+      "favoriteResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "first_name": {
+                      "type": "string"
+                    },
+                    "last_name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "photo": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "resep": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "nama_resep": {
+                      "type": "string"
+                    },
+                    "deskripsi": {
+                      "type": "string"
+                    },
+                    "gambar": {
+                      "type": "string"
+                    },
+                    "bahan": {
+                      "type": "string"
+                    },
+                    "informasi_gizi": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
