@@ -72,7 +72,7 @@
       "post": {
         "security": [
           {
-            "getTokenAuth": []
+            "userAuth": []
           }
         ],
         "tags": ["Auth API"],
@@ -107,7 +107,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Success"
           }
         }
@@ -128,15 +128,8 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/tokenResponse"
-                }
-              }
-            }
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -668,6 +661,12 @@
         "in": "header",
         "name": "Authorization",
         "description": "Authentication key for admin routes"
+      },
+      "userAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Authentication key for user routes"
       },
       "getTokenAuth": {
         "type": "apiKey",
