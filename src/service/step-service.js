@@ -68,7 +68,7 @@ const update = async (req) => {
         }
     })
 
-    if (countStepNo) {
+    if (countStepNo === 1) {
         throw new ResponseError(400, "Step No already used")
     }
 
