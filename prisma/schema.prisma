@@ -127,7 +127,7 @@ model bahan {
 
 model resep {
   id             Int       @id @default(autoincrement())
-  nama_resep     String    @db.VarChar(100)
+  nama_resep     String    @unique @db.VarChar(100)
   deskripsi      String    @db.VarChar(255)
   gambar         String    @db.VarChar(100)
   bahan          String    @db.VarChar(255)
