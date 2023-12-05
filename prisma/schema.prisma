@@ -112,7 +112,7 @@ model kategori_resep {
 // ---- Resep & Bahan Configuration ----
 model bahan {
   id         Int       @id @default(autoincrement())
-  nama_bahan String    @db.VarChar(100)
+  nama_bahan String    @unique @db.VarChar(100)
   deskripsi  String    @db.VarChar(255)
   gambar     String    @db.VarChar(100)
   gizi       String    @db.VarChar(100)
