@@ -148,9 +148,9 @@ model resep {
 model step {
   id        Int       @id @default(autoincrement())
   id_resep  Int
-  step_no   String    @db.VarChar(2)
+  step_no   Int
   step_desc String    @db.VarChar(255)
-  waktu     String    @db.VarChar(100)
+  waktu     Int
   createdBy Int
   createdAt DateTime  @default(now())
   updatedAt DateTime? @default(now())
