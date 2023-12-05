@@ -13,7 +13,7 @@ publicRouter.post('/auth/forgot-password/:token', authController.forgotPassword)
 publicRouter.post('/auth/refresh', forgotPasswordMiddleware, authController.refreshTokens)
 
 // Favorite routes
-publicRouter.get("/favorite", authMiddleware, favoriteController.getAllFavorite)
+publicRouter.get("/favorite", authMiddleware, favoriteController.getFavoriteByIdUser)
 publicRouter.post("/favorite", authMiddleware, favoriteController.createFavorite)
 publicRouter.delete("/favorite/:favoriteId", authMiddleware, favoriteController.deleteFavorite)
 
