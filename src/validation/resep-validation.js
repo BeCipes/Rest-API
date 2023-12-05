@@ -1,28 +1,29 @@
-import joi from 'joi'
+import Joi from "joi"
 
-// const resepValidation = joi.object({
-//     nama: joi.string().required(),
-//     deskripsi: joi.string().required(),
-//     bahan: joi.string().required(),
-//     langkah: joi.string().required(),
-//     foto: joi.string().required(),
-//     kategori: joi.string().required(),
-//     porsi: joi.number().required(),
-//     waktu: joi.number().required(),
-//     tingkat: joi.number().required(),
-//     kalori: joi.number().required(),
-//     protein: joi.number().required(),
-//     lemak: joi.number().required(),
-//     karbo: joi.number().required(),
-//     serat: joi.number().required(),
-//     gula: joi.number().required(),
-//     natrium: joi.number().required(),
-//     kolesterol: joi.number().required(),
-//     asam: joi.number().required(),
-//     kalsium: joi.number().required(),
-//     zat_besi: joi.number().required(),
-//     vitamin_a: joi.number().required(),
-//     vitamin_b: joi.number().required(),
-//     vitamin_c: joi.number().required(),
-//     vitamin_d: joi.number().required(),
-// })
+const createResepValidation = Joi.object({
+    nama_resep: Joi.string().max(100).required(),
+    deskripsi: Joi.string().max(100).required(),
+    gambar: Joi.string().max(100).required(),
+    bahan: Joi.string().max(100).required(),
+    informasi_gizi: Joi.string().max(100).required(),
+    id_kategori: Joi.number().min(1).positive().required(),
+    createdBy: Joi.number().min(1).positive().required(),
+})
+
+const updateResepValidation = Joi.object({
+    id: Joi.number().min(1).positive().required(),
+    nama_resep: Joi.string().max(100).required(),
+    deskripsi: Joi.string().max(100).required(),
+    gambar: Joi.string().max(100).required(),
+    bahan: Joi.string().max(100).required(),
+    informasi_gizi: Joi.string().max(100).required(),
+    id_kategori: Joi.number().min(1).positive().required(),
+})
+
+const getResepValidation = Joi.number().min(1).positive().required()
+
+export {
+    createResepValidation,
+    updateResepValidation,
+    getResepValidation
+}

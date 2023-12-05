@@ -18,7 +18,7 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 
 1. Clone repository ini
 2. Install dependencies yang diperlukan dengan perintah `npm install`
-3. Buat file `.env` pada folder `config` dengan format sebagai berikut:
+3. Buat folder `config` di root directory, lalu buat file `.env` didalamnya dengan format sebagai berikut:
 
    ```env
    # Port yang ingin anda pakai
@@ -27,11 +27,19 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
    # Secret key untuk jwt
    SECRET=
 
+   # Mailing service yang anda gunakan
+   MAIL_HOST=
+   MAIL_PORT=
+   MAIL_USER=
+   MAIL_PASS=
+
    # URL database (sebagai contoh saya berikan dibawah)
    DATABASE_URL="mysql://root:password@localhost:3306/yourdb"
    ```
 
-4. Jalankan server dengan menggunakan perintah `npm run dev`
+4. Jalankan perintah `npm run migrate` untuk membuat tabel-tabel yang diperlukan
+5. Jalankan server dengan menggunakan perintah `npm run dev`
+6. **(Optional)** Jika anda ingin melakukan test, anda dapat menggunakan perintah `npm run test`
 
 ### Dokumentasi API
 

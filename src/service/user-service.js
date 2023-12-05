@@ -13,6 +13,7 @@ const create = async (req) => {
         }
     })
 
+    // Perdebatan apakah admin hanya boleh membuat user / boleh semua
     if (countUser === 1) {
         throw new ResponseError(400, "Email already exists")
     }
@@ -22,7 +23,7 @@ const create = async (req) => {
             role_name: "User".toLowerCase(),
         },
         select: {
-            id_role: true
+            id: true
         }
     })
 
@@ -30,7 +31,7 @@ const create = async (req) => {
         throw new ResponseError(404, "Role not found")
     }
 
-    user.id_role = userRole.id_role
+    user.id_role = userRole.id
     user.password = await bcrypt.hash(user.password, 10)
 
     return prismaClient.user.create({
@@ -48,7 +49,7 @@ const update = async (req) => {
 
     const countUser = await prismaClient.user.count({
         where: {
-            id_user: user.id_user
+            id: user.id
         }
     })
 
@@ -60,11 +61,11 @@ const update = async (req) => {
 
     return prismaClient.user.update({
         where: {
-            id_user: user.id_user
+            id: user.id
         },
         data: user,
         select: {
-            id_user: true,
+            id: true,
             first_name: true,
             last_name: true,
             email: true
@@ -77,7 +78,7 @@ const remove = async (userId) => {
 
     const countUser = await prismaClient.user.count({
         where: {
-            id_user: userId
+            id: userId
         }
     })
 
@@ -87,7 +88,7 @@ const remove = async (userId) => {
 
     await prismaClient.user.delete({
         where: {
-            id_user: userId
+            id: userId
         },
     })
 
@@ -99,13 +100,18 @@ const get = async (userId) => {
 
     const user = await prismaClient.user.findUnique({
         where: {
-            id_user: userId
+            id: userId
         },
         select: {
-            id_user: true,
+            id: true,
             first_name: true,
             last_name: true,
-            email: true
+            email: true,
+            role: {
+                select: {
+                    role_name: true,
+                },
+            },
         }
     })
 
@@ -119,10 +125,15 @@ const get = async (userId) => {
 const getAll = async () => {
     const user = await prismaClient.user.findMany({
         select: {
-            id_user: true,
+            id: true,
             first_name: true,
             last_name: true,
-            email: true
+            email: true,
+            role: {
+                select: {
+                    role_name: true,
+                },
+            },
         }
     })
 

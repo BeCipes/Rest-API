@@ -27,7 +27,7 @@ const removeTestUser = async () => {
 const createTestRole = async () => {
     await prismaClient.role.create({
         data: {
-            role_name: "user",
+            role_name: "test",
         }
     })
 }

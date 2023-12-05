@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,9 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id_user    Int       @id @default(autoincrement())
-  id_role    Int       @db.Int
+// ---- User Configuration ----
+model user {
+  id         Int       @id @default(autoincrement())
+  id_role    Int
   first_name String    @db.VarChar(100)
   last_name  String    @db.VarChar(100)
   password   String    @db.VarChar(100)
@@ -22,44 +20,180 @@ model User {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime? @default(now())
 
-  role Role @relation(fields: [id_role], references: [id_role])
+  role role @relation(fields: [id_role], references: [id])
 
-  @@map("users")
+  teknik         teknik[]
+  artikel        artikel[]
+  bahan          bahan[]
+  jenis_kategori jenis_kategori[]
+  kategori       kategori[]
+  resep          resep[]
+  step           step[]
+  favorite       favorite[]
+  kategori_resep kategori_resep[]
+
+  @@map("user")
 }
 
-model Role {
-  id_role   Int       @id @default(autoincrement())
+model role {
+  id        Int       @id @default(autoincrement())
   role_name String    @unique @db.VarChar(100)
   createdAt DateTime  @default(now())
   updatedAt DateTime? @default(now())
 
-  users User[]
+  user user[]
 
   @@map("role")
 }
 
-model Kategori_Resep {
-  id_kategori_resep Int       @id @default(autoincrement())
-  nama_kategori     String    @unique @db.VarChar(100)
-  gambar            String?   @db.VarChar(100)
-  jenis             Int       @db.Int()
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime? @default(now())
+model favorite {
+  id        Int       @id @default(autoincrement())
+  id_user   Int
+  id_resep  Int
+  createdBy Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @default(now())
+
+  resep resep @relation(fields: [id_resep], references: [id])
+  user  user  @relation(fields: [createdBy], references: [id])
+
+  @@map("favorite")
+}
+
+// ---- Kategori Configuration ----
+model kategori {
+  id            Int       @id @default(autoincrement())
+  nama_kategori String    @unique @db.VarChar(100)
+  gambar        String?   @db.VarChar(100)
+  id_jenis      Int
+  createdBy     Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime? @default(now())
+
+  jenis_kategori jenis_kategori @relation(fields: [id_jenis], references: [id])
+  user           user           @relation(fields: [createdBy], references: [id])
+
+  artikel        artikel[]
+  teknik         teknik[]
+  kategori_resep kategori_resep[]
+
+  @@map("kategori")
+}
+
+model jenis_kategori {
+  id         Int       @id @default(autoincrement())
+  nama_jenis String    @unique @db.VarChar(100)
+  createdBy  Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @default(now())
+
+  user user @relation(fields: [createdBy], references: [id])
+
+  kategori kategori[]
+
+  @@map("jenis_kategori")
+}
+
+model kategori_resep {
+  id          Int       @id @default(autoincrement())
+  id_kategori Int
+  id_resep    Int
+  createdBy   Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @default(now())
+
+  user     user     @relation(fields: [createdBy], references: [id])
+  kategori kategori @relation(fields: [id_kategori], references: [id])
+  resep    resep    @relation(fields: [id_resep], references: [id])
 
   @@map("kategori_resep")
 }
 
-// model Artikel {
-//   id_artikel Int       @id @default(autoincrement())
-//   id_user    Int       @db.Int
-//   headline   String    @db.VarChar(100)
-//   content    String    @db.Text
-//   image      String?   @unique
-//   writer     String    @db.VarChar(100)
-//   createdAt  DateTime  @default(now())
-//   updatedAt  DateTime? @default(now())
+// ---- Resep & Bahan Configuration ----
+model bahan {
+  id         Int       @id @default(autoincrement())
+  nama_bahan String    @db.VarChar(100)
+  deskripsi  String    @db.VarChar(255)
+  gambar     String    @db.VarChar(100)
+  gizi       String    @db.VarChar(100)
+  createdBy  Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @default(now())
 
-//   user User @relation(fields: [id_user], references: [id_user])
+  user user @relation(fields: [createdBy], references: [id])
 
-//   @@map("artikel")
-// }
+  @@map("bahan")
+}
+
+model resep {
+  id             Int       @id @default(autoincrement())
+  nama_resep     String    @db.VarChar(100)
+  deskripsi      String    @db.VarChar(255)
+  gambar         String    @db.VarChar(100)
+  bahan          String    @db.VarChar(255)
+  informasi_gizi String    @db.VarChar(255)
+  createdBy      Int
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime? @default(now())
+
+  user user @relation(fields: [createdBy], references: [id])
+
+  step           step[]
+  favorite       favorite[]
+  kategori_resep kategori_resep[]
+
+  @@map("resep")
+}
+
+model step {
+  id        Int       @id @default(autoincrement())
+  id_resep  Int
+  step_no   String    @db.VarChar(2)
+  step_desc String    @db.VarChar(255)
+  waktu     String    @db.VarChar(100)
+  createdBy Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @default(now())
+
+  resep resep @relation(fields: [id_resep], references: [id])
+  user  user  @relation(fields: [createdBy], references: [id])
+
+  @@map("step")
+}
+
+// ---- Information Configuration ----
+model artikel {
+  id          Int       @id @default(autoincrement())
+  headline    String    @db.VarChar(100)
+  gambar      String    @db.VarChar(100)
+  isi         String    @db.VarChar(100)
+  penulis     String    @db.VarChar(100)
+  sumber      String    @db.VarChar(100)
+  id_kategori Int
+  createdBy   Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @default(now())
+
+  kategori kategori @relation(fields: [id_kategori], references: [id])
+  user     user     @relation(fields: [createdBy], references: [id])
+
+  @@map("artikel")
+}
+
+model teknik {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(100)
+  description String    @db.VarChar(100)
+  cover       String    @db.VarChar(100)
+  url         String    @db.VarChar(100)
+  sumber      String    @db.VarChar(100)
+  id_kategori Int
+  createdBy   Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @default(now())
+
+  kategori kategori @relation(fields: [id_kategori], references: [id])
+  user     user     @relation(fields: [createdBy], references: [id])
+
+  @@map("teknik")
+}

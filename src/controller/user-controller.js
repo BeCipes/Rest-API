@@ -15,7 +15,7 @@ const createUser = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
     try {
         const userId = req.params.userId
-        req.body.id_user = userId
+        req.body.id = userId
         
         const result = await userService.update(req.body)
         const response = SuccessWebResponse(200, "OK", "Success update user", result)

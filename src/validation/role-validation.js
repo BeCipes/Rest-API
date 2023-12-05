@@ -5,7 +5,7 @@ const createRoleValidation = Joi.object({
 })
 
 const updateRoleValidation = Joi.object({
-    id_role: Joi.number().min(1).positive().required(),
+    id: Joi.number().min(1).positive().required(),
     role_name: Joi.string().max(100).required()
 })
 

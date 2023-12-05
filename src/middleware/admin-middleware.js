@@ -1,23 +1,32 @@
 import { prismaClient } from "../app/database.js"
-import { decodeAccessToken } from "../helper/auth-utils.js"
+import { decodeToken, getTokenPart } from "../helper/jwt-helper.js"
 import { ErrorWebResponse } from "../helper/web-response.js"
 
 export const adminMiddleware = async (req, res, next) => {
-    const token = req.get('Authorization')
+    const rawToken = req.get('Authorization')
+    
+    if (!rawToken) {
+        const response = ErrorWebResponse(401, "Unauthorized")
+        res.status(401).json(response).end()
+        
+        return
+    }
+
+    const token = await getTokenPart(rawToken)
 
     if (!token) {
         const response = ErrorWebResponse(401, "Unauthorized")
         res.status(401).json(response).end()
-
+        
         return
     }
-
+    
     try {
-        const decodedToken = decodeAccessToken(token)
+        const decodedToken = await decodeToken(token)
 
         const user = await prismaClient.user.findFirst({
             where: {
-                id_user: decodedToken.id,
+                id: decodedToken.id,
             },
             include: {
                 role: {
@@ -27,6 +36,7 @@ export const adminMiddleware = async (req, res, next) => {
                 }
             }
         })
+
 
         if (!user) {
             const response = ErrorWebResponse(401, "Unauthorized")
@@ -47,7 +57,8 @@ export const adminMiddleware = async (req, res, next) => {
 
         next()
     } catch (error) {
-        const response = ErrorWebResponse(401, "Unauthorized")
-        res.status(401).json(response).end()
+        // const response = ErrorWebResponse(401, "Unauthorized")
+        // res.status(401).json(response).end()
+        next(error)
     }
 }

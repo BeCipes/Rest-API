@@ -4,11 +4,12 @@ import { validate } from "../validation/validation.js"
 import { createKategoriResepValidation, updateKategoriResepValidation, getKategoriResepValidation } from "../validation/kategori_resep-validation.js"
 
 const create = async (req) => {
-    const kategori_resep = validate(createKategoriResepValidation, req)
+    const kategoriResep = validate(createKategoriResepValidation, req)
 
-    const countKategoriResep = await prismaClient.kategori_Resep.count({
+    const countKategoriResep = await prismaClient.kategori_resep.count({
         where: {
-            nama_kategori: kategori_resep.nama_kategori
+            id_kategori: kategoriResep.id_kategori,
+            id_resep: kategoriResep.id_resep
         }
     })
 
@@ -16,21 +17,46 @@ const create = async (req) => {
         throw new ResponseError(400, "Kategori Resep already exists")
     }
 
-    return prismaClient.kategori_Resep.create({
-        data: kategori_resep,
+    const countUser = await prismaClient.user.count({
+        where: {
+            id: req.createdBy
+        }
+    })
+
+    if (countUser === 0) {
+        throw new ResponseError(404, "User is not found")
+    }
+
+    return prismaClient.kategori_resep.create({
+        data: kategoriResep,
         select: {
-            nama_kategori: true,
-            gambar: true
+            kategori: {
+                select: {
+                    id: true,
+                    nama_kategori: true,
+                    gambar: true
+                }
+            },
+            resep: {
+                select: {
+                    id: true,
+                    nama_resep: true,
+                    deskripsi: true,
+                    gambar: true,
+                    bahan: true,
+                    informasi_gizi: true
+                }
+            }
         }
     })
 }
 
 const update = async (req) => {
-    const kategori_resep = validate(updateKategoriResepValidation, req)
+    const kategoriResep = validate(updateKategoriResepValidation, req)
 
-    const countKategoriResep = await prismaClient.kategori_Resep.count({
+    const countKategoriResep = await prismaClient.kategori_resep.count({
         where: {
-            id_kategori_resep: kategori_resep.id_kategori_resep
+            id: kategoriResep.id
         }
     })
 
@@ -38,15 +64,30 @@ const update = async (req) => {
         throw new ResponseError(404, "Kategori Resep is not found")
     }
 
-    return prismaClient.kategori_Resep.update({
+    return prismaClient.kategori_resep.update({
         where: {
-            id_kategori_resep: kategori_resep.id_kategori_resep
+            id: kategoriResep.id
         },
-        data: kategori_resep,
+        data: kategoriResep,
         select: {
-            id_kategori_resep: true,
-            nama_kategori: true,
-            gambar: true
+            id: true,
+            kategori: {
+                select: {
+                    id: true,
+                    nama_kategori: true,
+                    gambar: true
+                }
+            },
+            resep: {
+                select: {
+                    id: true,
+                    nama_resep: true,
+                    deskripsi: true,
+                    gambar: true,
+                    bahan: true,
+                    informasi_gizi: true
+                }
+            }
         }
     })
 }
@@ -54,30 +95,60 @@ const update = async (req) => {
 const get = async (kategoriResepId) => {
     kategoriResepId = validate(getKategoriResepValidation, kategoriResepId)
 
-    const kategori_resep = await prismaClient.kategori_Resep.findUnique({
+    const kategoriResep = await prismaClient.kategori_resep.findUnique({
         where: {
-            id_kategori_resep: kategoriResepId
+            id: kategoriResepId
         },
         select: {
-            id_kategori_resep: true,
-            nama_kategori: true,
-            gambar: true
+            id: true,
+            kategori: {
+                select: {
+                    id: true,
+                    nama_kategori: true,
+                    gambar: true
+                }
+            },
+            resep: {
+                select: {
+                    id: true,
+                    nama_resep: true,
+                    deskripsi: true,
+                    gambar: true,
+                    bahan: true,
+                    informasi_gizi: true
+                }
+            }
         }
     })
 
-    if (!kategori_resep) {
+    if (!kategoriResep) {
         throw new ResponseError(404, "Kategori Resep is not found")
     }
 
-    return kategori_resep
+    return kategoriResep
 }
 
 const getAll = async () => {
-    return prismaClient.kategori_Resep.findMany({
+    return prismaClient.kategori_resep.findMany({
         select: {
-            id_kategori_resep: true,
-            nama_kategori: true,
-            gambar: true
+            id: true,
+            kategori: {
+                select: {
+                    id: true,
+                    nama_kategori: true,
+                    gambar: true
+                }
+            },
+            resep: {
+                select: {
+                    id: true,
+                    nama_resep: true,
+                    deskripsi: true,
+                    gambar: true,
+                    bahan: true,
+                    informasi_gizi: true
+                }
+            }
         }
     })
 }
@@ -85,9 +156,9 @@ const getAll = async () => {
 const remove = async (kategoriResepId) => {
     kategoriResepId = validate(getKategoriResepValidation, kategoriResepId)
 
-    const countKategoriResep = await prismaClient.kategori_Resep.count({
+    const countKategoriResep = await prismaClient.kategori_resep.count({
         where: {
-            id_kategori_resep: kategoriResepId
+            id: kategoriResepId
         }
     })
 
@@ -95,9 +166,9 @@ const remove = async (kategoriResepId) => {
         throw new ResponseError(404, "Kategori Resep is not found")
     }
 
-    await prismaClient.kategori_Resep.delete({
+    await prismaClient.kategori_resep.delete({
         where: {
-            id_kategori_resep: kategoriResepId
+            id: kategoriResepId
         }
     })
 
