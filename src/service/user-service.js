@@ -33,6 +33,7 @@ const create = async (req) => {
 
     user.id_role = userRole.id
     user.password = await bcrypt.hash(user.password, 10)
+    user.id = uuid().toString()
 
     return prismaClient.user.create({
         data: user,

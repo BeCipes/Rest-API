@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE `user` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` VARCHAR(36) NOT NULL,
     `id_role` INTEGER NOT NULL,
     `first_name` VARCHAR(100) NOT NULL,
     `last_name` VARCHAR(100) NOT NULL,
@@ -32,9 +32,9 @@ CREATE TABLE `role` (
 -- CreateTable
 CREATE TABLE `favorite` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `id_user` INTEGER NOT NULL,
+    `id_user` VARCHAR(191) NOT NULL,
     `id_resep` INTEGER NOT NULL,
-    `createdBy` INTEGER NOT NULL,
+    `createdBy` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -47,7 +47,7 @@ CREATE TABLE `kategori` (
     `nama_kategori` VARCHAR(100) NOT NULL,
     `gambar` VARCHAR(100) NULL,
     `id_jenis` INTEGER NOT NULL,
-    `createdBy` INTEGER NOT NULL,
+    `createdBy` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -59,7 +59,7 @@ CREATE TABLE `kategori` (
 CREATE TABLE `jenis_kategori` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `nama_jenis` VARCHAR(100) NOT NULL,
-    `createdBy` INTEGER NOT NULL,
+    `createdBy` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -72,7 +72,7 @@ CREATE TABLE `kategori_resep` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `id_kategori` INTEGER NOT NULL,
     `id_resep` INTEGER NOT NULL,
-    `createdBy` INTEGER NOT NULL,
+    `createdBy` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -86,7 +86,7 @@ CREATE TABLE `bahan` (
     `deskripsi` VARCHAR(255) NOT NULL,
     `gambar` VARCHAR(100) NOT NULL,
     `gizi` VARCHAR(100) NOT NULL,
-    `createdBy` INTEGER NOT NULL,
+    `createdBy` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -102,7 +102,7 @@ CREATE TABLE `resep` (
     `gambar` VARCHAR(100) NOT NULL,
     `bahan` VARCHAR(255) NOT NULL,
     `informasi_gizi` VARCHAR(255) NOT NULL,
-    `createdBy` INTEGER NOT NULL,
+    `createdBy` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -117,7 +117,7 @@ CREATE TABLE `step` (
     `step_no` INTEGER NOT NULL,
     `step_desc` VARCHAR(255) NOT NULL,
     `waktu` INTEGER NOT NULL,
-    `createdBy` INTEGER NOT NULL,
+    `createdBy` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -133,7 +133,7 @@ CREATE TABLE `artikel` (
     `penulis` VARCHAR(100) NOT NULL,
     `sumber` VARCHAR(100) NOT NULL,
     `id_kategori` INTEGER NOT NULL,
-    `createdBy` INTEGER NOT NULL,
+    `createdBy` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -149,7 +149,7 @@ CREATE TABLE `teknik` (
     `url` VARCHAR(100) NOT NULL,
     `sumber` VARCHAR(100) NOT NULL,
     `id_kategori` INTEGER NOT NULL,
-    `createdBy` INTEGER NOT NULL,
+    `createdBy` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -206,3 +206,7 @@ ALTER TABLE `teknik` ADD CONSTRAINT `teknik_id_kategori_fkey` FOREIGN KEY (`id_k
 
 -- AddForeignKey
 ALTER TABLE `teknik` ADD CONSTRAINT `teknik_createdBy_fkey` FOREIGN KEY (`createdBy`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+INSERT INTO `role` (`id`, `role_name`, `createdAt`, `updatedAt`) VALUES (NULL, 'user', '2023-12-06 22:44:47.000000', '2023-12-06 22:44:47.000000');
+
+INSERT INTO `role` (`id`, `role_name`, `createdAt`, `updatedAt`) VALUES (NULL, 'admin', '2023-12-06 22:44:47.000000', '2023-12-06 22:44:47.000000');

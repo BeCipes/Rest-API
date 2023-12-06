@@ -5,6 +5,7 @@ import { ResponseError } from "./../error/response-error.js"
 import { generateTokens, generateAccessToken, generateResetPasswordToken, generateVerifyEmailToken, decodeToken, getTokenPart } from "../helper/jwt-helper.js"
 import { sendForgotPass, sendVerifyEmail } from "../helper/send-mail.js"
 import bcrypt from "bcrypt"
+import { v4 as uuid } from 'uuid'
 
 const register = async (req) => {
     const user = validate(registerUserValidation, req)
@@ -37,6 +38,7 @@ const register = async (req) => {
 
     const token = await generateTokens(user)
     user.token = token.refreshToken
+    user.id = uuid().toString()
 
     await prismaClient.user.create({
         data: user,

@@ -9,7 +9,7 @@ datasource db {
 
 // ---- User Configuration ----
 model user {
-  id           Int       @id @default(autoincrement())
+  id           String    @id @db.VarChar(36)
   id_role      Int
   first_name   String    @db.VarChar(100)
   last_name    String    @db.VarChar(100)
@@ -50,9 +50,9 @@ model role {
 
 model favorite {
   id        Int       @id @default(autoincrement())
-  id_user   Int
+  id_user   String
   id_resep  Int
-  createdBy Int
+  createdBy String
   createdAt DateTime  @default(now())
   updatedAt DateTime? @default(now())
 
@@ -68,7 +68,7 @@ model kategori {
   nama_kategori String    @unique @db.VarChar(100)
   gambar        String?   @db.VarChar(100)
   id_jenis      Int
-  createdBy     Int
+  createdBy     String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime? @default(now())
 
@@ -85,7 +85,7 @@ model kategori {
 model jenis_kategori {
   id         Int       @id @default(autoincrement())
   nama_jenis String    @unique @db.VarChar(100)
-  createdBy  Int
+  createdBy  String
   createdAt  DateTime  @default(now())
   updatedAt  DateTime? @default(now())
 
@@ -100,7 +100,7 @@ model kategori_resep {
   id          Int       @id @default(autoincrement())
   id_kategori Int
   id_resep    Int
-  createdBy   Int
+  createdBy   String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @default(now())
 
@@ -118,7 +118,7 @@ model bahan {
   deskripsi  String    @db.VarChar(255)
   gambar     String    @db.VarChar(100)
   gizi       String    @db.VarChar(100)
-  createdBy  Int
+  createdBy  String
   createdAt  DateTime  @default(now())
   updatedAt  DateTime? @default(now())
 
@@ -134,7 +134,7 @@ model resep {
   gambar         String    @db.VarChar(100)
   bahan          String    @db.VarChar(255)
   informasi_gizi String    @db.VarChar(255)
-  createdBy      Int
+  createdBy      String
   createdAt      DateTime  @default(now())
   updatedAt      DateTime? @default(now())
 
@@ -153,7 +153,7 @@ model step {
   step_no   Int
   step_desc String    @db.VarChar(255)
   waktu     Int
-  createdBy Int
+  createdBy String
   createdAt DateTime  @default(now())
   updatedAt DateTime? @default(now())
 
@@ -172,7 +172,7 @@ model artikel {
   penulis     String    @db.VarChar(100)
   sumber      String    @db.VarChar(100)
   id_kategori Int
-  createdBy   Int
+  createdBy   String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @default(now())
 
@@ -190,7 +190,7 @@ model teknik {
   url         String    @db.VarChar(100)
   sumber      String    @db.VarChar(100)
   id_kategori Int
-  createdBy   Int
+  createdBy   String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @default(now())
 
