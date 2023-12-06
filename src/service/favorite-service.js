@@ -90,6 +90,35 @@ const get = async (favoriteId) => {
     return favorite
 }
 
+const getByUserId = async (userId) => {
+    userId = validate(getFavoriteValidation, userId)
+
+    const favorite = await prismaClient.favorite.findMany({
+        where: {
+            id_user: userId
+        },
+        select: {
+            id: true,
+            resep: {
+                select: {
+                    id: true,
+                    nama_resep: true,
+                    deskripsi: true,
+                    gambar: true,
+                    bahan: true,
+                    informasi_gizi: true
+                }
+            }
+        }
+    })
+
+    if (!favorite) {
+        throw new ResponseError(404, "Favorite is not found")
+    }
+
+    return favorite
+}
+
 const getAll = async () => {
     return prismaClient.favorite.findMany({
         select: {
@@ -142,5 +171,6 @@ export default {
     create,
     get,
     getAll,
+    getByUserId,
     remove
 }

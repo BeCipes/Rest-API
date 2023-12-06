@@ -69,10 +69,10 @@
       }
     },
     "/auth/refresh": {
-      "post": {
+      "get": {
         "security": [
           {
-            "getTokenAuth": []
+            "userAuth": []
           }
         ],
         "tags": ["Auth API"],
@@ -107,7 +107,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Success"
           }
         }
@@ -128,12 +128,310 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "Success",
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/auth/verify-email": {
+      "post": {
+        "tags": ["Auth API"],
+        "summary": "Send verify email mail to the user",
+        "description": "Send verify email mail to the user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/verifyEmailMailRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/auth/verify-email/{token}": {
+      "get": {
+        "tags": ["Auth API"],
+        "summary": "Verify user's email",
+        "description": "Verify user's email",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "summary": "Get all user",
+        "description": "Get all user",
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/tokenResponse"
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "summary": "Create a new user",
+        "description": "Create a new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{userId}": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "summary": "Get a user by id",
+        "description": "Get a user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "user ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "summary": "Update a user by id",
+        "description": "Update a user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "user ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "summary": "Delete a user by id",
+        "description": "Delete a user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "user ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/favorite": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Favorite API"],
+        "summary": "Get all user's favorite",
+        "description": "Get all user's favorite",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/favoriteUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/favoriteResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Favorite API"],
+        "summary": "Create a new favorite for user",
+        "description": "Create a new favorite for user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/favoriteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/favoriteResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/favorite/{favoriteId}": {
+      "delete": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Favorite API"],
+        "summary": "Delete user's favorite",
+        "description": "Delete user's favorite",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "role ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
                 }
               }
             }
@@ -295,179 +593,6 @@
         "responses": {
           "200": {
             "description": "Success delete role",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "number"
-                    },
-                    "status": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user": {
-      "get": {
-        "security": [
-          {
-            "adminAuth": []
-          }
-        ],
-        "tags": ["User API"],
-        "summary": "Get all user",
-        "description": "Get all user",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/userResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "security": [
-          {
-            "adminAuth": []
-          }
-        ],
-        "tags": ["User API"],
-        "summary": "Create a new user",
-        "description": "Create a new user",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/userRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/userResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/{userId}": {
-      "get": {
-        "security": [
-          {
-            "adminAuth": []
-          }
-        ],
-        "tags": ["User API"],
-        "summary": "Get a user by id",
-        "description": "Get a user by id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "user ID",
-            "required": true,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/userResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "security": [
-          {
-            "adminAuth": []
-          }
-        ],
-        "tags": ["User API"],
-        "summary": "Update a user by id",
-        "description": "Update a user by id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "user ID",
-            "required": true,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/userRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/userResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "security": [
-          {
-            "adminAuth": []
-          }
-        ],
-        "tags": ["User API"],
-        "summary": "Delete a user by id",
-        "description": "Delete a user by id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "user ID",
-            "required": true,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success delete user",
             "content": {
               "application/json": {
                 "schema": {
@@ -669,6 +794,12 @@
         "name": "Authorization",
         "description": "Authentication key for admin routes"
       },
+      "userAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Authentication key for user routes"
+      },
       "getTokenAuth": {
         "type": "apiKey",
         "in": "header",
@@ -745,6 +876,14 @@
         "type": "object",
         "properties": {
           "password": {
+            "type": "string"
+          }
+        }
+      },
+      "verifyEmailMailRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
             "type": "string"
           }
         }
@@ -910,6 +1049,93 @@
                 },
                 "token": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "favoriteUserRequest": {
+        "type": "object",
+        "properties": {
+          "id_user": {
+            "type": "number"
+          }
+        }
+      },
+      "favoriteRequest": {
+        "type": "object",
+        "properties": {
+          "id_user": {
+            "type": "number"
+          },
+          "id_resep": {
+            "type": "number"
+          }
+        }
+      },
+      "favoriteResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "first_name": {
+                      "type": "string"
+                    },
+                    "last_name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "photo": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "resep": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "nama_resep": {
+                      "type": "string"
+                    },
+                    "deskripsi": {
+                      "type": "string"
+                    },
+                    "gambar": {
+                      "type": "string"
+                    },
+                    "bahan": {
+                      "type": "string"
+                    },
+                    "informasi_gizi": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }

@@ -7,6 +7,9 @@ import { jenisKategoriRouter } from "../routes/jenis_kategori-api.js"
 import { kategoriResepRouter } from "../routes/kategori_resep-api.js"
 import { artikelRouter } from "../routes/artikel-api.js"
 import { teknikRouter } from "../routes/teknik-api.js"
+import { stepRouter } from "../routes/step-api.js"
+import { resepRouter } from "../routes/resep-api.js"
+import { bahanRouter } from "../routes/bahan-api.js"
 import { errorMiddleware } from "../middleware/error-middleware.js"
 import { notfoundMiddleware } from "../middleware/not-found-middleware.js"
 import cors from "cors"
@@ -30,6 +33,9 @@ app.use(apiPrefix, jenisKategoriRouter)
 app.use(apiPrefix, kategoriResepRouter)
 app.use(apiPrefix, artikelRouter)
 app.use(apiPrefix, teknikRouter)
+app.use(apiPrefix, stepRouter)
+app.use(apiPrefix, resepRouter)
+app.use(apiPrefix, bahanRouter)
 
 app.use(notfoundMiddleware)
 app.use(errorMiddleware)

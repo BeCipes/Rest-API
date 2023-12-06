@@ -8,12 +8,14 @@ const publicRouter = new express.Router()
 // Auth routes
 publicRouter.post('/auth/register', authController.register)
 publicRouter.post('/auth/login', authController.login)
+publicRouter.post('/auth/verify-email', authController.sendVerifyEmail)
+publicRouter.get('/auth/verify-email/:token', authController.verifyEmail)
 publicRouter.post('/auth/forgot-password', authController.sendPasswordResetEmail)
 publicRouter.post('/auth/forgot-password/:token', authController.forgotPassword)
-publicRouter.post('/auth/refresh', forgotPasswordMiddleware, authController.refreshTokens)
+publicRouter.get('/auth/refresh', forgotPasswordMiddleware, authController.refreshTokens)
 
 // Favorite routes
-publicRouter.get("/favorite", authMiddleware, favoriteController.getAllFavorite)
+publicRouter.get("/favorite", authMiddleware, favoriteController.getFavoriteByIdUser)
 publicRouter.post("/favorite", authMiddleware, favoriteController.createFavorite)
 publicRouter.delete("/favorite/:favoriteId", authMiddleware, favoriteController.deleteFavorite)
 

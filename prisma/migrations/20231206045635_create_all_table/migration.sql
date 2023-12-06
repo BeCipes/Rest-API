@@ -8,6 +8,8 @@ CREATE TABLE `user` (
     `email` VARCHAR(191) NOT NULL,
     `photo` VARCHAR(191) NULL,
     `token` TEXT NULL,
+    `isVerified` BOOLEAN NOT NULL DEFAULT false,
+    `verify_token` TEXT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -88,6 +90,7 @@ CREATE TABLE `bahan` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    UNIQUE INDEX `bahan_nama_bahan_key`(`nama_bahan`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -103,6 +106,7 @@ CREATE TABLE `resep` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    UNIQUE INDEX `resep_nama_resep_key`(`nama_resep`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -110,9 +114,9 @@ CREATE TABLE `resep` (
 CREATE TABLE `step` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `id_resep` INTEGER NOT NULL,
-    `step_no` VARCHAR(2) NOT NULL,
+    `step_no` INTEGER NOT NULL,
     `step_desc` VARCHAR(255) NOT NULL,
-    `waktu` VARCHAR(100) NOT NULL,
+    `waktu` INTEGER NOT NULL,
     `createdBy` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),

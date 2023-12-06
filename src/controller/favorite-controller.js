@@ -28,10 +28,22 @@ const deleteFavorite = async (req, res, next) => {
     }
 }
 
-const getFavoriteById = async (req, res, next) => {
+// const getFavoriteById = async (req, res, next) => {
+//     try {
+//         const favoriteId = req.params.favoriteId
+//         const result = await favoriteService.get(favoriteId)
+//         const response = SuccessWebResponse(200, "OK", "Success get favorite", result)
+
+//         res.status(200).json(response)
+//     } catch (e) {
+//         next(e)
+//     }
+// }
+
+const getFavoriteByIdUser = async (req, res, next) => {
     try {
-        const favoriteId = req.params.favoriteId
-        const result = await favoriteService.get(favoriteId)
+        const userId = await getCurrentUserId(req.get("Authorization"))
+        const result = await favoriteService.getByUserId(userId)
         const response = SuccessWebResponse(200, "OK", "Success get favorite", result)
 
         res.status(200).json(response)
@@ -40,20 +52,21 @@ const getFavoriteById = async (req, res, next) => {
     }
 }
 
-const getAllFavorite = async (req, res, next) => {
-    try {
-        const result = await favoriteService.getAll()
-        const response = SuccessWebResponse(200, "OK", "Success get all favorite", result)
+// const getAllFavorite = async (req, res, next) => {
+//     try {
+//         const result = await favoriteService.getAll()
+//         const response = SuccessWebResponse(200, "OK", "Success get all favorite", result)
 
-        res.status(200).json(response)
-    } catch (e) {
-        next(e)
-    }
-}
+//         res.status(200).json(response)
+//     } catch (e) {
+//         next(e)
+//     }
+// }
 
 export default {
     createFavorite,
     deleteFavorite,
-    getFavoriteById,
-    getAllFavorite
+    // getFavoriteById,
+    getFavoriteByIdUser,
+    // getAllFavorite
 }
