@@ -134,6 +134,39 @@
         }
       }
     },
+    "/auth/verify-email": {
+      "post": {
+        "tags": ["Auth API"],
+        "summary": "Send verify email mail to the user",
+        "description": "Send verify email mail to the user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/verifyEmailMailRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/auth/verify-email/{token}": {
+      "get": {
+        "tags": ["Auth API"],
+        "summary": "Verify user's email",
+        "description": "Verify user's email",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/user": {
       "get": {
         "security": [
@@ -843,6 +876,14 @@
         "type": "object",
         "properties": {
           "password": {
+            "type": "string"
+          }
+        }
+      },
+      "verifyEmailMailRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
             "type": "string"
           }
         }
