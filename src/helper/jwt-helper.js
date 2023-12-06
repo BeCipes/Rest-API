@@ -3,7 +3,11 @@ import bcrypt from "bcrypt"
 import { ResponseError } from "./../error/response-error.js"
 
 const generateAccessToken = async (user) => {
-  const token = jwt.sign({ id: user.id, role: user.role?.role_name }, process.env.SECRET, {
+  const token = jwt.sign({
+    id: user.id,
+    role: user.role?.role_name
+  },
+    process.env.SECRET, {
     expiresIn: '12h',
   })
 
@@ -21,7 +25,19 @@ const generateRefreshToken = async (user) => {
 }
 
 const generateResetPasswordToken = async (user) => {
-  const token = jwt.sign({ id: user.id }, process.env.SECRET, {
+  const token = jwt.sign({
+    id: user.id
+  }, process.env.SECRET, {
+    expiresIn: '5m',
+  })
+
+  return token
+}
+
+const generateVerifyEmailToken = async (user) => {
+  const token = jwt.sign({
+    email: user.email
+  }, process.env.SECRET, {
     expiresIn: '5m',
   })
 
@@ -72,6 +88,7 @@ export {
   generateAccessToken,
   generateRefreshToken,
   generateResetPasswordToken,
+  generateVerifyEmailToken,
   generateTokens,
   getTokenPart,
   decodeToken,
