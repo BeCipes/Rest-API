@@ -1,9 +1,9 @@
 import { validate } from "./../validation/validation.js"
-import { registerUserValidation, loginUserValidation } from "./../validation/auth-validation.js"
+import { registerUserValidation, loginUserValidation, forgotPasswordValidation } from "./../validation/auth-validation.js"
 import { prismaClient } from "../app/database.js"
 import { ResponseError } from "./../error/response-error.js"
-import { generateTokens, generateAccessToken, generateResetPasswordToken, decodeToken, getTokenPart } from "../helper/jwt-helper.js"
-import { sendForgotPassMail } from "../helper/send-mail.js"
+import { generateTokens, generateAccessToken, generateResetPasswordToken, generateVerifyEmailToken, decodeToken, getTokenPart } from "../helper/jwt-helper.js"
+import { sendForgotPass, sendVerifyEmail } from "../helper/send-mail.js"
 import bcrypt from "bcrypt"
 
 const register = async (req) => {
@@ -148,12 +148,13 @@ const sendPasswordResetMail = async (email) => {
     }
 
     const token = await generateResetPasswordToken(user)
-    await sendForgotPassMail(token, email)
+    await sendForgotPass(token, email)
 
     return
 }
 
 const forgotPassword = async (token, password) => {
+    password = validate(forgotPasswordValidation, password)
     const decodedToken = await decodeToken(token)
 
     const user = await prismaClient.user.findFirst({
@@ -180,10 +181,66 @@ const forgotPassword = async (token, password) => {
     return
 }
 
+const sendVerifyEmailMail = async (email) => {
+    const user = await prismaClient.user.findUnique({
+        where: {
+            email: email
+        }
+    })
+
+    if (!user) {
+        throw new ResponseError(404, "User not found")
+    }
+
+    const token = await generateVerifyEmailToken(user)
+    await sendVerifyEmail(token, email)
+
+    await prismaClient.user.update({
+        where: {
+            id: user.id,
+        },
+        data: {
+            verify_token: token
+        },
+    })
+
+    return
+}
+
+const verifyEmail = async (token) => {
+    const decodedToken = await decodeToken(token)
+
+    const user = await prismaClient.user.findUnique({
+        where: {
+            email: decodedToken.email,
+            verify_token: token
+        }
+    })
+
+    if (!user) {
+        throw new ResponseError(404, "User not found")
+    }
+
+
+    await prismaClient.user.update({
+        where: {
+            id: user.id,
+        },
+        data: {
+            isVerified: true,
+            verify_token: null
+        },
+    })
+
+    return
+}
+
 export default {
     register,
     login,
     refreshToken,
     forgotPassword,
-    sendPasswordResetMail
+    sendPasswordResetMail,
+    sendVerifyEmailMail,
+    verifyEmail
 }

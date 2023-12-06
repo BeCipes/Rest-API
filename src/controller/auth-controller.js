@@ -63,10 +63,38 @@ const forgotPassword = async (req, res, next) => {
     }
 }
 
+const sendVerifyEmail = async (req, res, next) => {
+    try {
+        const { email } = req.body
+        
+        const result = await authService.sendVerifyEmailMail(email)
+        const response = SuccessWebResponse(200, "OK", "Verify email link sent successfully", result)
+
+        res.status(200).json(response);
+    } catch (e) {
+        next(e)
+    }
+}
+
+const verifyEmail = async (req, res, next) => {
+    try {
+        const { token } = req.params
+        
+        const result = await authService.verifyEmail(token)
+        const response = SuccessWebResponse(200, "OK", "Email verified successfully", result)
+
+        res.status(200).json(response);
+    } catch (e) {
+        next(e)
+    }
+}
+
 export default {
     register,
     login,
     refreshTokens,
     sendPasswordResetEmail,
+    sendVerifyEmail,
+    verifyEmail,
     forgotPassword
 }

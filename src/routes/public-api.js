@@ -8,6 +8,8 @@ const publicRouter = new express.Router()
 // Auth routes
 publicRouter.post('/auth/register', authController.register)
 publicRouter.post('/auth/login', authController.login)
+publicRouter.post('/auth/verify-email', authController.sendVerifyEmail)
+publicRouter.get('/auth/verify-email/:token', authController.verifyEmail)
 publicRouter.post('/auth/forgot-password', authController.sendPasswordResetEmail)
 publicRouter.post('/auth/forgot-password/:token', authController.forgotPassword)
 publicRouter.get('/auth/refresh', forgotPasswordMiddleware, authController.refreshTokens)
