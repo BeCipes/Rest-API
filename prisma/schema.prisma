@@ -9,16 +9,18 @@ datasource db {
 
 // ---- User Configuration ----
 model user {
-  id         Int       @id @default(autoincrement())
-  id_role    Int
-  first_name String    @db.VarChar(100)
-  last_name  String    @db.VarChar(100)
-  password   String    @db.VarChar(100)
-  email      String    @unique
-  photo      String?   @unique
-  token      String?   @db.Text
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime? @default(now())
+  id           Int       @id @default(autoincrement())
+  id_role      Int
+  first_name   String    @db.VarChar(100)
+  last_name    String    @db.VarChar(100)
+  password     String    @db.VarChar(100)
+  email        String    @unique
+  photo        String?   @unique
+  token        String?   @db.Text
+  isVerified   Boolean   @default(false)
+  verify_token String?   @db.Text
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @default(now())
 
   role role @relation(fields: [id_role], references: [id])
 
