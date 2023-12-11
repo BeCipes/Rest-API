@@ -40,6 +40,15 @@ publicRouter.get("/data/resep/", authMiddleware, resepController.getAllResep)
 publicRouter.get("/data/step/", authMiddleware, stepController.getAllStep)
 publicRouter.get("/data/teknik/", authMiddleware, teknikController.getAllTeknik)
 
+publicRouter.get("/data/artikel/:artikelId", authMiddleware, artikelController.getArtikelById)
+publicRouter.get("/data/bahan/:bahanId", authMiddleware, bahanController.getBahanById)
+publicRouter.get("/data/jenis-kategori/:jenisKategoriId", authMiddleware, jenisKategoriController.getJenisKategoriById)
+publicRouter.get("/data/kategori-resep/:kategoriResepId", authMiddleware, kategoriResepController.getKategoriResepById)
+publicRouter.get("/data/kategori/:kategoriId", authMiddleware, kategoriController.getKategoriById)
+publicRouter.get("/data/resep/:resepId", authMiddleware, resepController.getResepById)
+publicRouter.get("/data/step/:stepId", authMiddleware, stepController.getStepById)
+publicRouter.get("/data/teknik/:teknikId", authMiddleware, teknikController.getTeknikById)
+
 export {
     publicRouter
 }
