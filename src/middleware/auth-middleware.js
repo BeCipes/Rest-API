@@ -2,7 +2,7 @@ import { prismaClient } from "../app/database.js"
 import { getTokenPart, decodeToken } from "../helper/jwt-helper.js"
 import { ErrorWebResponse } from "../helper/web-response.js"
 
-const forgotPasswordMiddleware = async (req, res, next) => {
+const refreshTokenMiddleware = async (req, res, next) => {
     const rawToken = req.get('Authorization')
     
     if (!rawToken) {
@@ -77,7 +77,6 @@ const authMiddleware = async (req, res, next) => {
             }
         })
 
-
         if (!user) {
             const response = ErrorWebResponse(401, "Unauthorized")
             res.status(401).json(response).end()
@@ -104,6 +103,6 @@ const authMiddleware = async (req, res, next) => {
 }
 
 export {
-    forgotPasswordMiddleware,
+    refreshTokenMiddleware,
     authMiddleware
 }

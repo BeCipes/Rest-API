@@ -2,7 +2,7 @@ import { validate } from "./../validation/validation.js"
 import { registerUserValidation, loginUserValidation, forgotPasswordValidation } from "./../validation/auth-validation.js"
 import { prismaClient } from "../app/database.js"
 import { ResponseError } from "./../error/response-error.js"
-import { generateTokens, generateAccessToken, generateResetPasswordToken, generateVerifyEmailToken, decodeToken, getTokenPart } from "../helper/jwt-helper.js"
+import { generateTokens, generateAccessToken, generateResetPasswordToken, generateVerifyEmailToken, decodeToken, getTokenPart, convertExpToDate } from "../helper/jwt-helper.js"
 import { sendForgotPass, sendVerifyEmail } from "../helper/send-mail.js"
 import bcrypt from "bcrypt"
 import { v4 as uuid } from 'uuid'
@@ -37,8 +37,14 @@ const register = async (req) => {
     user.password = await bcrypt.hash(user.password, 10)
 
     const token = await generateTokens(user)
+    const decodedRefreshToken = await decodeToken(token.refreshToken)
+    const expDate = await convertExpToDate(decodedRefreshToken.exp)
+
+    token.refreshToken = await bcrypt.hash(token.refreshToken, 10)
+
     user.token = token.refreshToken
     user.id = uuid().toString()
+    user.token_exp = expDate
 
     await prismaClient.user.create({
         data: user,
@@ -82,13 +88,18 @@ const login = async (req) => {
     }
     
     const token = await generateTokens(dbUser)
+    const decodedRefreshToken = await decodeToken(token.refreshToken)
+    const expDate = await convertExpToDate(decodedRefreshToken.exp)
+    
+    token.refreshToken = await bcrypt.hash(token.refreshToken, 10)
 
     const tes = await prismaClient.user.update({
         where: {
             email: dbUser.email
         },
         data: {
-            token: token.refreshToken
+            token: token.refreshToken,
+            token_exp: expDate
         },
         select: {
             role: {
@@ -117,7 +128,8 @@ const refreshToken = async (rawToken) => {
         where: {
             token: refreshToken,
         },
-        include: {
+        select: {
+            token_exp: true,
             role: {
                 select: {
                     role_name: true,
@@ -128,6 +140,12 @@ const refreshToken = async (rawToken) => {
     
     if (!user) {
         throw new ResponseError(401, "Invalid refresh token")
+    }
+
+    const tokenExp = new Date(user.token_exp).getTime()
+
+    if (tokenExp && tokenExp < Date.now()) {
+        throw new ResponseError(401, "Refresh token has expired, please login again")
     }
     
     const newToken = await generateAccessToken(user)
@@ -148,6 +166,17 @@ const sendPasswordResetMail = async (email) => {
     if (!user) {
         throw new ResponseError(404, "User not found")
     }
+
+// const isVerified = await prismaClient.user.count({
+//         where: {
+//             email: user.email,
+//             isVerified: true
+//         }
+//     })
+
+//     if (isVerified === 1) {
+//         throw new ResponseError(400, "This account is not verified")
+//     }
 
     const token = await generateResetPasswordToken(user)
     await sendForgotPass(token, email)
@@ -237,6 +266,35 @@ const verifyEmail = async (token) => {
     return
 }
 
+const getCurrentUser = async (token) => {
+    const decodedToken = await decodeToken(token)
+
+    const user = await prismaClient.user.findUnique({
+        where: {
+            id: decodedToken.id,
+        },
+        include: {
+            role: {
+                select: {
+                    role_name: true,
+                },
+            },
+        },
+    })
+    
+    if (!user) {
+        throw new ResponseError(401, "Invalid token")
+    }
+
+    return {
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        role: user.role?.role_name,
+        isVerified: user.isVerified
+    }
+}
+
 export default {
     register,
     login,
@@ -244,5 +302,6 @@ export default {
     forgotPassword,
     sendPasswordResetMail,
     sendVerifyEmailMail,
+    getCurrentUser,
     verifyEmail
 }
