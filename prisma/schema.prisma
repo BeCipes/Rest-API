@@ -17,6 +17,7 @@ model user {
   email        String    @unique
   photo        String?   @unique
   token        String?   @db.Text
+  token_exp    DateTime? @db.DateTime(3)
   isVerified   Boolean   @default(false)
   verify_token String?   @db.Text
   createdAt    DateTime  @default(now())

@@ -8,6 +8,7 @@ CREATE TABLE `user` (
     `email` VARCHAR(191) NOT NULL,
     `photo` VARCHAR(191) NULL,
     `token` TEXT NULL,
+    `token_exp` DATETIME(3) NULL,
     `isVerified` BOOLEAN NOT NULL DEFAULT false,
     `verify_token` TEXT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -207,6 +208,6 @@ ALTER TABLE `teknik` ADD CONSTRAINT `teknik_id_kategori_fkey` FOREIGN KEY (`id_k
 -- AddForeignKey
 ALTER TABLE `teknik` ADD CONSTRAINT `teknik_createdBy_fkey` FOREIGN KEY (`createdBy`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
+-- Add Role
 INSERT INTO `role` (`id`, `role_name`, `createdAt`, `updatedAt`) VALUES (NULL, 'user', '2023-12-06 22:44:47.000000', '2023-12-06 22:44:47.000000');
-
 INSERT INTO `role` (`id`, `role_name`, `createdAt`, `updatedAt`) VALUES (NULL, 'admin', '2023-12-06 22:44:47.000000', '2023-12-06 22:44:47.000000');
