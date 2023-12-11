@@ -266,7 +266,8 @@ const verifyEmail = async (token) => {
     return
 }
 
-const getCurrentUser = async (token) => {
+const getUserInfo = async (token) => {
+    token = await getTokenPart(token)
     const decodedToken = await decodeToken(token)
 
     const user = await prismaClient.user.findUnique({
@@ -302,6 +303,6 @@ export default {
     forgotPassword,
     sendPasswordResetMail,
     sendVerifyEmailMail,
-    getCurrentUser,
+    getUserInfo,
     verifyEmail
 }

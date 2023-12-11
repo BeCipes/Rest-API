@@ -20,7 +20,7 @@ publicRouter.post("/favorite", authMiddleware, favoriteController.createFavorite
 publicRouter.delete("/favorite/:favoriteId", authMiddleware, favoriteController.deleteFavorite)
 
 // User routes
-publicRouter.get("/user/get-info", authMiddleware, authController.getCurrentUser)
+publicRouter.get("/user/get-info", authMiddleware, authController.getCurrentUserInfo)
 
 export {
     publicRouter

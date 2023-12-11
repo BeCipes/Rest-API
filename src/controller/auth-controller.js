@@ -89,10 +89,10 @@ const verifyEmail = async (req, res, next) => {
     }
 }
 
-const getCurrentUser = async (req, res, next) => {
+const getCurrentUserInfo = async (req, res, next) => {
     try {
         const token = req.get('Authorization')
-        const result = await authService.getCurrentUser(token)
+        const result = await authService.getUserInfo(token)
         const response = SuccessWebResponse(200, "OK", "Success get user info", result)
 
         res.status(200).json(response)
@@ -109,6 +109,6 @@ export default {
     sendPasswordResetEmail,
     sendVerifyEmail,
     verifyEmail,
-    getCurrentUser,
+    getCurrentUserInfo,
     forgotPassword
 }
