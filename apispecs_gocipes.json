@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000/api",
+      "url": "http://localhost:port/api",
       "description": "Local server"
     }
   ],
@@ -163,6 +163,502 @@
         "responses": {
           "200": {
             "description": "Success"
+          }
+        }
+      }
+    },
+    "/user/get-info": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get all data)"],
+        "summary": "Get current user info",
+        "description": "Get current user info",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/artikel": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get all data)"],
+        "summary": "Get all artikel",
+        "description": "Get all artikel",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/artikelResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/teknik": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get all data)"],
+        "summary": "Get all teknik",
+        "description": "Get all teknik",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/teknikResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/bahan": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get all data)"],
+        "summary": "Get all bahan",
+        "description": "Get all bahan",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bahanResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/jenis-kategori": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get all data)"],
+        "summary": "Get all jenis kategori",
+        "description": "Get all jenis kategori",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/jenisKategoriResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/kategori-resep": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get all data)"],
+        "summary": "Get all kategori resep",
+        "description": "Get all kategori resep",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kategoriResepResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/kategori": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get all data)"],
+        "summary": "Get all kategori",
+        "description": "Get all kategori",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kategoriResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/resep": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get all data)"],
+        "summary": "Get all resep",
+        "description": "Get all resep",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/resepResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/step": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get all data)"],
+        "summary": "Get all step",
+        "description": "Get all step",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stepResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/teknik/{teknikId}": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get data by id)"],
+        "summary": "Get teknik by id",
+        "description": "Get teknik by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "teknik ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/teknikResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/artikel/{artikelId}": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get data by id)"],
+        "summary": "Get artikel by id",
+        "description": "Get artikel by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "artikel ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/artikelResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/bahan/{bahanId}": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get data by id)"],
+        "summary": "Get bahan by id",
+        "description": "Get bahan by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "bahan ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bahanResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/kategori-resep/{kategoriResepId}": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get data by id)"],
+        "summary": "Get kategori resep by id",
+        "description": "Get kategori resep by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "kategori resep ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kategoriResepResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/jenis-kategori/{jenisKategoriId}": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get data by id)"],
+        "summary": "Get jenis kategori by id",
+        "description": "Get jenis kategori by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "jenis kategori ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/jenisKategoriResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/kategori/{kategoriId}": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get data by id)"],
+        "summary": "Get kategori by id",
+        "description": "Get kategori by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "kategori ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/kategoriResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/resep/{resepId}": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get data by id)"],
+        "summary": "Get resep by id",
+        "description": "Get resep by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "resep ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/resepResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/step/{stepId}": {
+      "get": {
+        "security": [
+          {
+            "userAuth": []
+          }
+        ],
+        "tags": ["Public API (Get data by id)"],
+        "summary": "Get step by id",
+        "description": "Get step by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "step ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stepResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -784,6 +1280,656 @@
           }
         }
       }
+    },
+    "/step": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Step API"],
+        "summary": "Get all step",
+        "description": "Get all step",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Step API"],
+        "summary": "Create a new step",
+        "description": "Create a new step",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/stepRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/step/{stepId}": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Step API"],
+        "summary": "Get a step by id",
+        "description": "Get a step by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "step ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Step API"],
+        "summary": "Update a step by id",
+        "description": "Update a step by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "step ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/stepRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Step API"],
+        "summary": "Delete a step by id",
+        "description": "Delete a step by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "step ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/teknik": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Teknik API"],
+        "summary": "Get all teknik",
+        "description": "Get all teknik",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Teknik API"],
+        "summary": "Create a new teknik",
+        "description": "Create a new teknik",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/teknikRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/teknik/{teknikId}": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Teknik API"],
+        "summary": "Get a teknik by id",
+        "description": "Get a teknik by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "teknik ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Teknik API"],
+        "summary": "Update a teknik by id",
+        "description": "Update a teknik by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "teknik ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/teknikRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Teknik API"],
+        "summary": "Delete a teknik by id",
+        "description": "Delete a teknik by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "teknik ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/bahan": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Bahan API"],
+        "summary": "Get all bahan",
+        "description": "Get all bahan",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Bahan API"],
+        "summary": "Create a new bahan",
+        "description": "Create a new bahan",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bahanRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/bahan/{bahanId}": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Bahan API"],
+        "summary": "Get a bahan by id",
+        "description": "Get a bahan by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "bahan ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Bahan API"],
+        "summary": "Update a bahan by id",
+        "description": "Update a bahan by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "bahan ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bahanRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Bahan API"],
+        "summary": "Delete a bahan by id",
+        "description": "Delete a bahan by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "bahan ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/jenis-kategori": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Jenis Kategori API"],
+        "summary": "Get all jenis kategori",
+        "description": "Get all jenis kategori",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Jenis Kategori API"],
+        "summary": "Create a new jenis kategori",
+        "description": "Create a new jenis kategori",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/jenisKategoriRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/jenis-kategori/{jenisKategoriId}": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Jenis Kategori API"],
+        "summary": "Get a jenis kategori by id",
+        "description": "Get a jenis kategori by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "jenis kategori ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Jenis Kategori API"],
+        "summary": "Update a jenis kategori by id",
+        "description": "Update a jenis kategori by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "jenis kategori ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/jenisKategoriRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Jenis Kategori API"],
+        "summary": "Delete a jenis kategori by id",
+        "description": "Delete a jenis kategori by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "jenis kategori ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/kategori": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Kategori API"],
+        "summary": "Get all kategori",
+        "description": "Get all kategori",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Kategori API"],
+        "summary": "Create a new kategori",
+        "description": "Create a new kategori",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/kategoriRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/kategori/{kategoriId}": {
+      "get": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Kategori API"],
+        "summary": "Get a kategori by id",
+        "description": "Get a kategori by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "kategori ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Kategori API"],
+        "summary": "Update a kategori by id",
+        "description": "Update a kategori by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "kategori ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/kategoriRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "tags": ["Kategori API"],
+        "summary": "Delete a kategori by id",
+        "description": "Delete a kategori by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "kategori ID",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1136,6 +2282,416 @@
                       "type": "string"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "teknikRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "cover": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "sumber": {
+            "type": "string"
+          },
+          "id_kategori": {
+            "type": "number"
+          }
+        }
+      },
+      "teknikResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "cover": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "sumber": {
+                  "type": "string"
+                },
+                "id_kategori": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "artikelRequest": {
+        "type": "object",
+        "properties": {
+          "headline": {
+            "type": "string"
+          },
+          "gambar": {
+            "type": "string"
+          },
+          "isi": {
+            "type": "string"
+          },
+          "penulis": {
+            "type": "string"
+          },
+          "sumber": {
+            "type": "string"
+          },
+          "id_kategori": {
+            "type": "number"
+          }
+        }
+      },
+      "artikelResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "headline": {
+                  "type": "string"
+                },
+                "gambar": {
+                  "type": "string"
+                },
+                "isi": {
+                  "type": "string"
+                },
+                "penulis": {
+                  "type": "string"
+                },
+                "sumber": {
+                  "type": "string"
+                },
+                "id_kategori": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "bahanRequest": {
+        "type": "object",
+        "properties": {
+          "nama_bahan": {
+            "type": "string"
+          },
+          "gambar": {
+            "type": "string"
+          },
+          "deskripsi": {
+            "type": "string"
+          },
+          "gizi": {
+            "type": "number"
+          }
+        }
+      },
+      "bahanResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "nama_bahan": {
+                  "type": "string"
+                },
+                "gambar": {
+                  "type": "string"
+                },
+                "deskripsi": {
+                  "type": "string"
+                },
+                "gizi": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "jenisKategoriRequest": {
+        "type": "object",
+        "properties": {
+          "nama_jenis_kategori": {
+            "type": "string"
+          }
+        }
+      },
+      "jenisKategoriResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "nama_jenis_kategori": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "kategoriResepRequest": {
+        "type": "object",
+        "properties": {
+          "id_kategori": {
+            "type": "string"
+          },
+          "id_resep": {
+            "type": "string"
+          }
+        }
+      },
+      "kategoriResepResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "kategori": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "nama_kategori": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "resep": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "nama_resep": {
+                      "type": "string"
+                    },
+                    "deskripsi": {
+                      "type": "string"
+                    },
+                    "gambar": {
+                      "type": "string"
+                    },
+                    "bahan": {
+                      "type": "string"
+                    },
+                    "informasi_gizi": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "kategoriRequest": {
+        "type": "object",
+        "properties": {
+          "nama_kategori": {
+            "type": "string"
+          },
+          "gambar": {
+            "type": "string"
+          },
+          "id_jenis": {
+            "type": "number"
+          }
+        }
+      },
+      "kategoriResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "nama_kategori": {
+                  "type": "string"
+                },
+                "gambar": {
+                  "type": "string"
+                },
+                "jenis": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "nama_jenis_kategori": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "stepRequest": {
+        "type": "object",
+        "properties": {
+          "id_resep": {
+            "type": "number"
+          },
+          "step_no": {
+            "type": "string"
+          },
+          "step_desc": {
+            "type": "string"
+          },
+          "waktu": {
+            "type": "number"
+          }
+        }
+      },
+      "stepResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "resep": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "nama_resep": {
+                      "type": "string"
+                    },
+                    "deskripsi": {
+                      "type": "string"
+                    },
+                    "gambar": {
+                      "type": "string"
+                    },
+                    "bahan": {
+                      "type": "string"
+                    },
+                    "informasi_gizi": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "step_no": {
+                  "type": "string"
+                },
+                "step_desc": {
+                  "type": "string"
+                },
+                "waktu": {
+                  "type": "number"
                 }
               }
             }
