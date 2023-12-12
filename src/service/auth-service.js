@@ -33,6 +33,7 @@ const register = async (req) => {
         throw new ResponseError(404, "Role not found")
     }
 
+    user.id = uuid().toString()
     user.id_role = userRole.id
     user.password = await bcrypt.hash(user.password, 10)
 
@@ -43,7 +44,6 @@ const register = async (req) => {
     token.refreshToken = await bcrypt.hash(token.refreshToken, 10)
 
     user.token = token.refreshToken
-    user.id = uuid().toString()
     user.token_exp = expDate
 
     await prismaClient.user.create({
