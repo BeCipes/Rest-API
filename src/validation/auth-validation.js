@@ -12,9 +12,7 @@ const loginUserValidation = Joi.object({
     password: Joi.string().min(8).max(100).required()
 })
 
-const forgotPasswordValidation = Joi.object({
-    password: Joi.string().min(8).max(100).required()
-})
+const forgotPasswordValidation = Joi.string().min(8).max(100).required()
 
 export {
     registerUserValidation,
