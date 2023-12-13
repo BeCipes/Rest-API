@@ -291,6 +291,7 @@ const getUserInfo = async (token) => {
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
+        photo: user.photo,
         role: user.role?.role_name,
         isVerified: user.isVerified
     }
