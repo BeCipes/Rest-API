@@ -4,5 +4,5 @@ import { logger } from "./app/logging.js"
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
-    logger.info(`App start on port ${process.env.PORT}`)
+    logger.info(`App start on port ${PORT}`)
 })
