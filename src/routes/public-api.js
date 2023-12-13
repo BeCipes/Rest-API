@@ -9,7 +9,7 @@ import kategoriController from "../controller/kategori-controller.js"
 import resepController from "../controller/resep-controller.js"
 import stepController from "../controller/step-controller.js"
 import teknikController from "../controller/teknik-controller.js"
-import { refreshTokenMiddleware, authMiddleware } from "../middleware/auth-middleware.js"
+import { refreshTokenMiddleware, authMiddleware } from "../middleware/public-middleware.js"
 
 const publicRouter = new express.Router()
 
