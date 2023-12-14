@@ -6,7 +6,7 @@ const createResepValidation = Joi.object({
     gambar: Joi.string().max(100).required(),
     bahan: Joi.string().max(100).required(),
     informasi_gizi: Joi.string().max(100).required(),
-    createdBy: Joi.number().min(1).positive().required(),
+    createdBy: Joi.string().min(36).max(36).required(),
 })
 
 const updateResepValidation = Joi.object({

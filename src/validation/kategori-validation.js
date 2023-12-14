@@ -4,7 +4,7 @@ const createKategoriValidation = Joi.object({
     nama_kategori: Joi.string().max(100).required(),
     gambar: Joi.string().max(100),
     id_jenis: Joi.number().min(1).positive().required(),
-    createdBy: Joi.number().min(1).positive().required(),
+    createdBy: Joi.string().min(36).max(36).required(),
 })
 
 const updateKategoriValidation = Joi.object({
