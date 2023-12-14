@@ -43,7 +43,7 @@ const sendPasswordResetEmail = async (req, res, next) => {
         const result = await authService.sendPasswordResetMail(email)
         const response = SuccessWebResponse(200, "OK", "Password reset email sent successfully", result)
 
-        res.status(200).json(response);
+        res.status(200).json(response)
     } catch (e) {
         next(e)
     }
@@ -57,7 +57,7 @@ const forgotPassword = async (req, res, next) => {
         const result = await authService.forgotPassword(token, password)
         const response = SuccessWebResponse(200, "OK", "Password reset successfully", result)
 
-        res.status(200).json(response);
+        res.status(200).json(response)
     } catch (e) {
         next(e)
     }
@@ -70,7 +70,7 @@ const sendVerifyEmail = async (req, res, next) => {
         const result = await authService.sendVerifyEmailMail(email)
         const response = SuccessWebResponse(200, "OK", "Verify email link sent successfully", result)
 
-        res.status(200).json(response);
+        res.status(200).json(response)
     } catch (e) {
         next(e)
     }
@@ -83,10 +83,23 @@ const verifyEmail = async (req, res, next) => {
         const result = await authService.verifyEmail(token)
         const response = SuccessWebResponse(200, "OK", "Email verified successfully", result)
 
-        res.status(200).json(response);
+        res.status(200).json(response)
     } catch (e) {
         next(e)
     }
+}
+
+const getCurrentUserInfo = async (req, res, next) => {
+    try {
+        const token = req.get('Authorization')
+        const result = await authService.getUserInfo(token)
+        const response = SuccessWebResponse(200, "OK", "Success get user info", result)
+
+        res.status(200).json(response)
+    } catch (e) {
+        next(e)
+    }
+
 }
 
 export default {
@@ -96,5 +109,6 @@ export default {
     sendPasswordResetEmail,
     sendVerifyEmail,
     verifyEmail,
+    getCurrentUserInfo,
     forgotPassword
 }

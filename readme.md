@@ -1,6 +1,6 @@
 # RestAPI for GoCipes Program
 
-![GoCipes](https://avatars.githubusercontent.com/u/150586675?s=200&v=4)
+<p align="center"><img align="center" src="https://raw.githubusercontent.com/BeCipes/Resources/main/assets/banner-becipes.png" alt="Becipes Logo"/></p>
 
 Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS, ExpressJS, dan Prisma ORM.
 
@@ -18,7 +18,7 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 
 1. Clone repository ini
 2. Install dependencies yang diperlukan dengan perintah `npm install`
-3. Buat folder `config` di root directory, lalu buat file `.env` didalamnya dengan format sebagai berikut:
+3. Buat file `.env` didalam folder `config` dengan format sebagai berikut:
 
    ```env
    # Port yang ingin anda pakai
@@ -44,3 +44,4 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 ### Dokumentasi API
 
 Dokumentasi API dibuat menggunakan **`OpenAPI Specification (OAS)`** dan dapat dilihat di file `apispecs_gocipes.json`
+Saya juga telah menyediakan file postman yang dapat langsung di import dan digunakan.

@@ -2,23 +2,44 @@ import jwt, { decode } from 'jsonwebtoken'
 import bcrypt from "bcrypt"
 import { ResponseError } from "./../error/response-error.js"
 
+const convertExpToDate = async (exp) => {
+  const date = new Date(0)
+  date.setUTCSeconds(exp)
+
+  return date
+}
+
 const generateAccessToken = async (user) => {
+  let exp
+  if (user.role?.role_name === 'Admin') {
+    exp = '15m'
+  } else {
+    exp = '12h'
+  }
+
   const token = jwt.sign({
     id: user.id,
     role: user.role?.role_name
   },
     process.env.SECRET, {
-    expiresIn: '12h',
+    expiresIn: exp,
   })
 
   return token
 }
 
 const generateRefreshToken = async (user) => {
+  let exp
+  if (user.role?.role_name === 'Admin') {
+    exp = '2h'
+  } else {
+    exp = '30d'
+  }
+
   const token = jwt.sign({
     id: user.id
   }, process.env.SECRET, {
-    expiresIn: '30d'
+    expiresIn: exp
   })
 
   return token
@@ -76,7 +97,7 @@ const decodeToken = async (token) => {
 
 const generateTokens = async (user) => {
   const accessToken = await generateAccessToken(user)
-  const refreshToken = await bcrypt.hash(await generateRefreshToken(user), 10)
+  const refreshToken = await generateRefreshToken(user)
 
   return {
     accessToken,
@@ -92,4 +113,5 @@ export {
   generateTokens,
   getTokenPart,
   decodeToken,
+  convertExpToDate,
 }

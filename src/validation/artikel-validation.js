@@ -7,7 +7,7 @@ const createArtikelValidation = Joi.object({
     penulis: Joi.string().max(100).required(),
     sumber: Joi.string().max(100).required(),
     id_kategori: Joi.number().min(1).positive().required(),
-    createdBy: Joi.number().min(1).positive().required(),
+    createdBy: Joi.string().min(36).max(36).required(),
 })
 
 const updateArtikelValidation = Joi.object({

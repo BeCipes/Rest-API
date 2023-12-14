@@ -1,4 +1,4 @@
-import express from "express"
+import { app, apiPrefix } from '../../config/app-config.js'
 import { publicRouter } from "../routes/public-api.js"
 import { roleRouter } from "../routes/role-api.js"
 import { userRouter } from "../routes/user-api.js"
@@ -11,16 +11,7 @@ import { stepRouter } from "../routes/step-api.js"
 import { resepRouter } from "../routes/resep-api.js"
 import { bahanRouter } from "../routes/bahan-api.js"
 import { errorMiddleware } from "../middleware/error-middleware.js"
-import { notfoundMiddleware } from "../middleware/not-found-middleware.js"
-import cors from "cors"
-
-const app = express()
-
-app.use(cors())
-app.use(express.json())
-
-
-const apiPrefix = "/api"
+import { notFoundMiddleware } from "../middleware/not-found-middleware.js"
 
 // Public routes API (user & admin)
 app.use(apiPrefix, publicRouter)
@@ -37,7 +28,8 @@ app.use(apiPrefix, stepRouter)
 app.use(apiPrefix, resepRouter)
 app.use(apiPrefix, bahanRouter)
 
-app.use(notfoundMiddleware)
+// Middleware
+app.use(notFoundMiddleware)
 app.use(errorMiddleware)
 
 export { app }

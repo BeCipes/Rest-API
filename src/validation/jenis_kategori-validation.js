@@ -2,7 +2,7 @@ import Joi from "joi"
 
 const createJenisKategoriValidation = Joi.object({
     nama_jenis: Joi.string().max(100).required(),
-    createdBy: Joi.number().min(1).positive().required(),
+    createdBy: Joi.string().min(36).max(36).required(),
 })
 
 const updateJenisKategoriValidation = Joi.object({

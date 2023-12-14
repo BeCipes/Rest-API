@@ -1,7 +1,7 @@
 import { ResponseError } from "../error/response-error.js"
 
-const notfoundMiddleware = () => {
+const notFoundMiddleware = () => {
     throw new ResponseError(404, "Page Not Found")
 }
 
-export { notfoundMiddleware }
+export { notFoundMiddleware }
