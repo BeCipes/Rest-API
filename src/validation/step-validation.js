@@ -5,7 +5,7 @@ const createStepValidation = Joi.object({
     step_no: Joi.number().min(1).positive().required(),
     step_desc: Joi.string().max(100).required(),
     waktu: Joi.number().min(1).positive().required(),
-    createdBy: Joi.number().min(1).positive().required(),
+    createdBy: Joi.string().min(36).max(36).required(),
 })
 
 const updateStepValidation = Joi.object({
