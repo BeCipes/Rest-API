@@ -120,6 +120,7 @@ const getByResep = async (resepId) => {
             id_resep: resepId
         },
         select: {
+            id: true,
             id_resep: true,
             waktu: true,
             step_no: true,
@@ -137,6 +138,7 @@ const getByResep = async (resepId) => {
 const getAll = async () => {
     return prismaClient.step.findMany({
         select: {
+            id: true,
             id_resep: true,
             waktu: true,
             step_no: true,
