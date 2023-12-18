@@ -9,7 +9,8 @@ import kategoriController from "../controller/kategori-controller.js"
 import resepController from "../controller/resep-controller.js"
 import stepController from "../controller/step-controller.js"
 import teknikController from "../controller/teknik-controller.js"
-import { refreshTokenMiddleware, authMiddleware } from "../middleware/public-middleware.js"
+import uploadController from "../controller/upload-controller.js"
+import { refreshTokenMiddleware, authMiddleware, uploadMiddleware } from "../middleware/public-middleware.js"
 
 const publicRouter = new express.Router()
 
@@ -48,6 +49,7 @@ publicRouter.get("/data/kategori/:kategoriId", authMiddleware, kategoriControlle
 publicRouter.get("/data/resep/:resepId", authMiddleware, resepController.getResepById)
 publicRouter.get("/data/step/:stepId", authMiddleware, stepController.getStepById)
 publicRouter.get("/data/teknik/:teknikId", authMiddleware, teknikController.getTeknikById)
+publicRouter.post("/data/upload", uploadMiddleware, uploadController.uploadFile)
 
 export {
     publicRouter
