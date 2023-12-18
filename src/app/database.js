@@ -24,26 +24,26 @@ try {
       },
     ],
   })
+
+  prismaClient.$on && prismaClient.$on("error", (e) => {
+    logger.error(e)
+  })
+
+  prismaClient.$on && prismaClient.$on("warn", (e) => {
+    logger.warn(e)
+  })
+
+  prismaClient.$on && prismaClient.$on("info", (e) => {
+    logger.info(e)
+  })
+
+  prismaClient.$on && prismaClient.$on("query", (e) => {
+    logger.info(e)
+  })
 } catch (e) {
   logger.error(e)
 }
 
-prismaClient.$on("error", (e) => {
-  logger.error(e)
-})
-
-prismaClient.$on("warn", (e) => {
-  logger.warn(e)
-})
-
-prismaClient.$on("info", (e) => {
-  logger.info(e)
-})
-
-prismaClient.$on("query", (e) => {
-  logger.info(e)
-})
-
 export {
-  prismaClient,
+  prismaClient
 }

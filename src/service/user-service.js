@@ -3,6 +3,7 @@ import { createUserValidation, updateUserValidation, getUserValidation } from ".
 import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import bcrypt from "bcrypt"
+import { v4 as uuid } from "uuid"
 
 const create = async (req) => {
     const user = validate(createUserValidation, req)
@@ -35,7 +36,7 @@ const create = async (req) => {
     user.password = await bcrypt.hash(user.password, 10)
     user.id = uuid().toString()
 
-    return prismaClient.user.create({
+    await prismaClient.user.create({
         data: user,
         select: {
             first_name: true,
@@ -43,6 +44,8 @@ const create = async (req) => {
             email: true
         }
     })
+
+    return
 }
 
 const update = async (req) => {
@@ -60,7 +63,7 @@ const update = async (req) => {
 
     user.password = await bcrypt.hash(user.password, 10)
 
-    return prismaClient.user.update({
+    await prismaClient.user.update({
         where: {
             id: user.id
         },
@@ -72,6 +75,8 @@ const update = async (req) => {
             email: true
         }
     })
+
+    return 
 }
 
 const remove = async (userId) => {

@@ -1,7 +1,6 @@
 import Joi from "joi"
 
 const createUserValidation = Joi.object({
-    // id_role: Joi.number().min(1).positive().required(),
     first_name: Joi.string().max(100).required(),
     last_name: Joi.string().max(100).required(),
     email: Joi.string().max(100).required(),
@@ -11,7 +10,6 @@ const createUserValidation = Joi.object({
 
 const updateUserValidation = Joi.object({
     id: Joi.number().min(1).positive().required(),
-    // id_role: Joi.number().min(1).positive().required(),
     first_name: Joi.string().max(100).required(),
     last_name: Joi.string().max(100).required(),
     email: Joi.string().max(100).required(),
