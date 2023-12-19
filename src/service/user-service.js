@@ -61,7 +61,9 @@ const update = async (req) => {
         throw new ResponseError(404, "User is not found")
     }
 
-    user.password = await bcrypt.hash(user.password, 10)
+    if (user.password) {
+        user.password = await bcrypt.hash(user.password, 10)
+    }
 
     await prismaClient.user.update({
         where: {
