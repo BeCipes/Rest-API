@@ -2,6 +2,7 @@ import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import { validate } from "../validation/validation.js"
 import { createKategoriResepValidation, updateKategoriResepValidation, getKategoriResepValidation } from "../validation/kategori_resep-validation.js"
+import { getResepValidation } from "../validation/resep-validation.js"
 
 const create = async (req) => {
     const kategoriResep = validate(createKategoriResepValidation, req)
@@ -153,6 +154,36 @@ const getAll = async () => {
     })
 }
 
+const getByResep = async (resepId) => {
+    resepId = validate(getResepValidation, resepId)
+
+    return prismaClient.kategori_resep.findMany({
+        where: {
+            id_resep: resepId
+        },
+        select: {
+            id: true,
+            kategori: {
+                select: {
+                    id: true,
+                    nama_kategori: true,
+                    gambar: true
+                }
+            },
+            resep: {
+                select: {
+                    id: true,
+                    nama_resep: true,
+                    deskripsi: true,
+                    gambar: true,
+                    bahan: true,
+                    informasi_gizi: true
+                }
+            }
+        }
+    })
+}
+
 const remove = async (kategoriResepId) => {
     kategoriResepId = validate(getKategoriResepValidation, kategoriResepId)
 
@@ -180,5 +211,6 @@ export default {
     update,
     get,
     getAll,
+    getByResep,
     remove
 }
