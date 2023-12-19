@@ -9,7 +9,7 @@ const createUserValidation = Joi.object({
 })
 
 const updateUserValidation = Joi.object({
-    id: Joi.number().min(1).positive().required(),
+    id: Joi.string().min(36).max(36).required(),
     first_name: Joi.string().max(100).required(),
     last_name: Joi.string().max(100).required(),
     email: Joi.string().max(100).required(),
@@ -17,7 +17,7 @@ const updateUserValidation = Joi.object({
     photo: Joi.string().max(100)
 })
 
-const getUserValidation = Joi.number().min(1).positive().required()
+const getUserValidation = Joi.string().min(36).max(36).required()
 
 export {
     createUserValidation,
