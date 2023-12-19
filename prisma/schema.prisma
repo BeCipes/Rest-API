@@ -116,7 +116,7 @@ model kategori_resep {
 model bahan {
   id         Int       @id @default(autoincrement())
   nama_bahan String    @unique @db.VarChar(100)
-  deskripsi  String    @db.VarChar(255)
+  deskripsi  String    @db.Text
   gambar     String    @db.VarChar(100)
   gizi       String    @db.VarChar(100)
   createdBy  String
@@ -169,7 +169,7 @@ model artikel {
   id          Int       @id @default(autoincrement())
   headline    String    @db.VarChar(100)
   gambar      String    @db.VarChar(100)
-  isi         String    @db.VarChar(100)
+  isi         String    @db.Text
   penulis     String    @db.VarChar(100)
   sumber      String    @db.VarChar(100)
   id_kategori Int
@@ -186,7 +186,7 @@ model artikel {
 model teknik {
   id          Int       @id @default(autoincrement())
   title       String    @db.VarChar(100)
-  description String    @db.VarChar(100)
+  description String    @db.Text
   cover       String    @db.VarChar(100)
   url         String    @db.VarChar(100)
   sumber      String    @db.VarChar(100)
