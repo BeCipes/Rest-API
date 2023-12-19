@@ -54,6 +54,18 @@ const getKategoriResepById = async (req, res, next) => {
     }
 }
 
+const getKategoriResepByIdResep = async (req, res, next) => {
+    try {
+        const resepId = req.params.kategoriResepId
+        const result = await kategoriResepService.getByResep(resepId)
+        const response = SuccessWebResponse(200, "OK", "Success get kategori resep", result)
+
+        res.status(200).json(response)
+    } catch (e) {
+        next(e)
+    }
+}
+
 const getAllKategoriResep = async (req, res, next) => {
     try {
         const result = await kategoriResepService.getAll()
@@ -70,5 +82,6 @@ export default {
     updateKategoriResep,
     deleteKategoriResep,
     getKategoriResepById,
+    getKategoriResepByIdResep,
     getAllKategoriResep
 }
