@@ -62,17 +62,19 @@ const update = async (req) => {
         throw new ResponseError(404, "Step is not found")
     }
 
-    const countStepNo = await prismaClient.step.count({
+    const stepNo = await prismaClient.step.count({
         where: {
-            step_no: step.step_no
+            id_resep: step.id_resep,
+            step_no: step.step_no,
+            NOT: {
+                id: step.id
+            }
         }
     })
 
-    if (countStepNo === 1) {
+    if (countStep === 1 && stepNo === 1) {
         throw new ResponseError(400, "Step No already used")
     }
-
-    console.log(countStepNo)
 
     return prismaClient.step.update({
         where: {
