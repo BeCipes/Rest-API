@@ -1,6 +1,6 @@
-# RestAPI for GoCipes Program
-
 <p align="center"><img align="center" src="https://raw.githubusercontent.com/BeCipes/Resources/main/assets/banner-becipes.png" alt="Becipes Logo"/></p>
+
+# RestAPI for GoCipes Program
 
 Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS, ExpressJS, dan Prisma ORM.
 
