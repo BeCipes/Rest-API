@@ -4,7 +4,7 @@ import { bucket } from "../../config/firebase_storage-config.js"
 
 const upload = async (req) => {
     return new Promise((resolve, reject) => {
-        const up = multer({storage: multer.memoryStorage()}).array("files", 3);
+        const up = multer({storage: multer.memoryStorage()}).array("files", 3)
 
         up(req, null, async (err) => {
             if (err) {
@@ -18,15 +18,15 @@ const upload = async (req) => {
             }
 
             const uploadPromises = req.files.map(async (file) => {
-                const fileName = file.originalname;
-                const fileBuffer = file.buffer;
+                const fileName = file.originalname
+                const fileBuffer = file.buffer
 
-                const storageRef = ref(bucket, fileName);
-                await uploadBytes(storageRef, fileBuffer);
+                const storageRef = ref(bucket, fileName)
+                await uploadBytes(storageRef, fileBuffer)
 
                 const encodedFileName = encodeURIComponent(fileName)
 
-                return `https://storage.googleapis.com/${process.env.BUCKET_NAME}/${encodedFileName}`;
+                return `https://storage.googleapis.com/${process.env.BUCKET_NAME}/${encodedFileName}`
             })
 
             

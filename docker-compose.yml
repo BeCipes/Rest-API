@@ -1,0 +1,46 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./config/.env
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - planetscale
+    networks:
+      - my-network
+
+  planetscale:
+    image: planetscale/pscale:latest
+    networks:
+      - no-internet
+      - internet
+    ports:
+      - "3306:3306"
+    entrypoint: ["/bin/sh", "-c"]
+    environment:
+      - PLANETSCALE_DB
+      - PLANETSCALE_BRANCH
+      - PLANETSCALE_ORG
+      - PLANETSCALE_SERVICE_TOKEN
+      - PLANETSCALE_SERVICE_TOKEN_NAME
+    command:
+      [
+        "pscale connect --host `hostname -i | awk '{print $$1}'` becipes main --org becipesapp",
+      ]
+
+networks:
+  no-internet:
+    driver: bridge
+    internal: true
+  internet:
+    driver: bridge
+  my-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

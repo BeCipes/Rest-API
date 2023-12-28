@@ -29,7 +29,6 @@ app.use(apiPrefix, resepRouter)
 app.use(apiPrefix, bahanRouter)
 
 // Middleware
-app.use(notFoundMiddleware)
 app.use(errorMiddleware)
 
 export { app }
