@@ -13,6 +13,7 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 <img src="https://images.ctfassets.net/nx13ojx82pll/60miWU6vSisC1N2IgQRPkt/61066f84608375c590b6dcb68fb47dc0/nodejs-cors-guide-what-it-is-and-how-to-enable-it-picture-1.png?w=1744&h=982&q=80&fm=png" alt="CORS" height="50"/>
 <img src="https://www.panayiotisgeorgiou.net/wp-content/uploads/2017/03/joi-1.png" alt="Joi" height="50"/>
 <img src="https://camo.githubusercontent.com/dd51cf3dbd56f3c69f73f26255f377384d4dec4665d884a56ae1fd6a7bda319c/687474703a2f2f6a77742e696f2f696d672f6c6f676f2d61737365742e737667" alt="JSON Web Token" height="50"/>
+<img src="https://miro.medium.com/v2/resize:fit:1024/1*oT_l6QxMdTN65-0gwFqeNg.png" alt="Firebase" height="50"/>
 
 ## Cara menggunakan
 
@@ -26,6 +27,10 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 
    # Secret key untuk jwt
    SECRET=
+
+   # Bucket url and name for firebase storage
+   BUCKET_URL=
+   BUCKET_NAME=
 
    # Mailing service yang anda gunakan
    MAIL_HOST=
