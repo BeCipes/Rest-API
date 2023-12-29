@@ -1,26 +1,26 @@
-import { validate } from "../validation/validation.js";
+import { validate } from "../validation/validation.js"
 import {
   createUserValidation,
   updateUserValidation,
   getUserValidation,
-} from "../validation/user-validation.js";
-import { prismaClient } from "../app/database.js";
-import { ResponseError } from "../error/response-error.js";
-import bcrypt from "bcryptjs";
-import { v4 as uuid } from "uuid";
+} from "../validation/user-validation.js"
+import { prismaClient } from "../app/database.js"
+import { ResponseError } from "../error/response-error.js"
+import bcrypt from "bcryptjs"
+import { v4 as uuid } from "uuid"
 
 const create = async (req) => {
-  const user = validate(createUserValidation, req);
+  const user = validate(createUserValidation, req)
 
   const countUser = await prismaClient.user.count({
     where: {
       email: user.email,
     },
-  });
+  })
 
   // Perdebatan apakah admin hanya boleh membuat user / boleh semua
   if (countUser === 1) {
-    throw new ResponseError(400, "Email already exists");
+    throw new ResponseError(400, "Email already exists")
   }
 
   const userRole = await prismaClient.role.findFirst({
@@ -30,15 +30,15 @@ const create = async (req) => {
     select: {
       id: true,
     },
-  });
+  })
 
   if (!userRole) {
-    throw new ResponseError(404, "Role not found");
+    throw new ResponseError(404, "Role not found")
   }
 
-  user.id_role = userRole.id;
-  user.password = await bcrypt.hash(user.password, 10);
-  user.id = uuid().toString();
+  user.id_role = userRole.id
+  user.password = await bcrypt.hash(user.password, 10)
+  user.id = uuid().toString()
 
   await prismaClient.user.create({
     data: user,
@@ -47,26 +47,26 @@ const create = async (req) => {
       last_name: true,
       email: true,
     },
-  });
+  })
 
-  return;
-};
+  return
+}
 
 const update = async (req) => {
-  const user = validate(updateUserValidation, req);
+  const user = validate(updateUserValidation, req)
 
   const countUser = await prismaClient.user.count({
     where: {
       id: user.id,
     },
-  });
+  })
 
   if (!countUser) {
-    throw new ResponseError(404, "User is not found");
+    throw new ResponseError(404, "User is not found")
   }
 
   if (user.password) {
-    user.password = await bcrypt.hash(user.password, 10);
+    user.password = await bcrypt.hash(user.password, 10)
   }
 
   await prismaClient.user.update({
@@ -80,35 +80,35 @@ const update = async (req) => {
       last_name: true,
       email: true,
     },
-  });
+  })
 
-  return;
-};
+  return
+}
 
 const remove = async (userId) => {
-  userId = validate(getUserValidation, userId);
+  userId = validate(getUserValidation, userId)
 
   const countUser = await prismaClient.user.count({
     where: {
       id: userId,
     },
-  });
+  })
 
   if (!countUser) {
-    throw new ResponseError(404, "User is not found");
+    throw new ResponseError(404, "User is not found")
   }
 
   await prismaClient.user.delete({
     where: {
       id: userId,
     },
-  });
+  })
 
-  return;
-};
+  return
+}
 
 const get = async (userId) => {
-  userId = validate(getUserValidation, userId);
+  userId = validate(getUserValidation, userId)
 
   const user = await prismaClient.user.findUnique({
     where: {
@@ -125,14 +125,14 @@ const get = async (userId) => {
         },
       },
     },
-  });
+  })
 
   if (!user) {
-    throw new ResponseError(404, "User is not found");
+    throw new ResponseError(404, "User is not found")
   }
 
-  return user;
-};
+  return user
+}
 
 const getAll = async () => {
   const user = await prismaClient.user.findMany({
@@ -147,14 +147,14 @@ const getAll = async () => {
         },
       },
     },
-  });
+  })
 
   if (!user) {
-    throw new ResponseError(404, "User is not found");
+    throw new ResponseError(404, "User is not found")
   }
 
-  return user;
-};
+  return user
+}
 
 export default {
   create,
@@ -162,4 +162,4 @@ export default {
   remove,
   get,
   getAll,
-};
+}
