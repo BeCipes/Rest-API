@@ -19,7 +19,7 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 
 1. Clone repository ini
 2. Install dependencies yang diperlukan dengan perintah `npm install`
-3. Buat file `.env` didalam folder `config` dengan format sebagai berikut:
+3. Rename file `.env.example` didalam folder `config` menjadi `.env` dan diisi sesuai dengan kebutuhan anda:
 
    ```env
    # Port yang ingin anda pakai
@@ -40,6 +40,13 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 
    # URL database (sebagai contoh saya berikan dibawah)
    DATABASE_URL="mysql://root:password@localhost:3306/yourdb"
+
+   ## Jika anda ingin menggunakan docker, maka anda dapat menambah field:
+   PLANETSCALE_DB=
+   PLANETSCALE_BRANCH=
+   PLANETSCALE_ORG=
+   PLANETSCALE_SERVICE_TOKEN=
+   PLANETSCALE_SERVICE_TOKEN_NAME=
    ```
 
 4. Jalankan perintah `npm run migrate` untuk membuat tabel-tabel yang diperlukan
