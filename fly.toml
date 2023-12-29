@@ -10,6 +10,15 @@ primary_region = "sin"
 
 [env]
   MYSQL_ATTR_SSL_CA = "/etc/ssl/certs/ca-certificates.crt"
+  PORT="3000"
+  SECRET="ac43724f16e9241d990427ab7c8f4228"
+  DATABASE_URL="mysql://2xkhhvprgstbg6gkkqo3:pscale_pw_G4JYvMCzsiw9hamceSDpTy9wvQKKsJNQOCzI1vFpbqG@aws.connect.psdb.cloud/becipes?sslaccept=strict"
+  BUCKET_URL="gs://becipes-14223.appspot.com"
+  BUCKET_NAME="becipes-14223.appspot.com"
+  MAIL_HOST="smtp.mailtrap.io"
+  MAIL_PORT="465"
+  MAIL_USER="79dbc37dd4fcbf"
+  MAIL_PASS="6bb6949b90b0d5"
 
 [http_service]
   internal_port = 3000
