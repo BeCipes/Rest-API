@@ -22,15 +22,11 @@ services:
     ports:
       - "3306:3306"
     entrypoint: ["/bin/sh", "-c"]
-    environment:
-      - PLANETSCALE_DB
-      - PLANETSCALE_BRANCH
-      - PLANETSCALE_ORG
-      - PLANETSCALE_SERVICE_TOKEN
-      - PLANETSCALE_SERVICE_TOKEN_NAME
+    env_file:
+      - ./config/.env
     command:
       [
-        "pscale connect --host `hostname -i | awk '{print $$1}'` becipes main --org becipesapp",
+        "pscale connect --host `hostname -i | awk '{print $1}'` $$PLANETSCALE_DB $$PLANETSCALE_BRANCH --org becipesapp",
       ]
 
 networks:
@@ -41,6 +37,3 @@ networks:
     driver: bridge
   my-network:
     driver: bridge
-
-volumes:
-  mysql_data:

@@ -41,6 +41,7 @@ try {
     logger.info(e)
   })
 } catch (e) {
+  console.log("error generating prisma")
   logger.error(e)
 }
 

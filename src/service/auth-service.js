@@ -1,11 +1,11 @@
-import { validate } from "./../validation/validation.js";
+import { validate } from "./../validation/validation.js"
 import {
   registerUserValidation,
   loginUserValidation,
   forgotPasswordValidation,
-} from "./../validation/auth-validation.js";
-import { prismaClient } from "../app/database.js";
-import { ResponseError } from "./../error/response-error.js";
+} from "./../validation/auth-validation.js"
+import { prismaClient } from "../app/database.js"
+import { ResponseError } from "./../error/response-error.js"
 import {
   generateTokens,
   generateAccessToken,
@@ -14,22 +14,22 @@ import {
   decodeToken,
   getTokenPart,
   convertExpToDate,
-} from "../helper/jwt-helper.js";
-import { sendForgotPass, sendVerifyEmail } from "../helper/send-mail.js";
-import bcrypt from "bcryptjs";
-import { v4 as uuid } from "uuid";
+} from "../helper/jwt-helper.js"
+import { sendForgotPass, sendVerifyEmail } from "../helper/send-mail.js"
+import bcrypt from "bcryptjs"
+import { v4 as uuid } from "uuid"
 
 const register = async (req) => {
-  const user = validate(registerUserValidation, req);
+  const user = validate(registerUserValidation, req)
 
   const countUser = await prismaClient.user.count({
     where: {
       email: user.email,
     },
-  });
+  })
 
   if (countUser === 1) {
-    throw new ResponseError(400, "Email already exists");
+    throw new ResponseError(400, "Email already exists")
   }
 
   const userRole = await prismaClient.role.findFirst({
@@ -39,24 +39,24 @@ const register = async (req) => {
     select: {
       id: true,
     },
-  });
+  })
 
   if (!userRole) {
-    throw new ResponseError(404, "Role not found");
+    throw new ResponseError(404, "Role not found")
   }
 
-  user.id = uuid().toString();
-  user.id_role = userRole.id;
-  user.password = await bcrypt.hash(user.password, 10);
+  user.id = uuid().toString()
+  user.id_role = userRole.id
+  user.password = await bcrypt.hash(user.password, 10)
 
-  const token = await generateTokens(user);
-  const decodedRefreshToken = await decodeToken(token.refreshToken);
-  const expDate = await convertExpToDate(decodedRefreshToken.exp);
+  const token = await generateTokens(user)
+  const decodedRefreshToken = await decodeToken(token.refreshToken)
+  const expDate = await convertExpToDate(decodedRefreshToken.exp)
 
-  token.refreshToken = await bcrypt.hash(token.refreshToken, 10);
+  token.refreshToken = await bcrypt.hash(token.refreshToken, 10)
 
-  user.token = token.refreshToken;
-  user.token_exp = expDate;
+  user.token = token.refreshToken
+  user.token_exp = expDate
 
   await prismaClient.user.create({
     data: user,
@@ -66,15 +66,15 @@ const register = async (req) => {
       email: true,
       token: true,
     },
-  });
+  })
 
   return {
     token,
-  };
-};
+  }
+}
 
 const login = async (req) => {
-  const user = validate(loginUserValidation, req);
+  const user = validate(loginUserValidation, req)
 
   const dbUser = await prismaClient.user.findUnique({
     where: {
@@ -87,23 +87,23 @@ const login = async (req) => {
         },
       },
     },
-  });
+  })
 
   if (!dbUser) {
-    throw new ResponseError(401, "Email or password is wrong");
+    throw new ResponseError(401, "Email or password is wrong")
   }
 
-  const isPasswordValid = await bcrypt.compare(user.password, dbUser.password);
+  const isPasswordValid = await bcrypt.compare(user.password, dbUser.password)
 
   if (!isPasswordValid) {
-    throw new ResponseError(401, "Email or password is wrong");
+    throw new ResponseError(401, "Email or password is wrong")
   }
 
-  const token = await generateTokens(dbUser);
-  const decodedRefreshToken = await decodeToken(token.refreshToken);
-  const expDate = await convertExpToDate(decodedRefreshToken.exp);
+  const token = await generateTokens(dbUser)
+  const decodedRefreshToken = await decodeToken(token.refreshToken)
+  const expDate = await convertExpToDate(decodedRefreshToken.exp)
 
-  token.refreshToken = await bcrypt.hash(token.refreshToken, 10);
+  token.refreshToken = await bcrypt.hash(token.refreshToken, 10)
 
   const tes = await prismaClient.user.update({
     where: {
@@ -121,20 +121,20 @@ const login = async (req) => {
       },
       token: true,
     },
-  });
+  })
 
   if (!tes) {
-    throw new ResponseError(500, "Internal Server Error");
+    throw new ResponseError(500, "Internal Server Error")
   }
 
   return {
     role: dbUser.role?.role_name,
     token,
-  };
-};
+  }
+}
 
 const refreshToken = async (rawToken) => {
-  const refreshToken = await getTokenPart(rawToken);
+  const refreshToken = await getTokenPart(rawToken)
 
   const user = await prismaClient.user.findFirst({
     where: {
@@ -148,38 +148,38 @@ const refreshToken = async (rawToken) => {
         },
       },
     },
-  });
+  })
 
   if (!user) {
-    throw new ResponseError(401, "Invalid refresh token");
+    throw new ResponseError(401, "Invalid refresh token")
   }
 
-  const tokenExp = new Date(user.token_exp).getTime();
+  const tokenExp = new Date(user.token_exp).getTime()
 
   if (tokenExp && tokenExp < Date.now()) {
     throw new ResponseError(
       401,
       "Refresh token has expired, please login again"
-    );
+    )
   }
 
-  const newToken = await generateAccessToken(user);
+  const newToken = await generateAccessToken(user)
 
   return {
     role: user.role?.role_name,
     token: newToken,
-  };
-};
+  }
+}
 
 const sendPasswordResetMail = async (email) => {
   const user = await prismaClient.user.findUnique({
     where: {
       email: email,
     },
-  });
+  })
 
   if (!user) {
-    throw new ResponseError(404, "User not found");
+    throw new ResponseError(404, "User not found")
   }
 
   // const isVerified = await prismaClient.user.count({
@@ -193,27 +193,27 @@ const sendPasswordResetMail = async (email) => {
   //         throw new ResponseError(400, "This account is not verified")
   //     }
 
-  const token = await generateResetPasswordToken(user);
-  await sendForgotPass(token, email);
+  const token = await generateResetPasswordToken(user)
+  await sendForgotPass(token, email)
 
-  return;
-};
+  return
+}
 
 const forgotPassword = async (token, password) => {
-  password = validate(forgotPasswordValidation, password);
-  const decodedToken = await decodeToken(token);
+  password = validate(forgotPasswordValidation, password)
+  const decodedToken = await decodeToken(token)
 
   const user = await prismaClient.user.findFirst({
     where: {
       id: decodedToken.id,
     },
-  });
+  })
 
   if (!user) {
-    throw new ResponseError(401, "Invalid token");
+    throw new ResponseError(401, "Invalid token")
   }
 
-  const newPassword = await bcrypt.hash(password, 10);
+  const newPassword = await bcrypt.hash(password, 10)
 
   await prismaClient.user.update({
     where: {
@@ -222,24 +222,24 @@ const forgotPassword = async (token, password) => {
     data: {
       password: newPassword,
     },
-  });
+  })
 
-  return;
-};
+  return
+}
 
 const sendVerifyEmailMail = async (email) => {
   const user = await prismaClient.user.findUnique({
     where: {
       email: email,
     },
-  });
+  })
 
   if (!user) {
-    throw new ResponseError(404, "User not found");
+    throw new ResponseError(404, "User not found")
   }
 
-  const token = await generateVerifyEmailToken(user);
-  await sendVerifyEmail(token, email);
+  const token = await generateVerifyEmailToken(user)
+  await sendVerifyEmail(token, email)
 
   await prismaClient.user.update({
     where: {
@@ -248,23 +248,23 @@ const sendVerifyEmailMail = async (email) => {
     data: {
       verify_token: token,
     },
-  });
+  })
 
-  return;
-};
+  return
+}
 
 const verifyEmail = async (token) => {
-  const decodedToken = await decodeToken(token);
+  const decodedToken = await decodeToken(token)
 
   const user = await prismaClient.user.findUnique({
     where: {
       email: decodedToken.email,
       verify_token: token,
     },
-  });
+  })
 
   if (!user) {
-    throw new ResponseError(404, "User not found");
+    throw new ResponseError(404, "User not found")
   }
 
   await prismaClient.user.update({
@@ -275,14 +275,14 @@ const verifyEmail = async (token) => {
       isVerified: true,
       verify_token: null,
     },
-  });
+  })
 
-  return;
-};
+  return
+}
 
 const getUserInfo = async (token) => {
-  token = await getTokenPart(token);
-  const decodedToken = await decodeToken(token);
+  token = await getTokenPart(token)
+  const decodedToken = await decodeToken(token)
 
   const user = await prismaClient.user.findUnique({
     where: {
@@ -295,10 +295,10 @@ const getUserInfo = async (token) => {
         },
       },
     },
-  });
+  })
 
   if (!user) {
-    throw new ResponseError(401, "Invalid token");
+    throw new ResponseError(401, "Invalid token")
   }
 
   return {
@@ -308,8 +308,8 @@ const getUserInfo = async (token) => {
     photo: user.photo,
     role: user.role?.role_name,
     isVerified: user.isVerified,
-  };
-};
+  }
+}
 
 export default {
   register,
@@ -320,4 +320,4 @@ export default {
   sendVerifyEmailMail,
   getUserInfo,
   verifyEmail,
-};
+}
