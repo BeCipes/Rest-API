@@ -6,11 +6,11 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "dotenv -e config/.env nodemon src/index.js",
-    "test": "dotenv -e config/.env jest -i",
-    "prisma-generate": "dotenv -e config/.env -- npx prisma generate",
-    "migrate": "dotenv -e config/.env -- npx prisma migrate dev",
-    "migrate-create-only": "dotenv -e config/.env -- npx prisma migrate dev --create-only"
+    "dev": "npx dotenv -e config/.env nodemon src/index.js",
+    "test": "npx dotenv -e config/.env jest -i",
+    "prisma-generate": "npx dotenv -e config/.env -- npx prisma generate",
+    "migrate": "npx dotenv -e config/.env -- npx prisma migrate dev",
+    "migrate-create-only": "npx dotenv -e config/.env -- npx prisma migrate dev --create-only"
   },
   "jest": {
     "transform": {
