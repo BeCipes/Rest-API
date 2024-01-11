@@ -1,7 +1,7 @@
 import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import { validate } from "../validation/validation.js"
-import { createFavoriteValidation, getFavoriteValidation } from "../validation/favorite-validation.js"
+import { createFavoriteValidation, getFavoriteValidation, getFavoriteValidationUser } from "../validation/favorite-validation.js"
 
 const create = async (req) => {
     const favorite = validate(createFavoriteValidation, req)
@@ -15,6 +15,16 @@ const create = async (req) => {
 
     if (countFavorite === 1) {
         throw new ResponseError(400, "Favorite already exists")
+    }
+
+    const countResep = await prismaClient.resep.count({
+        where: {
+            id: favorite.id_resep
+        }
+    })
+
+    if (countResep === 0) {
+        throw new ResponseError(404, "Resep is not found")
     }
 
     const countUser = await prismaClient.user.count({
@@ -91,7 +101,7 @@ const get = async (favoriteId) => {
 }
 
 const getByUserId = async (userId) => {
-    userId = validate(getFavoriteValidation, userId)
+    userId = validate(getFavoriteValidationUser, userId)
 
     const favorite = await prismaClient.favorite.findMany({
         where: {
