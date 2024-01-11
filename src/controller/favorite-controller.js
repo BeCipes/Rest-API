@@ -5,6 +5,7 @@ import { getCurrentUserId } from "../helper/auth-util.js"
 const createFavorite = async (req, res, next) => {
     try {
         const userId = await getCurrentUserId(req.get("Authorization"))
+        req.body.id_user = userId
         const requestData = { ...req.body, createdBy: userId }
         
         const result = await favoriteService.create(requestData)
