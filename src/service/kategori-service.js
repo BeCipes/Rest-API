@@ -2,6 +2,7 @@ import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import { validate } from "../validation/validation.js"
 import { createKategoriValidation, updateKategoriValidation, getKategoriValidation } from "../validation/kategori-validation.js"
+import { getImageLink } from "../helper/image-helper.js"
 
 const create = async (req) => {
     const kategori = validate(createKategoriValidation, req)
@@ -81,11 +82,13 @@ const get = async (kategoriId) => {
         throw new ResponseError(404, "Kategori is not found")
     }
 
+    kategori.gambar = await getImageLink(kategori.gambar)
+
     return kategori
 }
 
 const getAll = async () => {
-    return prismaClient.kategori.findMany({
+    const kategori = await prismaClient.kategori.findMany({
         select: {
             id: true,
             nama_kategori: true,
@@ -93,6 +96,10 @@ const getAll = async () => {
             gambar: true
         }
     })
+
+    kategori.gambar = await getImageLink(kategori.gambar)
+
+    return kategori
 }
 
 const remove = async (kategoriId) => {

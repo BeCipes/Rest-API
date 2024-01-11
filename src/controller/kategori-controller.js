@@ -1,6 +1,7 @@
 import kategoriService from "../service/kategori-service.js"
 import { SuccessWebResponse } from "../helper/web-response.js"
 import { getCurrentUserId } from "../helper/auth-util.js"
+import { getImageLink } from "../helper/image-helper.js"
 
 const createKategori = async (req, res, next) => {
     try {
@@ -46,6 +47,8 @@ const getKategoriById = async (req, res, next) => {
     try {
         const kategoriId = req.params.kategoriId
         const result = await kategoriService.get(kategoriId)
+        result.gambar = await getImageLink(result.gambar)
+
         const response = SuccessWebResponse(200, "OK", "Success get kategori", result)
 
         res.status(200).json(response)
@@ -57,6 +60,13 @@ const getKategoriById = async (req, res, next) => {
 const getAllKategori = async (req, res, next) => {
     try {
         const result = await kategoriService.getAll()
+        
+        await Promise.all(result.map(async (item) => {
+            item.gambar = await getImageLink(item.gambar)
+
+            return item
+        }))
+
         const response = SuccessWebResponse(200, "OK", "Success get all kategori", result)
 
         res.status(200).json(response)

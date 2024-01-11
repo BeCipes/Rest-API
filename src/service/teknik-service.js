@@ -2,6 +2,7 @@ import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import { validate } from "../validation/validation.js"
 import { createTeknikValidation, updateTeknikValidation, getTeknikValidation } from "../validation/teknik-validation.js"
+import { getImageLink } from "../helper/image-helper.js"
 
 const create = async (req) => {
     const teknik = validate(createTeknikValidation, req)
@@ -97,15 +98,13 @@ const get = async (teknikId) => {
         }
     })
 
-    if (!teknik) {
-        throw new ResponseError(404, "Teknik is not found")
-    }
+    teknik.cover = await getImageLink(teknik.cover)
 
     return teknik
 }
 
 const getAll = async () => {
-    return prismaClient.teknik.findMany({
+    const teknik = await prismaClient.teknik.findMany({
         select: {
             id: true,
             title: true,
@@ -116,6 +115,10 @@ const getAll = async () => {
             id_kategori: true,
         }
     })
+
+    teknik.cover = await getImageLink(teknik.cover)
+
+    return teknik
 }
 
 const remove = async (teknikId) => {

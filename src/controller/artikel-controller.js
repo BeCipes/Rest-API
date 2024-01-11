@@ -1,6 +1,7 @@
 import artikelService from "../service/artikel-service.js"
 import { SuccessWebResponse } from "../helper/web-response.js"
 import { getCurrentUserId } from "../helper/auth-util.js"
+import { getImageLink } from "../helper/image-helper.js"
 
 const createArtikel = async (req, res, next) => {
     try {
@@ -47,6 +48,8 @@ const getArtikelById = async (req, res, next) => {
     try {
         const artikelId = req.params.artikelId
         const result = await artikelService.get(artikelId)
+        result.gambar = await getImageLink(result.gambar)
+        
         const response = SuccessWebResponse(200, "OK", "Success get artikel", result)
 
         res.status(200).json(response)
@@ -58,6 +61,13 @@ const getArtikelById = async (req, res, next) => {
 const getAllArtikel = async (req, res, next) => {
     try {
         const result = await artikelService.getAll()
+        
+        await Promise.all(result.map(async (item) => {
+            item.gambar = await getImageLink(item.gambar)
+
+            return item
+        }))
+
         const response = SuccessWebResponse(200, "OK", "Success get all artikel", result)
 
         res.status(200).json(response)

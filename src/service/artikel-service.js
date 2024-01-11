@@ -2,6 +2,7 @@ import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import { validate } from "../validation/validation.js"
 import { createArtikelValidation, updateArtikelValidation, getArtikelValidation } from "../validation/artikel-validation.js"
+import { getImageLink } from "../helper/image-helper.js"
 
 const create = async (req) => {
     const artikel = validate(createArtikelValidation, req)
@@ -97,15 +98,13 @@ const get = async (artikelId) => {
         }
     })
 
-    if (!artikel) {
-        throw new ResponseError(404, "Artikel is not found")
-    }
+    artikel.gambar = await getImageLink(artikel.gambar)
 
     return artikel
 }
 
 const getAll = async () => {
-    return prismaClient.artikel.findMany({
+    const artikel = prismaClient.artikel.findMany({
         select: {
             id: true,
             headline: true,
@@ -116,6 +115,8 @@ const getAll = async () => {
             id_kategori: true,
         }
     })
+
+    return artikel
 }
 
 const remove = async (artikelId) => {

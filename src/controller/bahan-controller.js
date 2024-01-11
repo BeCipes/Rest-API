@@ -1,6 +1,7 @@
 import bahanService from "../service/bahan-service.js"
 import { SuccessWebResponse } from "../helper/web-response.js"
 import { getCurrentUserId } from "../helper/auth-util.js"
+import { getImageLink } from "../helper/image-helper.js"
 
 const createBahan = async (req, res, next) => {
     try {
@@ -47,6 +48,8 @@ const getBahanById = async (req, res, next) => {
     try {
         const bahanId = req.params.bahanId
         const result = await bahanService.get(bahanId)
+        result.gambar = await getImageLink(result.gambar)
+
         const response = SuccessWebResponse(200, "OK", "Success get bahan", result)
 
         res.status(200).json(response)
@@ -58,6 +61,13 @@ const getBahanById = async (req, res, next) => {
 const getAllBahan = async (req, res, next) => {
     try {
         const result = await bahanService.getAll()
+        
+        await Promise.all(result.map(async (item) => {
+            item.gambar = await getImageLink(item.gambar)
+
+            return item
+        }))
+
         const response = SuccessWebResponse(200, "OK", "Success get all bahan", result)
 
         res.status(200).json(response)

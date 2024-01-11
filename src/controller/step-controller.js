@@ -1,6 +1,7 @@
 import stepService from "../service/step-service.js"
 import { SuccessWebResponse } from "../helper/web-response.js"
 import { getCurrentUserId } from "../helper/auth-util.js"
+import { getImageLink } from "../helper/image-helper.js"
 
 const createStep = async (req, res, next) => {
     try {
@@ -50,6 +51,8 @@ const getStepById = async (req, res, next) => {
     try {
         const stepId = req.params.stepId
         const result = await stepService.get(stepId)
+        result.gambar = await getImageLink(result.gambar)
+
         const response = SuccessWebResponse(200, "OK", "Success get step", result)
 
         res.status(200).json(response)
@@ -62,6 +65,13 @@ const getStepByIdResep = async (req, res, next) => {
     try {
         const resepId = req.params.resepId
         const result = await stepService.getByResep(resepId)
+        
+        await Promise.all(result.map(async (item) => {
+            item.gambar = await getImageLink(item.gambar)
+
+            return item
+        }))
+
         const response = SuccessWebResponse(200, "OK", "Success get all step by id resep", result)
 
         res.status(200).json(response)
@@ -73,6 +83,13 @@ const getStepByIdResep = async (req, res, next) => {
 const getAllStep = async (req, res, next) => {
     try {
         const result = await stepService.getAll()
+        
+        await Promise.all(result.map(async (item) => {
+            item.gambar = await getImageLink(item.gambar)
+
+            return item
+        }))
+
         const response = SuccessWebResponse(200, "OK", "Success get all step", result)
 
         res.status(200).json(response)

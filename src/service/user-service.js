@@ -8,6 +8,7 @@ import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import bcrypt from "bcryptjs"
 import { v4 as uuid } from "uuid"
+import { getImageLink } from "../helper/image-helper.js"
 
 const create = async (req) => {
   const user = validate(createUserValidation, req)
@@ -119,6 +120,7 @@ const get = async (userId) => {
       first_name: true,
       last_name: true,
       email: true,
+      photo: true,
       role: {
         select: {
           role_name: true,
@@ -127,9 +129,7 @@ const get = async (userId) => {
     },
   })
 
-  if (!user) {
-    throw new ResponseError(404, "User is not found")
-  }
+  user.photo = await getImageLink(user.photo)
 
   return user
 }
@@ -141,6 +141,7 @@ const getAll = async () => {
       first_name: true,
       last_name: true,
       email: true,
+      photo: true,
       role: {
         select: {
           role_name: true,
@@ -149,9 +150,7 @@ const getAll = async () => {
     },
   })
 
-  if (!user) {
-    throw new ResponseError(404, "User is not found")
-  }
+  user.photo = await getImageLink(user.photo)
 
   return user
 }

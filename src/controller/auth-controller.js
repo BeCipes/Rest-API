@@ -1,5 +1,6 @@
 import authService from "../service/auth-service.js"
 import { SuccessWebResponse } from "../helper/web-response.js"
+import { getImageLink } from "../helper/image-helper.js"
 
 const register = async (req, res, next) => {
     try {
@@ -93,6 +94,8 @@ const getCurrentUserInfo = async (req, res, next) => {
     try {
         const token = req.get('Authorization')
         const result = await authService.getUserInfo(token)
+        result.photo = await getImageLink(result.photo)
+
         const response = SuccessWebResponse(200, "OK", "Success get user info", result)
 
         res.status(200).json(response)
