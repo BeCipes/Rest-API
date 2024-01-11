@@ -128,6 +128,7 @@ const login = async (req) => {
   }
 
   return {
+    id: dbUser.id,
     role: dbUser.role?.role_name,
     token,
   }
@@ -302,6 +303,7 @@ const getUserInfo = async (token) => {
   }
 
   return {
+    id: user.id,
     first_name: user.first_name,
     last_name: user.last_name,
     email: user.email,

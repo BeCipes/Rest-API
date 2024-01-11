@@ -2,6 +2,7 @@ import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import { validate } from "../validation/validation.js"
 import { createStepValidation, updateStepValidation, getStepValidation } from "../validation/step-validation.js"
+import { getImageLink } from "../helper/image-helper.js"
 
 const create = async (req) => {
     const step = validate(createStepValidation, req)
@@ -103,13 +104,12 @@ const get = async (stepId) => {
             id_resep: true,
             waktu: true,
             step_no: true,
-            step_desc: true
+            step_desc: true,
+            gambar: true
         }
     })
 
-    if (!step) {
-        throw new ResponseError(404, "Step is not found")
-    }
+    step.gambar = await getImageLink(step.gambar)
 
     return step
 }
@@ -126,27 +126,31 @@ const getByResep = async (resepId) => {
             id_resep: true,
             waktu: true,
             step_no: true,
-            step_desc: true
+            step_desc: true,
+            gambar: true
         }
     })
 
-    if (!step) {
-        throw new ResponseError(404, "Step is not found")
-    }
+    step.gambar = await getImageLink(step.gambar)
 
     return step
 }
 
 const getAll = async () => {
-    return prismaClient.step.findMany({
+    const step = await prismaClient.step.findMany({
         select: {
             id: true,
             id_resep: true,
             waktu: true,
             step_no: true,
-            step_desc: true
+            step_desc: true,
+            gambar: true
         }
     })
+
+    step.gambar = await getImageLink(step.gambar)
+
+    return step
 }
 
 const remove = async (stepId) => {

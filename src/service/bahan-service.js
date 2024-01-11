@@ -2,6 +2,7 @@ import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import { validate } from "../validation/validation.js"
 import { createBahanValidation, updateBahanValidation, getBahanValidation } from "../validation/bahan-validation.js"
+import { getImageLink } from "../helper/image-helper.js"
 
 const create = async (req) => {
     const bahan = validate(createBahanValidation, req)
@@ -85,11 +86,13 @@ const get = async (bahanId) => {
         throw new ResponseError(404, "Bahan is not found")
     }
 
+    bahan.gambar = await getImageLink(bahan.gambar)
+
     return bahan
 }
 
 const getAll = async () => {
-    return prismaClient.bahan.findMany({
+    const bahan = await prismaClient.bahan.findMany({
         select: {
             id: true,
             nama_bahan: true,
@@ -98,6 +101,10 @@ const getAll = async () => {
             gizi: true
         }
     })
+
+    bahan.gambar = await getImageLink(bahan.gambar)
+
+    return bahan
 }
 
 const remove = async (bahanId) => {

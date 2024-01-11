@@ -1,5 +1,6 @@
 import userService from "../service/user-service.js"
 import { SuccessWebResponse } from "../helper/web-response.js"
+import { getImageLink } from "../helper/image-helper.js"
 
 const createUser = async (req, res, next) => {
     try {
@@ -42,6 +43,8 @@ const getUserById = async (req, res, next) => {
     try {
         const userId = req.params.userId
         const result = await userService.get(userId)
+        result.photo = await getImageLink(result.photo)
+
         const response = SuccessWebResponse(200, "OK", "Success get user", result)
 
         res.status(200).json(response)
@@ -53,6 +56,13 @@ const getUserById = async (req, res, next) => {
 const getAllUser = async (req, res, next) => {
     try {
         const result = await userService.getAll()
+
+        await Promise.all(result.map(async (item) => {
+            item.photo = await getImageLink(item.photo)
+
+            return item
+        }))
+
         const response = SuccessWebResponse(200, "OK", "Success get all user", result)
 
         res.status(200).json(response)

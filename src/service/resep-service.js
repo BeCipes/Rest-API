@@ -2,6 +2,7 @@ import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
 import { validate } from "../validation/validation.js"
 import { createResepValidation, updateResepValidation, getResepValidation } from "../validation/resep-validation.js"
+import { getImageLink } from "../helper/image-helper.js"
 
 const create = async (req) => {
     const resep = validate(createResepValidation, req)
@@ -88,6 +89,8 @@ const get = async (resepId) => {
         throw new ResponseError(404, "Resep is not found")
     }
 
+    resep.gambar = await getImageLink(resep.gambar)
+
     return resep
 }
 
@@ -103,9 +106,43 @@ const getAll = async () => {
         }
     })
 
-    if (!resep) {
-        throw new ResponseError(404, "Resep is not found")
+    resep.gambar = await getImageLink(resep.gambar)
+
+    return resep
+}
+
+const getByIdKategori = async (kategoriId) => {
+    kategoriId = validate(getResepValidation, kategoriId)
+
+    const countKategori = await prismaClient.kategori.count({
+        where: {
+            id: kategoriId
+        }
+    })
+
+    if (countKategori === 0) {
+        throw new ResponseError(404, "Kategori is not found")
     }
+
+    const resep = await prismaClient.resep.findMany({
+        where: {
+            kategori: {
+                some: {
+                    id: kategoriId
+                }
+            }
+        },
+        select: {
+            id: true,
+            nama_resep: true,
+            deskripsi: true,
+            gambar: true,
+            bahan: true,
+            informasi_gizi: true
+        }
+    })
+
+    resep.gambar = await getImageLink(resep.gambar)
 
     return resep
 }
@@ -137,5 +174,6 @@ export default {
     update,
     get,
     getAll,
+    getByIdKategori,
     remove
 }

@@ -1,6 +1,7 @@
 import teknikService from "../service/teknik-service.js"
 import { SuccessWebResponse } from "../helper/web-response.js"
 import { getCurrentUserId } from "../helper/auth-util.js"
+import { getImageLink } from "../helper/image-helper.js"
 
 const createTeknik = async (req, res, next) => {
     try {
@@ -47,6 +48,8 @@ const getTeknikById = async (req, res, next) => {
     try {
         const teknikId = req.params.teknikId
         const result = await teknikService.get(teknikId)
+        result.cover = await getImageLink(result.cover)
+
         const response = SuccessWebResponse(200, "OK", "Success get teknik", result)
 
         res.status(200).json(response)
@@ -58,6 +61,13 @@ const getTeknikById = async (req, res, next) => {
 const getAllTeknik = async (req, res, next) => {
     try {
         const result = await teknikService.getAll()
+        
+        await Promise.all(result.map(async (item) => {
+            item.cover = await getImageLink(item.cover)
+
+            return item
+        }))
+
         const response = SuccessWebResponse(200, "OK", "Success get all teknik", result)
 
         res.status(200).json(response)
