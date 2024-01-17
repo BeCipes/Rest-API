@@ -114,9 +114,9 @@ const getAll = async () => {
 const getByIdKategori = async (kategoriId) => {
     kategoriId = validate(getResepValidation, kategoriId)
 
-    const countKategori = await prismaClient.kategori.count({
+    const countKategori = await prismaClient.kategori_resep.count({
         where: {
-            id: kategoriId
+            id_kategori: kategoriId
         }
     })
 
@@ -124,21 +124,29 @@ const getByIdKategori = async (kategoriId) => {
         throw new ResponseError(404, "Kategori is not found")
     }
 
-    const resep = await prismaClient.resep.findMany({
+    const resep = await prismaClient.kategori_resep.findMany({
         where: {
-            kategori: {
-                some: {
-                    id: kategoriId
-                }
-            }
+            id_kategori: kategoriId
         },
         select: {
             id: true,
-            nama_resep: true,
-            deskripsi: true,
-            gambar: true,
-            bahan: true,
-            informasi_gizi: true
+            kategori: {
+                select: {
+                    id: true,
+                    nama_kategori: true,
+                    gambar: true
+                }
+            },
+            resep: {
+                select: {
+                    id: true,
+                    nama_resep: true,
+                    deskripsi: true,
+                    gambar: true,
+                    bahan: true,
+                    informasi_gizi: true
+                }
+            }
         }
     })
 

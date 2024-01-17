@@ -50,9 +50,9 @@ publicRouter.get("/data/kategori/:kategoriId", authMiddleware, kategoriControlle
 publicRouter.get("/data/resep/:resepId", authMiddleware, resepController.getResepById)
 publicRouter.get("/data/teknik/:teknikId", authMiddleware, teknikController.getTeknikById)
 
+publicRouter.get("/data/resep/kategori/:kategoriId", authMiddleware, resepController.getResepByIdKategori)
 publicRouter.get("/data/kategori-resep/resep/:resepId", authMiddleware, kategoriResepController.getKategoriResepByIdResep)
 publicRouter.get("/data/step/resep/:resepId", authMiddleware, stepController.getStepByIdResep)
-publicRouter.get("/data/step/resep/kategori/:kategoriId", authMiddleware, resepController.getResepByIdKategori)
 
 publicRouter.post("/data/upload", uploadMiddleware, uploadController.uploadFile)
 
