@@ -39,14 +39,15 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
    MAIL_PASS=
 
    # URL database (sebagai contoh saya berikan dibawah)
-   DATABASE_URL="mysql://root:password@localhost:3306/yourdb"
+   DATABASE_URL="mysql://root:password@localhost:port/yourdb"
 
    ## Jika anda ingin menggunakan docker, maka anda dapat menambah field:
-   PLANETSCALE_DB=
-   PLANETSCALE_BRANCH=
-   PLANETSCALE_ORG=
-   PLANETSCALE_SERVICE_TOKEN=
-   PLANETSCALE_SERVICE_TOKEN_NAME=
+   MYSQL_DATABASE=
+   MYSQL_USER=
+   MYSQL_PASSWORD=
+   MYSQL_ROOT_PASSWORD=
+   ## Jika anda ingin menggunakan empty password
+   # MYSQL_ALLOW_EMPTY_PASSWORD=true
    ```
 
 4. Jalankan perintah `npm run migrate` untuk membuat tabel-tabel yang diperlukan
@@ -57,3 +58,7 @@ Ini adalah RestAPI untuk program GoCipes. RestAPI ini dibuat menggunakan NodeJS,
 
 Dokumentasi API dibuat menggunakan **`OpenAPI Specification (OAS)`** dan dapat dilihat di file `apispecs_gocipes.json`
 Saya juga telah menyediakan file postman yang dapat langsung di import dan digunakan.
+
+### Notes
+
+Project belum 100% selesai, masih ada beberapa fitur yang belum saya buat dan masih ada beberapa kekurangan.
